@@ -10,7 +10,10 @@ module RailroadDiagrams
 
     def run(argv)
       OptionParser.new do |opts|
-        opts.banner = 'Usage: railroad_diagrams [options] [files]'
+        opts.banner = <<~BANNER
+          This is a test runner for railroad_diagrams:
+          Usage: railroad_diagrams [options] [files]
+        BANNER
 
         opts.on('-f', '--format FORMAT', 'Output format (svg, ascii, unicode, standalone)') do |format|
           @format = format
