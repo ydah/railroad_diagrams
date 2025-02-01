@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Generate SVG railroad syntax diagrams, like on JSON.org.'
   spec.homepage = "https://github.com/ydah/railroad_diagrams"
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 3.1.0'
+  spec.required_ruby_version = '>= 2.5.0'
 
   spec.metadata["homepage_uri"]          = spec.homepage
   spec.metadata["source_code_uri"]       = spec.homepage

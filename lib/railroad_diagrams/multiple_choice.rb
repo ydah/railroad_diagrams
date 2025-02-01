@@ -70,7 +70,7 @@ module RailroadDiagrams
       Path.new(x + 30 + AR + @inner_width, y + @height).right(AR).add(self)
 
       # Do the elements that curve below
-      below = @items[(@default + 1)..] || []
+      below = @items[(@default + 1)..-1] || []
       distance_from_y = [10 + AR, default.height + default.down + VS + below.first.up].max if below.any?
 
       below.each_with_index do |item, i|

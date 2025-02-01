@@ -31,7 +31,7 @@ module RailroadDiagrams
         text: @text
       )
       if @href
-        a = DiagramItem.new('a', attrs: { 'xlink:href' => @href }, text:).add(self)
+        a = DiagramItem.new('a', attrs: { 'xlink:href' => @href }, text: text).add(self)
         text.add(a)
       else
         text.add(self)

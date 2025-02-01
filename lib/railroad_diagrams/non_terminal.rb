@@ -49,7 +49,7 @@ module RailroadDiagrams
           attrs: {
             'xlink:href' => @href
           },
-          text:
+          text: text
         ).add(self)
         text.add(a)
       else

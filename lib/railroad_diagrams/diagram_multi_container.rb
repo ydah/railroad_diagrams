@@ -3,7 +3,7 @@
 module RailroadDiagrams
   class DiagramMultiContainer < DiagramItem
     def initialize(name, items, attrs = nil, text = nil)
-      super(name, attrs:, text:)
+      super(name, attrs: attrs, text: text)
       @items = items.map { |item| wrap_string(item) }
     end
 

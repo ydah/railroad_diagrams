@@ -201,7 +201,7 @@ module RailroadDiagrams
                     else
                       []
                     end
-        diagram_td = diagram_td.append_below(item_td, separator, move_entry:, move_exit:)
+        diagram_td = diagram_td.append_below(item_td, separator, move_entry: move_entry, move_exit: move_exit)
       end
       diagram_td
     end
