@@ -73,5 +73,9 @@ module RailroadDiagrams
         [diff / 2, diff / 2]
       end
     end
+
+    def write_standalone(write, css = nil)
+      write_svg(write)
+    end
   end
 end

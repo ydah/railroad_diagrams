@@ -85,7 +85,7 @@ module RailroadDiagrams
       super
     end
 
-    def write_text(_write)
+    def write_text(write)
       output = text_diagram
       output = "#{output.lines.join("\n")}\n"
       output = output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;') if ESCAPE_HTML
@@ -98,7 +98,7 @@ module RailroadDiagrams
       Style.new(css).add(self)
       @attrs['xmlns'] = 'http://www.w3.org/2000/svg'
       @attrs['xmlns:xlink'] = 'http://www.w3.org/1999/xlink'
-      DiagramItem.write_svg(write)
+      super(write)
       @children.pop
       @attrs.delete('xmlns')
       @attrs.delete('xmlns:xlink')
