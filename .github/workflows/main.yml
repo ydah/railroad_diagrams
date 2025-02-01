@@ -4,18 +4,21 @@ on:
   push:
     branches:
       - main
-
   pull_request:
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    name: Ruby ${{ matrix.ruby }}
+  ruby-versions:
+    uses: ruby/actions/.github/workflows/ruby_versions.yml@master
+    with:
+      engine: cruby
+      min_version: 2.5
+  test:
+    needs: ruby-versions
+    runs-on: ubuntu-22.04
     strategy:
+      fail-fast: false
       matrix:
-        ruby:
-          - '3.4'
-
+        ruby: ${{ fromJson(needs.ruby-versions.outputs.versions) }}
     steps:
       - uses: actions/checkout@v4
       - name: Set up Ruby
@@ -23,5 +26,4 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - name: Run the default task
-        run: bundle exec rake
+      - run: exe/railroad_diagrams --format=svg
