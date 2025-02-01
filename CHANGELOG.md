@@ -2,6 +2,10 @@
 
 ## Unreleased
 
+## 0.2.1 - 2025-02-01
+
+- Fix an error for bundle install from Ruby 2.5.
+
 ## 0.2.0 - 2025-02-01
 
 - Fix an error for standalone mode.
