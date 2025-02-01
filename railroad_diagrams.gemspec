@@ -12,7 +12,7 @@ Gem::Specification.new do |spec|
   spec.description = 'Generate SVG railroad syntax diagrams, like on JSON.org.'
   spec.homepage = "https://github.com/ydah/railroad_diagrams"
   spec.license = 'MIT'
-  spec.required_ruby_version = '>= 2.5.0'
+  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
 
   spec.metadata["homepage_uri"]          = spec.homepage
   spec.metadata["source_code_uri"]       = spec.homepage
@@ -20,12 +20,8 @@ Gem::Specification.new do |spec|
   spec.metadata["bug_tracker_uri"]       = "#{spec.homepage}/issues"
   spec.metadata['rubygems_mfa_required'] = 'true'
 
-  gemspec = File.basename(__FILE__)
-  spec.files = IO.popen(%w[git ls-files -z], chdir: __dir__, err: IO::NULL) do |ls|
-    ls.readlines("\x0", chomp: true).reject do |f|
-      (f == gemspec) ||
-        f.start_with?(*%w[bin/ test/ spec/ features/ .git .github appveyor Gemfile])
-    end
+  spec.files = Dir.chdir(File.expand_path(__dir__)) do
+    `git ls-files -z`.split("\x0").reject { |f| f.match(%r{\A(?:test|spec|features|sample)/}) }
   end
 
   spec.bindir        = 'exe'
