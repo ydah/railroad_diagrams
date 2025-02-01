@@ -74,7 +74,7 @@ module RailroadDiagrams
 
       # lower track
       lower_span =
-        @items[1..].sum { |item| item.width + (item.needs_space ? 20 : 0) } +
+        @items[1..-1].sum { |item| item.width + (item.needs_space ? 20 : 0) } +
         ((@items.size - 2) * AR * 2) +
         (last.height.positive? ? AR : 0) -
         AR
