@@ -34,7 +34,7 @@ module RailroadDiagrams
         write.call(" #{name}=\"#{RailroadDiagrams.escape_attr(value)}\"")
       end
       write.call('>')
-      write.call("\n") if @name in %w[g svg]
+      write.call("\n") if %w[g svg].include?(@name)
       @children.each do |child|
         if child.is_a?(DiagramItem) || child.is_a?(Path) || child.is_a?(Style)
           child.write_svg(write)
