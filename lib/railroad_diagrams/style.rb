@@ -9,8 +9,11 @@ module RailroadDiagrams
     class << self
       def default_style
         <<~CSS
+          * {
+            color: #333333;
+          }
           svg.railroad-diagram {
-            background-color:hsl(30,20%,95%);
+            background-color: white;
           }
           svg.railroad-diagram path {
             stroke-width:3;
@@ -21,16 +24,25 @@ module RailroadDiagrams
             font:bold 14px monospace;
             text-anchor:middle;
           }
-          svg.railroad-diagram text.label{
+          svg.railroad-diagram text.label {
             text-anchor:start;
           }
-          svg.railroad-diagram text.comment{
+          svg.railroad-diagram text.comment {
             font:italic 12px monospace;
           }
-          svg.railroad-diagram rect{
+          svg.railroad-diagram rect {
             stroke-width:3;
-            stroke:black;
+            stroke: #333333;
             fill:hsl(120,100%,90%);
+          }
+          svg.railroad-diagram path {
+            stroke: #333333;
+          }
+          svg.railroad-diagram .terminal rect {
+            fill: hsl(190, 100%, 83%);
+          }
+          svg.railroad-diagram .non-terminal rect {
+            fill: hsl(223, 100%, 83%);
           }
           svg.railroad-diagram rect.group-box {
             stroke: gray;
