@@ -139,6 +139,32 @@ module RailroadDiagrams
         string + (pad * (gap / pad.length))
       end
 
+      def get_parts(part_names)
+        part_names.map { |name| @parts[name] }
+      end
+
+      def enclose_lines(lines, lefts, rights)
+        unless lines.length == lefts.length && lines.length == rights.length
+          raise 'All arguments must be the same length'
+        end
+
+        lines.each_with_index.map { |line, i| lefts[i] + line + rights[i] }
+      end
+
+      def gaps(outer_width, inner_width)
+        diff = outer_width - inner_width
+        case INTERNAL_ALIGNMENT
+        when 'left'
+          [0, diff]
+        when 'right'
+          [diff, 0]
+        else
+          left = diff / 2
+          right = diff - left
+          [left, right]
+        end
+      end
+
       private
 
       def rectish(rect_type, data, dashed)
@@ -191,32 +217,6 @@ module RailroadDiagrams
         end
 
         new(entry, exit, new_lines)
-      end
-
-      def enclose_lines(lines, lefts, rights)
-        unless lines.length == lefts.length && lines.length == rights.length
-          raise 'All arguments must be the same length'
-        end
-
-        lines.each_with_index.map { |line, i| lefts[i] + line + rights[i] }
-      end
-
-      def gaps(outer_width, inner_width)
-        diff = outer_width - inner_width
-        case INTERNAL_ALIGNMENT
-        when 'left'
-          [0, diff]
-        when 'right'
-          [diff, 0]
-        else
-          left = diff / 2
-          right = diff - left
-          [left, right]
-        end
-      end
-
-      def get_parts(part_names)
-        part_names.map { |name| @parts[name] }
       end
     end
 
@@ -282,7 +282,7 @@ module RailroadDiagrams
       left = [pad * left_width] * @height
       right = [pad * (total_padding - left_width)] * @height
 
-      self.class.new(@entry, @exit, enclose_lines(@lines, left, right))
+      self.class.new(@entry, @exit, self.class.enclose_lines(@lines, left, right))
     end
 
     def copy

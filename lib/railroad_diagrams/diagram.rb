@@ -71,8 +71,8 @@ module RailroadDiagrams
 
     def text_diagram
       separator, = TextDiagram.get_parts(['separator'])
-      diagram_td = items[0].text_diagram
-      items[1..].each do |item|
+      diagram_td = @items[0].text_diagram
+      @items[1..].each do |item|
         item_td = item.text_diagram
         item_td.expand(1, 1, 0, 0) if item.needs_space
         diagram_td = diagram_td.append_right(separator)

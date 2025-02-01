@@ -103,7 +103,7 @@ module RailroadDiagrams
           # The bottom item exits directly to its right.
           right_lines += [line * 2]
         end
-        left_pad, right_pad = TextDiagram._gaps(max_width, item_td.width)
+        left_pad, right_pad = TextDiagram.gaps(max_width, item_td.width)
         item_td = item_td.expand(left_pad, right_pad, 0, 0)
         diagram_td = if item_num.zero?
                        item_td
