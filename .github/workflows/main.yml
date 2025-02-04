@@ -26,4 +26,8 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - run: exe/railroad_diagrams --format=svg
+      - run: |
+          exe/railroad_diagrams --format=svg
+          exe/railroad_diagrams --format=ascii
+          exe/railroad_diagrams --format=unicode
+          exe/railroad_diagrams --format=standalone
