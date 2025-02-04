@@ -42,7 +42,7 @@ module RailroadDiagrams
 
     def text_diagram
       # NOTE: href, title, and cls are ignored for text diagrams.
-      TextDiagram.new(0, 0, @text)
+      TextDiagram.new(0, 0, [@text])
     end
   end
 end

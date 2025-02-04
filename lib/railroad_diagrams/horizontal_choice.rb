@@ -156,11 +156,11 @@ module RailroadDiagrams
       # diagram_entry: distance from top to lowest entry, aka distance from top to diagram entry, aka final diagram entry and exit.
       diagram_entry = item_tds.map(&:entry).max
       # soil_to_baseline: distance from top to lowest entry before rightmost item, aka distance from skip-over-items line to rightmost entry, aka SOIL height.
-      soil_to_baseline = item_tds[0..-2].map(&:entry).max || 0
+      soil_to_baseline = item_tds[0...-1].map(&:entry).max
       # top_to_soil: distance from top to skip-over-items line.
       top_to_soil = diagram_entry - soil_to_baseline
       # baseline_to_suil: distance from lowest entry or exit after leftmost item to bottom, aka distance from entry to skip-under-items line, aka SUIL height.
-      baseline_to_suil = item_tds[1..-1].map { |td| td.height - [td.entry, td.exit].min }.max.to_i - 1
+      baseline_to_suil = item_tds[1..-1].map { |td| td.height - [td.entry, td.exit].min }.max - 1
 
       # The diagram starts with a line from its entry up to skip-over-items line:
       lines = Array.new(top_to_soil, '  ')
@@ -174,13 +174,13 @@ module RailroadDiagrams
         if item_num > 0
           # All items except the leftmost start with a line from the skip-over-items line down to their entry,
           # with a joining-line across at the skip-under-items line:
-          lines = Array.new(top_to_soil, '  ')
+          lines = ['  '] * top_to_soil
           # All such items except the rightmost also have a continuation of the skip-over-items line:
           line_to_next_item = item_num == item_tds.size - 1 ? ' ' : line
           lines << (roundcorner_top_right + line_to_next_item)
-          lines += Array.new(soil_to_baseline, line_vertical + ' ')
+          lines += ["#{line_vertical} "] * soil_to_baseline
           lines << (roundcorner_bot_left + line)
-          lines += Array.new(baseline_to_suil, '  ')
+          lines += ['  '] * baseline_to_suil
           lines << (line * 2)
 
           entry_td = TextDiagram.new(diagram_td.exit, diagram_td.exit, lines)
@@ -231,7 +231,7 @@ module RailroadDiagrams
           lines = []
           line_from_exit = diagram_td.exit == diagram_td.entry ? line : ' '
           lines << (line_from_exit + roundcorner_top_left)
-          lines += Array.new(diagram_td.exit - diagram_td.entry - 1, ' ' + line_vertical)
+          lines += Array.new(diagram_td.exit - diagram_td.entry, ' ' + line_vertical)
           lines << (line + roundcorner_bot_right) if diagram_td.exit != diagram_td.entry
           lines += Array.new(baseline_to_suil - (diagram_td.exit - diagram_td.entry), ' ' + line_vertical)
           lines << (line + roundcorner_bot_right)

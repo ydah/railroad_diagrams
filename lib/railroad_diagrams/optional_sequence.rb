@@ -136,7 +136,7 @@ module RailroadDiagrams
       # diagramEntry: distance from top to lowest entry, aka distance from top to diagram entry, aka final diagram entry and exit.
       diagram_entry = item_tds.map(&:entry).max
       # SOILHeight: distance from top to lowest entry before rightmost item, aka distance from skip-over-items line to rightmost entry, aka SOIL height.
-      soil_height = item_tds[0...-1].map(&:entry).max
+      soil_height = item_tds.map(&:entry).max
       # topToSOIL: distance from top to skip-over-items line.
       top_to_soil = diagram_entry - soil_height
 
@@ -147,7 +147,7 @@ module RailroadDiagrams
       lines += [roundcorner_bot_right + line]
       diagram_td = TextDiagram.new(lines.size - 1, lines.size - 1, lines)
 
-      @items.each_with_index do |item_td, i|
+      item_tds.each_with_index do |item_td, i|
         if i.positive?
           # All items except the leftmost start with a line from their entry down to their skip-under-item line,
           # with a joining-line across at the skip-over-items line:
@@ -162,9 +162,10 @@ module RailroadDiagrams
 
           # All items except the leftmost next have a line from skip-over-items line down to their entry,
           # with joining-lines at their entry and at their skip-under-item line:
-          lines = (['  '] * top_to_soil) + [line + roundcorner_top_right +
-                                            # All such items except the rightmost also have a continuation of the skip-over-items line:
-                                            (i < item_tds.size - 1 ? line : ' ')] +
+          lines = (['  '] * top_to_soil) +
+                  [line + roundcorner_top_right +
+                   # All such items except the rightmost also have a continuation of the skip-over-items line:
+                   (i < item_tds.size - 1 ? line : ' ')] +
                   ([" #{line_vertical} "] * (diagram_td.exit - top_to_soil - 1)) +
                   [line + roundcorner_bot_left + line] +
                   ([' ' * 3] * (item_td.height - item_td.entry - 1)) +

@@ -74,9 +74,10 @@ module RailroadDiagrams
       diagram_td = @items[0].text_diagram
       @items[1..-1].each do |item|
         item_td = item.text_diagram
-        item_td.expand(1, 1, 0, 0) if item.needs_space
-        diagram_td = diagram_td.append_right(separator)
+        item_td = item_td.expand(1, 1, 0, 0) if item.needs_space
+        diagram_td = diagram_td.append_right(item_td, separator)
       end
+      diagram_td
     end
 
     def write_svg(write)
@@ -88,8 +89,8 @@ module RailroadDiagrams
     def write_text(write)
       output = text_diagram
       output = "#{output.lines.join("\n")}\n"
-      output = output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;') if ESCAPE_HTML
-      write(output)
+      output = output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;')
+      write.call(output)
     end
 
     def write_standalone(write, css = nil)

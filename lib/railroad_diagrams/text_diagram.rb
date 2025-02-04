@@ -117,12 +117,31 @@ module RailroadDiagrams
         end
       end
 
-      def rect(item, dashed = false)
+      def rect(item, dashed: false)
         rectish('rect', item, dashed)
       end
 
-      def round_rect(item, dashed = false)
+      def round_rect(item, dashed: false)
         rectish('roundrect', item, dashed)
+      end
+
+      def max_width(*args)
+        max_width = 0
+        args.each do |arg|
+          width =
+            case arg
+            when TextDiagram
+              arg.width
+            when Array
+              arg.map(&:length).max
+            when Numeric
+              arg.to_s.length
+            else
+              arg.length
+            end
+          max_width = width if width > max_width
+        end
+        max_width
       end
 
       def pad_l(string, width, pad)
@@ -169,54 +188,57 @@ module RailroadDiagrams
 
       def rectish(rect_type, data, dashed)
         line_type = dashed ? '_dashed' : ''
-        parts = get_parts([
-                            "#{rect_type}_top_left",
-                            "#{rect_type}_left#{line_type}",
-                            "#{rect_type}_bot_left",
-                            "#{rect_type}_top_right",
-                            "#{rect_type}_right#{line_type}",
-                            "#{rect_type}_bot_right",
-                            "#{rect_type}_top#{line_type}",
-                            "#{rect_type}_bot#{line_type}",
-                            'line',
-                            'cross'
-                          ])
+        top_left, ctr_left, bot_left, top_right, ctr_right, bot_right, top_horiz, bot_horiz, line, cross =
+          get_parts([
+                      "#{rect_type}_top_left",
+                      "#{rect_type}_left#{line_type}",
+                      "#{rect_type}_bot_left",
+                      "#{rect_type}_top_right",
+                      "#{rect_type}_right#{line_type}",
+                      "#{rect_type}_bot_right",
+                      "#{rect_type}_top#{line_type}",
+                      "#{rect_type}_bot#{line_type}",
+                      'line',
+                      'cross'
+                    ])
 
-        item_td = data.is_a?(TextDiagram) ? data : new(0, 0, [data.to_s])
+        item_td = data.is_a?(TextDiagram) ? data : new(0, 0, [data])
 
-        lines = [parts[6] * (item_td.width + 2)]
-        lines += item_td.expand(1, 1, 0, 0).lines.map { |line| " #{line} " }
-        lines << (parts[7] * (item_td.width + 2))
+        lines = [top_horiz * (item_td.width + 2)]
+        if data.is_a?(TextDiagram)
+          lines += item_td.expand(1, 1, 0, 0).lines
+        else
+          (0...item_td.lines.length).each do |i|
+            lines += [(' ' + item_td.lines[i] + ' ')]
+          end
+        end
+        lines += [(bot_horiz * (item_td.width + 2))]
 
         entry = item_td.entry + 1
         exit = item_td.exit + 1
 
-        left_max = [parts[0], parts[1], parts[2]].map(&:size).max
-        lefts = Array.new(lines.size, parts[1].ljust(left_max))
-        lefts[0] = parts[0].ljust(left_max, parts[6])
-        lefts[-1] = parts[2].ljust(left_max, parts[7])
-        lefts[entry] = parts[9].ljust(left_max) if data.is_a?(TextDiagram)
+        left_max_width = max_width(top_left, ctr_left, bot_left)
+        lefts = [pad_r(ctr_left, left_max_width, ' ')] * lines.length
+        lefts[0] = pad_r(top_left, left_max_width, top_horiz)
+        lefts[-1] = pad_r(bot_left, left_max_width, bot_horiz)
+        lefts[entry] = cross if data.is_a?(TextDiagram)
 
-        right_max = [parts[3], parts[4], parts[5]].map(&:size).max
-        rights = Array.new(lines.size, parts[4].rjust(right_max))
-        rights[0] = parts[3].rjust(right_max, parts[6])
-        rights[-1] = parts[5].rjust(right_max, parts[7])
-        rights[exit] = parts[9].rjust(right_max) if data.is_a?(TextDiagram)
+        right_max_width = max_width(top_right, ctr_right, bot_right)
+        rights = [pad_l(ctr_right, right_max_width, ' ')] * lines.length
+        rights[0] = pad_l(top_right, right_max_width, top_horiz)
+        rights[-1] = pad_l(bot_right, right_max_width, bot_horiz)
+        rights[exit] = cross if data.is_a?(TextDiagram)
 
-        new_lines = lines.each_with_index.map do |line, i|
-          lefts[i] + line + rights[i]
-        end
+        lines = enclose_lines(lines, lefts, rights)
 
-        lefts = Array.new(lines.size, ' ')
-        lefts[entry] = parts[8]
-        rights = Array.new(lines.size, ' ')
-        rights[exit] = parts[8]
+        lefts = [' '] * lines.length
+        lefts[entry] = line
+        rights = [' '] * lines.length
+        rights[exit] = line
 
-        new_lines = new_lines.each_with_index.map do |line, i|
-          lefts[i] + line + rights[i]
-        end
+        lines = enclose_lines(lines, lefts, rights)
 
-        new(entry, exit, new_lines)
+        new(entry, exit, lines)
       end
     end
 
@@ -227,12 +249,17 @@ module RailroadDiagrams
       @exit = exit
       @lines = lines.dup
       @height = lines.size
-      @width = lines.empty? ? 0 : lines.first.size
+      @width = lines.any? ? lines[0].length : 0
 
-      validate
+      raise "Entry is not within diagram vertically:\n#{dump(false)}" unless entry <= lines.length
+      raise "Exit is not within diagram vertically:\n#{dump(false)}" unless exit <= lines.length
+
+      lines.each do |line|
+        raise "Diagram data is not rectangular:\n#{dump(false)}" unless lines[0].length == line.length
+      end
     end
 
-    def alter(new_entry = nil, new_exit = nil, new_lines = nil)
+    def alter(new_entry: nil, new_exit: nil, new_lines: nil)
       self.class.new(
         new_entry || @entry,
         new_exit || @exit,
@@ -310,22 +337,32 @@ module RailroadDiagrams
       )
     end
 
-    private
+    def dump(show = true)
+      result = "height=#{@height}; len(lines)=#{@lines.length}"
 
-    def validate
-      return if @lines.empty?
+      result += "; entry outside diagram: entry=#{@ntry}" if @entry > @lines.length
+      result += "; exit outside diagram: exit=#{@exit}" if @exit > @lines.length
 
-      line_length = @lines.first.size
-      @lines.each do |line|
-        raise ArgumentError, "Diagram is not rectangular:\n#{inspect}" unless line.size == line_length
+      (0...[@lines.length, @entry + 1, @exit + 1].max).each do |y|
+        result += "\n[#{format('%03d', y)}]"
+        result += " '#{@lines[y]}' len=#{@lines[y].length}" if y < @lines.length
+        if y == @entry && y == @exit
+          result += ' <- entry, exit'
+        elsif y == @entry
+          result += ' <- entry'
+        elsif y == @exit
+          result += ' <- exit'
+        end
       end
 
-      raise ArgumentError, "Entry point out of bounds:\n#{inspect}" if @entry >= @height
-
-      return unless @exit >= @height
-
-      raise ArgumentError, "Exit point out of bounds:\n#{inspect}"
+      if show
+        puts result
+      else
+        result
+      end
     end
+
+    private
 
     def inspect
       output = ["TextDiagram(entry=#{@entry}, exit=#{@exit}, height=#{@height})"]

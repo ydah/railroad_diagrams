@@ -115,14 +115,14 @@ module RailroadDiagrams
 
       first_td = @items[0].text_diagram
       second_td = @items[1].text_diagram
-      max_width = TextDiagram._max_width(first_td, second_td)
-      left_width, right_width = TextDiagram._gaps(max_width, 0)
+      max_width = TextDiagram.max_width(first_td, second_td)
+      left_width, right_width = TextDiagram.gaps(max_width, 0)
 
       left_lines = []
       right_lines = []
       separator = []
 
-      left_size, right_size = TextDiagram._gaps(first_td.width, 0)
+      left_size, right_size = TextDiagram.gaps(first_td.width, 0)
       diagram_td = first_td.expand(left_width - left_size, right_width - right_size, 0, 0)
 
       left_lines += [' ' * 2] * diagram_td.entry
@@ -142,7 +142,7 @@ module RailroadDiagrams
       left_lines << (' ' * 2)
       right_lines << (' ' * 2)
 
-      left_size, right_size = TextDiagram._gaps(second_td.width, 0)
+      left_size, right_size = TextDiagram.gaps(second_td.width, 0)
       second_td = second_td.expand(left_width - left_size, right_width - right_size, 0, 0)
       diagram_td = diagram_td.append_below(second_td, separator, move_entry: true, move_exit: true)
 
@@ -155,7 +155,7 @@ module RailroadDiagrams
       right_lines << (line + corner_bot_right)
 
       mid_point = first_td.height + (separator.size / 2)
-      diagram_td = diagram_td.alter(entry: mid_point, exit: mid_point)
+      diagram_td = diagram_td.alter(new_entry: mid_point, new_exit: mid_point)
 
       left_td = TextDiagram.new(mid_point, mid_point, left_lines)
       right_td = TextDiagram.new(mid_point, mid_point, right_lines)

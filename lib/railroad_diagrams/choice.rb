@@ -40,8 +40,6 @@ module RailroadDiagrams
       @up += @items[0].up
 
       @height = @items[default].height
-      @down = 0
-
       (default + 1...@items.size).each do |i|
         arcs =
           if i == default + 1
@@ -67,7 +65,7 @@ module RailroadDiagrams
     end
 
     def to_s
-      items_str = @items.map(&:inspect).join(', ')
+      items_str = @items.map(&:to_s).join(', ')
       "Choice(#{@default}, #{items_str})"
     end
 
@@ -150,57 +148,62 @@ module RailroadDiagrams
         move_entry = false
         move_exit = false
         if i <= @default
-          # First item and above the line: also remove ascenders above the item's entry and exit, suppress the separator above it.
-          has_separator = false
-          [0..item_td.entry].each { |j| left_lines[j] = ' ' }
-          [0..item_td.exit].each { |j| right_lines[j] = ' ' }
+          # Item below the line: round off the entry/exit lines downwards.
+          left_lines[item_td.entry] = roundcorner_top_left
+          right_lines[item_td.exit] = roundcorner_top_right
+          if i == 0
+            # First item and above the line: also remove ascenders above the item's entry and exit, suppress the separator above it.
+            has_separator = false
+            (0...item_td.entry).each { |j| left_lines[j] = ' ' }
+            (0...item_td.exit).each { |j| right_lines[j] = ' ' }
+          end
         end
         if i >= @default
           # Item below the line: round off the entry/exit lines downwards.
           left_lines[item_td.entry] = roundcorner_bot_left
-          right_lines[item_td.entry] = roundcorner_bot_right
+          right_lines[item_td.exit] = roundcorner_bot_right
           if i == 0
             # First item and below the line: also suppress the separator above it.
             has_separator = false
           end
           if i == @items.size - 1
             # Last item and below the line: also remove descenders below the item's entry and exit
-            [item_td.entry + 1..item_td.height].each { |j| left_lines[j] = ' ' }
-            [item_td.exit + 1..item_td.height].each { |j| right_lines[j] = ' ' }
+            (item_td.entry + 1...item_td.height).each { |j| left_lines[j] = ' ' }
+            (item_td.exit + 1...item_td.height).each { |j| right_lines[j] = ' ' }
           end
         end
         if i == @default
           # Item on the line: entry/exit are horizontal, and sets the outer entry/exit.
           left_lines[item_td.entry] = cross
-          right_lines[item_td.entry] = cross
+          right_lines[item_td.exit] = cross
           move_entry = true
           move_exit = true
           if i == 0 && i == @items.size - 1
             # Only item and on the line: set entry/exit for straight through.
             left_lines[item_td.entry] = line
-            right_lines[item_td.entry] = line
+            right_lines[item_td.exit] = line
           elsif i == 0
             # First item and on the line: set entry/exit for no ascenders.
-            left_lines[item_td.entry] = roundcorner_top_left
-            left_lines[item_td.exit] = roundcorner_bot_left
+            left_lines[item_td.entry] = roundcorner_top_right
+            right_lines[item_td.exit] = roundcorner_top_left
           elsif i == @items.size - 1
             # Last item and on the line: set entry/exit for no descenders.
-            left_lines[item_td.entry] = roundcorner_bot_left
-            right_lines[item_td.entry] = roundcorner_bot_right
+            left_lines[item_td.entry] = roundcorner_bot_right
+            right_lines[item_td.exit] = roundcorner_bot_left
           end
         end
         left_join_td = TextDiagram.new(item_td.entry, item_td.entry, left_lines)
         right_join_td = TextDiagram.new(item_td.exit, item_td.exit, right_lines)
         item_td = left_join_td.append_right(item_td, '').append_right(right_join_td, '')
-        separator = if has_separator
-                      [
-                        line_vertical +
-                          (' ' * (TextDiagram.max_width(diagram_td, item_td) - 2)) +
-                          line_vertical
-                      ]
-                    else
-                      []
-                    end
+        separator =
+          if has_separator
+            [
+              line_vertical +
+                (' ' * (TextDiagram.max_width(diagram_td, item_td) - 2)) + line_vertical
+            ]
+          else
+            []
+          end
         diagram_td = diagram_td.append_below(item_td, separator, move_entry: move_entry, move_exit: move_exit)
       end
       diagram_td

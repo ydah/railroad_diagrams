@@ -115,6 +115,7 @@ module RailroadDiagrams
       diagram_td = left_td.append_right(diagram_td, '')
       right_td = TextDiagram.new(0, right_lines.size - 1, right_lines)
       diagram_td.append_right(right_td, '')
+      diagram_td
     end
   end
 end

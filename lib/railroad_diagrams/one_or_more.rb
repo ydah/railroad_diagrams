@@ -55,7 +55,7 @@ module RailroadDiagrams
       # Format the item and then format the repeat append it to the bottom, after a spacer.
       item_td = @item.text_diagram
       repeat_td = @rep.text_diagram
-      fir_width = TextDiagram._max_width(item_td, repeat_td)
+      fir_width = TextDiagram.max_width(item_td, repeat_td)
       repeat_td = repeat_td.expand(0, fir_width - repeat_td.width, 0, 0)
       item_td = item_td.expand(0, fir_width - item_td.width, 0, 0)
       item_and_repeat_td = item_td.append_below(repeat_td, [])

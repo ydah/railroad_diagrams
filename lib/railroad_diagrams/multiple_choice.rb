@@ -124,7 +124,7 @@ module RailroadDiagrams
     def text_diagram
       multi_repeat = TextDiagram.get_parts(['multi_repeat']).first
       any_all = TextDiagram.rect(@type == 'any' ? '1+' : 'all')
-      diagram_td = Choice.text_diagram(self)
+      diagram_td = Choice.new(0, Skip.new).text_diagram
       repeat_td = TextDiagram.rect(multi_repeat)
       diagram_td = any_all.append_right(diagram_td, '')
       diagram_td.append_right(repeat_td, '')
