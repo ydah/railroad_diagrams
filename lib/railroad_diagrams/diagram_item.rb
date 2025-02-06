@@ -74,7 +74,7 @@ module RailroadDiagrams
       end
     end
 
-    def write_standalone(write, css = nil)
+    def write_standalone(write, _css = nil)
       write_svg(write)
     end
   end
