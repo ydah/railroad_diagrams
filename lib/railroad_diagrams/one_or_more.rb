@@ -63,7 +63,7 @@ module RailroadDiagrams
       # Build the left side of the repeat line and append the combined item and repeat to its right.
       left_lines = []
       left_lines << (repeat_top_left + line)
-      left_lines += [repeat_left + ' '] * ((item_td.height - item_td.entry) + repeat_td.entry - 1)
+      left_lines += ["#{repeat_left} "] * ((item_td.height - item_td.entry) + repeat_td.entry - 1)
       left_lines << (repeat_bot_left + line)
       left_td = TextDiagram.new(0, 0, left_lines)
       left_td = left_td.append_right(item_and_repeat_td, '')
@@ -71,7 +71,7 @@ module RailroadDiagrams
       # Build the right side of the repeat line and append it to the combined left side, item, and repeat's right.
       right_lines = []
       right_lines << (line + repeat_top_right)
-      right_lines += [' ' + repeat_right] * ((item_td.height - item_td.exit) + repeat_td.exit - 1)
+      right_lines += [" #{repeat_right}"] * ((item_td.height - item_td.exit) + repeat_td.exit - 1)
       right_lines << (line + repeat_bot_right)
       right_td = TextDiagram.new(0, 0, right_lines)
       left_td.append_right(right_td, '')

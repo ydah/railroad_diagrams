@@ -20,7 +20,7 @@ module RailroadDiagrams
         AR + # starting track
         (AR * 2 * (@items.size - 1)) + # inbetween tracks
         @items.sum { |x| x.width + (x.needs_space ? 20 : 0) } + # items
-        (last.height > 0 ? AR : 0) + # needs space to curve up
+        (last.height.positive? ? AR : 0) + # needs space to curve up
         AR # ending track
 
       # Always exits at entrance height
@@ -165,13 +165,13 @@ module RailroadDiagrams
       # The diagram starts with a line from its entry up to skip-over-items line:
       lines = Array.new(top_to_soil, '  ')
       lines << (roundcorner_top_left + line)
-      lines += Array.new(soil_to_baseline, line_vertical + ' ')
+      lines += Array.new(soil_to_baseline, "#{line_vertical} ")
       lines << (roundcorner_bot_right + line)
 
       diagram_td = TextDiagram.new(lines.size - 1, lines.size - 1, lines)
 
       item_tds.each_with_index do |item_td, item_num|
-        if item_num > 0
+        if item_num.positive?
           # All items except the leftmost start with a line from the skip-over-items line down to their entry,
           # with a joining-line across at the skip-under-items line:
           lines = ['  '] * top_to_soil
@@ -201,7 +201,7 @@ module RailroadDiagrams
 
         part_td = part_td.append_below(item_td, [], move_entry: true, move_exit: true)
 
-        if item_num > 0
+        if item_num.positive?
           # All items except the leftmost end with enough blank lines to pad down to the skip-under-items
           # line, followed by a segment of the skip-under-items line:
           lines = Array.new(baseline_to_suil - (item_td.height - item_td.entry) + 1, ' ' * item_td.width)
@@ -219,26 +219,25 @@ module RailroadDiagrams
           lines << (line * 2)
           lines += Array.new(diagram_td.exit - top_to_soil - 1, '  ')
           lines << (line + roundcorner_top_right)
-          lines += Array.new(baseline_to_suil - (diagram_td.exit - diagram_td.entry), ' ' + line_vertical)
-          line_from_prev_item = item_num > 0 ? line : ' '
+          lines += Array.new(baseline_to_suil - (diagram_td.exit - diagram_td.entry), " #{line_vertical}")
+          line_from_prev_item = item_num.positive? ? line : ' '
           lines << (line_from_prev_item + roundcorner_bot_left)
 
           entry = diagram_entry + 1 + (diagram_td.exit - diagram_td.entry)
           exit_td = TextDiagram.new(entry, diagram_entry + 1, lines)
-          diagram_td = diagram_td.append_right(exit_td, '')
         else
           # The rightmost item has a line from the skip-under-items line and from its exit up to the diagram exit:
           lines = []
           line_from_exit = diagram_td.exit == diagram_td.entry ? line : ' '
           lines << (line_from_exit + roundcorner_top_left)
-          lines += Array.new(diagram_td.exit - diagram_td.entry, ' ' + line_vertical)
+          lines += Array.new(diagram_td.exit - diagram_td.entry, " #{line_vertical}")
           lines << (line + roundcorner_bot_right) if diagram_td.exit != diagram_td.entry
-          lines += Array.new(baseline_to_suil - (diagram_td.exit - diagram_td.entry), ' ' + line_vertical)
+          lines += Array.new(baseline_to_suil - (diagram_td.exit - diagram_td.entry), " #{line_vertical}")
           lines << (line + roundcorner_bot_right)
 
           exit_td = TextDiagram.new(diagram_td.exit - diagram_td.entry, 0, lines)
-          diagram_td = diagram_td.append_right(exit_td, '')
         end
+        diagram_td = diagram_td.append_right(exit_td, '')
       end
 
       diagram_td

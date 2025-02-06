@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 add('test choice up',
     Diagram.new(
       Choice.new(

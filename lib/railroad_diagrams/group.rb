@@ -52,7 +52,7 @@ module RailroadDiagrams
       ).add(self)
 
       @item.format(x, y, @width).add(self)
-      @label.format(x, y - (@box_up + @label.down + @label.height), @width).add(self) if @label
+      @label&.format(x, y - (@box_up + @label.down + @label.height), @width)&.add(self)
 
       self
     end

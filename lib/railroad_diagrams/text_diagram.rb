@@ -146,14 +146,14 @@ module RailroadDiagrams
 
       def pad_l(string, width, pad)
         gap = width - string.length
-        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless gap % pad.length == 0
+        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad.length).zero?
 
         (pad * (gap / pad.length)) + string
       end
 
       def pad_r(string, width, pad)
         gap = width - string.length
-        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless gap % pad.length == 0
+        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad.length).zero?
 
         string + (pad * (gap / pad.length))
       end
@@ -209,7 +209,7 @@ module RailroadDiagrams
           lines += item_td.expand(1, 1, 0, 0).lines
         else
           (0...item_td.lines.length).each do |i|
-            lines += [(' ' + item_td.lines[i] + ' ')]
+            lines += [" #{item_td.lines[i]} "]
           end
         end
         lines += [(bot_horiz * (item_td.width + 2))]

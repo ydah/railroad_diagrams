@@ -69,12 +69,12 @@ module RailroadDiagrams
 
       case @format
       when 'svg'
-        diagram.write_svg(STDOUT.method(:write))
+        diagram.write_svg($stdout.method(:write))
       when 'standalone'
-        diagram.write_standalone(STDOUT.method(:write))
+        diagram.write_standalone($stdout.method(:write))
       when 'ascii', 'unicode'
         puts "\n<pre>"
-        diagram.write_text(STDOUT.method(:write))
+        diagram.write_text($stdout.method(:write))
         puts "\n</pre>"
       end
 

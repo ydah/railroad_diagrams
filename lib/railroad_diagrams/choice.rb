@@ -151,7 +151,7 @@ module RailroadDiagrams
           # Item below the line: round off the entry/exit lines downwards.
           left_lines[item_td.entry] = roundcorner_top_left
           right_lines[item_td.exit] = roundcorner_top_right
-          if i == 0
+          if i.zero?
             # First item and above the line: also remove ascenders above the item's entry and exit, suppress the separator above it.
             has_separator = false
             (0...item_td.entry).each { |j| left_lines[j] = ' ' }
@@ -162,7 +162,7 @@ module RailroadDiagrams
           # Item below the line: round off the entry/exit lines downwards.
           left_lines[item_td.entry] = roundcorner_bot_left
           right_lines[item_td.exit] = roundcorner_bot_right
-          if i == 0
+          if i.zero?
             # First item and below the line: also suppress the separator above it.
             has_separator = false
           end
@@ -178,11 +178,11 @@ module RailroadDiagrams
           right_lines[item_td.exit] = cross
           move_entry = true
           move_exit = true
-          if i == 0 && i == @items.size - 1
+          if i.zero? && i == @items.size - 1
             # Only item and on the line: set entry/exit for straight through.
             left_lines[item_td.entry] = line
             right_lines[item_td.exit] = line
-          elsif i == 0
+          elsif i.zero?
             # First item and on the line: set entry/exit for no ascenders.
             left_lines[item_td.entry] = roundcorner_top_right
             right_lines[item_td.exit] = roundcorner_top_left
