@@ -2,6 +2,8 @@
 
 A tiny Ruby+SVG library for drawing railroad syntax diagrams.
 
+<img width="500" alt="image" src="https://github.com/user-attachments/assets/2e9542d5-bfbf-4a27-9258-88391a948ddd" />
+
 Inspired by: https://github.com/tabatkins/railroad-diagrams
 
 # Installation
