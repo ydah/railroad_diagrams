@@ -1,4 +1,4 @@
-# RailroadDiagrams
+# RailroadDiagrams [![Gem Version](https://badge.fury.io/rb/railroad_diagrams.svg?icon=si%3Arubygems)](https://badge.fury.io/rb/railroad_diagrams)
 
 A tiny Ruby+SVG library for drawing railroad syntax diagrams.
 
