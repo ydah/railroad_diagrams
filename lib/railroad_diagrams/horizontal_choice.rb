@@ -23,7 +23,7 @@ module RailroadDiagrams
 
       @width =
         AR + # starting track
-        (AR * 2 * (@items.size - 1)) + # inbetween tracks
+        (AR * 2 * (@items.size - 1)) + # in between tracks
         @items.sum { |x| x.width + (x.needs_space ? 20 : 0) } + # items
         (last.height.positive? ? AR : 0) + # needs space to curve up
         AR # ending track
