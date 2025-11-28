@@ -1,13 +1,18 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class OptionalSequence < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: (OptionalSequence | Sequence)
     def self.new(*items)
       return Sequence.new(*items) if items.size <= 1
 
       super
     end
 
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(*items)
       super('g', items)
       @needs_space = false
@@ -38,11 +43,16 @@ module RailroadDiagrams
       end
     end
 
+    # @rbs return: String
     def to_s
       items = @items.map(&:to_s).join(', ')
       "OptionalSequence(#{items})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: OptionalSequence
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
       Path.new(x, y).right(left_gap).add(self)
@@ -124,6 +134,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       line, line_vertical, roundcorner_bot_left, roundcorner_bot_right,
       roundcorner_top_left, roundcorner_top_right = TextDiagram.get_parts(

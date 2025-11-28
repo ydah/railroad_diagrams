@@ -1,0 +1,22 @@
+# Generated from lib/railroad_diagrams/choice.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Choice < DiagramMultiContainer
+    # @rbs default: Integer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
+    def initialize: (Integer default, *DiagramItem | String items) -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Choice
+    def format: (Numeric x, Numeric y, Numeric width) -> Choice
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+  end
+end

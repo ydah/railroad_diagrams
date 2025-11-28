@@ -1,22 +1,38 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
-  VS = 8 # minimum vertical separation between things. For a 3px stroke, must be at least 4
-  AR = 10 # radius of arcs
-  DIAGRAM_CLASS = 'railroad-diagram' # class to put on the root <svg>
-  STROKE_ODD_PIXEL_LENGTH =
-    true # is the stroke width an odd (1px, 3px, etc) pixel length?
-  INTERNAL_ALIGNMENT =
-    'center' # how to align items when they have extra space. left/right/center
-  CHAR_WIDTH = 8.5 # width of each monospace character. play until you find the right value for your font
-  COMMENT_CHAR_WIDTH = 7 # comments are in smaller text by default
+  # minimum vertical separation between things. For a 3px stroke, must be at least 4
+  VS = 8 #: Integer
 
+  # radius of arcs
+  AR = 10 #: Integer
+
+  # class to put on the root <svg>
+  DIAGRAM_CLASS = 'railroad-diagram' #: String
+
+  # is the stroke width an odd (1px, 3px, etc) pixel length?
+  STROKE_ODD_PIXEL_LENGTH = true #: bool
+
+  # how to align items when they have extra space. left/right/center
+  INTERNAL_ALIGNMENT = 'center' #: String
+
+  # width of each monospace character. play until you find the right value for your font
+  CHAR_WIDTH = 8.5 #: Float
+
+  # comments are in smaller text by default
+  COMMENT_CHAR_WIDTH = 7 #: Integer
+
+  # @rbs val: String | Numeric
+  # @rbs return: String
   def self.escape_attr(val)
     return val.gsub('&', '&amp;').gsub("'", '&apos;').gsub('"', '&quot;') if val.is_a?(String)
 
     '%g' % val
   end
 
+  # @rbs val: String
+  # @rbs return: String
   def self.escape_html(val)
     escape_attr(val).gsub('<', '&lt;')
   end

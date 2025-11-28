@@ -1,0 +1,29 @@
+# Generated from lib/railroad_diagrams/style.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Style
+    # @rbs css: String
+    # @rbs return: void
+    def initialize: (String css) -> void
+
+    # @rbs return: String
+    def self.default_style: () -> String
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs parent: DiagramItem
+    # @rbs return: Style
+    def add: (DiagramItem parent) -> Style
+
+    # @rbs return: Style
+    def format: () -> Style
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_svg: (^(String) -> void write) -> void
+  end
+end

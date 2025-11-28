@@ -1,7 +1,12 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class MultipleChoice < DiagramMultiContainer
+    # @rbs default: Integer
+    # @rbs type: String
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(default, type, *items)
       super('g', items)
       raise ArgumentError, "default must be between 0 and #{items.length - 1}" unless (0...items.length).cover?(default)
@@ -34,11 +39,16 @@ module RailroadDiagrams
       @down -= @items[default].height # already counted in @height
     end
 
+    # @rbs return: String
     def to_s
       items = @items.map(&:to_s).join(', ')
       "MultipleChoice(#{@default}, #{@type}, #{items})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: MultipleChoice
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
 
@@ -121,6 +131,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       multi_repeat = TextDiagram.get_parts(['multi_repeat']).first
       any_all = TextDiagram.rect(@type == 'any' ? '1+' : 'all')

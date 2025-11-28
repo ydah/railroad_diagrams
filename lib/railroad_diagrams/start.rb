@@ -1,7 +1,11 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Start < DiagramItem
+    # @rbs type: String
+    # @rbs label: String?
+    # @rbs return: void
     def initialize(type = 'simple', label: nil)
       super('g')
       @width =
@@ -16,10 +20,15 @@ module RailroadDiagrams
       @label = label
     end
 
+    # @rbs return: String
     def to_s
       "Start(#{@type}, label=#{@label})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs _width: Numeric
+    # @rbs return: Start
     def format(x, y, _width)
       path = Path.new(x, y - 10)
       if @type == 'complex'
@@ -41,6 +50,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       cross, line, tee_right = TextDiagram.get_parts(%w[cross line tee_right])
       start =

@@ -1,0 +1,5 @@
+# Generated from lib/railroad_diagrams/version.rb with RBS::Inline
+
+module RailroadDiagrams
+  VERSION: String
+end

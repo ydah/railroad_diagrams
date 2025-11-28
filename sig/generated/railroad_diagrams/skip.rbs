@@ -1,0 +1,20 @@
+# Generated from lib/railroad_diagrams/skip.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Skip < DiagramItem
+    # @rbs return: void
+    def initialize: () -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Skip
+    def format: (Numeric x, Numeric y, Numeric width) -> Skip
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+  end
+end

@@ -1,0 +1,24 @@
+# Generated from lib/railroad_diagrams/comment.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Comment < DiagramItem
+    # @rbs text: String
+    # @rbs href: String?
+    # @rbs title: String?
+    # @rbs cls: String
+    # @rbs return: void
+    def initialize: (String text, ?String? href, ?String? title, ?cls: String) -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs _width: Numeric
+    # @rbs return: Comment
+    def format: (Numeric x, Numeric y, untyped _width) -> Comment
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+  end
+end

@@ -1,13 +1,18 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class AlternatingSequence < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: AlternatingSequence
     def self.new(*items)
       raise "AlternatingSequence takes exactly two arguments, but got #{items.size} arguments." unless items.size == 2
 
       super
     end
 
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(*items)
       super('g', items)
       @needs_space = false
@@ -38,11 +43,16 @@ module RailroadDiagrams
       @width = (2 * arc) + [first_width, cross_x, second_width].max + (2 * arc)
     end
 
+    # @rbs return: String
     def to_s
       items = @items.map(&:to_s).join(', ')
       "AlternatingSequence(#{items})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: AlternatingSequence
     def format(x, y, width)
       arc = AR
       gaps = determine_gaps(width, @width)
@@ -103,6 +113,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       cross_diag, corner_bot_left, corner_bot_right, corner_top_left, corner_top_right,
       line, line_vertical, tee_left, tee_right = TextDiagram.get_parts(

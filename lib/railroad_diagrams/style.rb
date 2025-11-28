@@ -1,12 +1,16 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Style
+    # @rbs css: String
+    # @rbs return: void
     def initialize(css)
       @css = css
     end
 
     class << self
+      # @rbs return: String
       def default_style
         <<~CSS
           * {
@@ -53,23 +57,30 @@ module RailroadDiagrams
       end
     end
 
+    # @rbs return: String
     def to_s
       "Style(#{@css})"
     end
 
+    # @rbs parent: DiagramItem
+    # @rbs return: Style
     def add(parent)
       parent.children.push(self)
       self
     end
 
+    # @rbs return: Style
     def format
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       TextDiagram.new
     end
 
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
     def write_svg(write)
       # Write included stylesheet as CDATA. See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/style
       cdata = "/* <![CDATA[ */\n#{@css}\n/* ]]> */\n"

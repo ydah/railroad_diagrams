@@ -1,7 +1,13 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Terminal < DiagramItem
+    # @rbs text: String
+    # @rbs href: String?
+    # @rbs title: String?
+    # @rbs cls: String
+    # @rbs return: void
     def initialize(text, href = nil, title = nil, cls: '')
       super('g', attrs: { 'class' => "terminal #{cls}" })
       @text = text
@@ -14,10 +20,15 @@ module RailroadDiagrams
       @needs_space = true
     end
 
+    # @rbs return: String
     def to_s
       "Terminal(#{@text}, href=#{@href}, title=#{@title}, cls=#{@cls})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Terminal
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
 
@@ -55,6 +66,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       # NOTE: href, title, and cls are ignored for text diagrams.
       TextDiagram.round_rect(@text)

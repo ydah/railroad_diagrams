@@ -1,13 +1,18 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class HorizontalChoice < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: (HorizontalChoice | Sequence)
     def self.new(*items)
       return Sequence.new(*items) if items.size <= 1
 
       super
     end
 
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(*items)
       super('g', items)
       all_but_last = @items[0...-1]
@@ -44,11 +49,16 @@ module RailroadDiagrams
       @down = [@lower_track, first.height + first.down].max
     end
 
+    # @rbs return: String
     def to_s
       items = @items.map(&:to_s).join(', ')
       "HorizontalChoice(#{items})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: HorizontalChoice
     def format(x, y, width)
       # Hook up the two sides if self is narrower than its stated width.
       left_gap, right_gap = determine_gaps(width, @width)
@@ -143,6 +153,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       line, line_vertical, roundcorner_bot_left, roundcorner_bot_right,
       roundcorner_top_left, roundcorner_top_right = TextDiagram.get_parts(

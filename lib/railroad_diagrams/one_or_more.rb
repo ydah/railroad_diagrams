@@ -1,7 +1,11 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class OneOrMore < DiagramItem
+    # @rbs item: DiagramItem | String
+    # @rbs repeat: (DiagramItem | String)?
+    # @rbs return: void
     def initialize(item, repeat = nil)
       super('g')
       @item = wrap_string(item)
@@ -14,10 +18,15 @@ module RailroadDiagrams
       @needs_space = true
     end
 
+    # @rbs return: String
     def to_s
       "OneOrMore(#{@item}, repeat=#{@rep})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: OneOrMore
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
 
@@ -44,6 +53,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       parts = TextDiagram.get_parts(
         %w[
@@ -77,6 +87,8 @@ module RailroadDiagrams
       left_td.append_right(right_td, '')
     end
 
+    # @rbs callback: ^(DiagramItem) -> void
+    # @rbs return: void
     def walk(callback)
       callback.call(self)
       @item.walk(callback)

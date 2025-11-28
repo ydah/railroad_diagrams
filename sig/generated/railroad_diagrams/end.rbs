@@ -1,0 +1,21 @@
+# Generated from lib/railroad_diagrams/end.rb with RBS::Inline
+
+module RailroadDiagrams
+  class End < DiagramItem
+    # @rbs type: String
+    # @rbs return: void
+    def initialize: (?String type) -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs _width: Numeric
+    # @rbs return: End
+    def format: (Numeric x, Numeric y, untyped _width) -> End
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+  end
+end

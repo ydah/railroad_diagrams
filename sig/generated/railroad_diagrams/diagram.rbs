@@ -1,0 +1,36 @@
+# Generated from lib/railroad_diagrams/diagram.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Diagram < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs type: String
+    # @rbs return: void
+    def initialize: (*DiagramItem | String items, **untyped kwargs) -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs padding_top: Numeric
+    # @rbs padding_right: Numeric?
+    # @rbs padding_bottom: Numeric?
+    # @rbs padding_left: Numeric?
+    # @rbs return: Diagram
+    def format: (?Numeric padding_top, ?Numeric? padding_right, ?Numeric? padding_bottom, ?Numeric? padding_left) -> Diagram
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_svg: (^(String) -> void write) -> void
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_text: (^(String) -> void write) -> void
+
+    # @rbs write: ^(String) -> void
+    # @rbs css: String?
+    # @rbs return: void
+    def write_standalone: (^(String) -> void write, ?String? css) -> void
+  end
+end

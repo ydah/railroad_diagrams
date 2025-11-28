@@ -1,13 +1,17 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 require 'optparse'
 
 module RailroadDiagrams
   class Command
+    # @rbs return: void
     def initialize
       @format = 'svg'
     end
 
+    # @rbs argv: Array[String]
+    # @rbs return: void
     def run(argv)
       OptionParser.new do |opts|
         opts.banner = <<~BANNER
@@ -62,6 +66,9 @@ module RailroadDiagrams
       puts '</body></html>'
     end
 
+    # @rbs name: String
+    # @rbs diagram: Diagram
+    # @rbs return: void
     def add(name, diagram)
       return unless @test_list.empty? || @test_list.include?(name)
 

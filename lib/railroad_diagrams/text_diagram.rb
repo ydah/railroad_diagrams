@@ -1,8 +1,9 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class TextDiagram
-    PARTS_UNICODE = {
+    PARTS_UNICODE = { #: Hash[String, String]
       'cross_diag' => '╳',
       'corner_bot_left' => '└',
       'corner_bot_right' => '┘',
@@ -53,7 +54,7 @@ module RailroadDiagrams
       'tee_right' => '├'
     }.freeze
 
-    PARTS_ASCII = {
+    PARTS_ASCII = { #: Hash[String, String]
       'cross_diag' => 'X',
       'corner_bot_left' => '\\',
       'corner_bot_right' => '/',
@@ -105,8 +106,11 @@ module RailroadDiagrams
     }.freeze
 
     class << self
-      attr_accessor :parts
+      attr_accessor :parts #: Hash[String, String]?
 
+      # @rbs characters: Hash[String, String]?
+      # @rbs defaults: Hash[String, String]?
+      # @rbs return: void
       def set_formatting(characters = nil, defaults = nil)
         return unless characters
 
@@ -117,14 +121,22 @@ module RailroadDiagrams
         end
       end
 
+      # @rbs item: String | TextDiagram
+      # @rbs dashed: bool
+      # @rbs return: TextDiagram
       def rect(item, dashed: false)
         rectish('rect', item, dashed)
       end
 
+      # @rbs item: String | TextDiagram
+      # @rbs dashed: bool
+      # @rbs return: TextDiagram
       def round_rect(item, dashed: false)
         rectish('roundrect', item, dashed)
       end
 
+      # @rbs *args: (TextDiagram | Array[String] | Numeric | String)
+      # @rbs return: Integer
       def max_width(*args)
         max_width = 0
         args.each do |arg|
@@ -144,6 +156,10 @@ module RailroadDiagrams
         max_width
       end
 
+      # @rbs string: String
+      # @rbs width: Integer
+      # @rbs pad: String
+      # @rbs return: String
       def pad_l(string, width, pad)
         gap = width - string.length
         raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad.length).zero?
@@ -151,6 +167,10 @@ module RailroadDiagrams
         (pad * (gap / pad.length)) + string
       end
 
+      # @rbs string: String
+      # @rbs width: Integer
+      # @rbs pad: String
+      # @rbs return: String
       def pad_r(string, width, pad)
         gap = width - string.length
         raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad.length).zero?
@@ -158,10 +178,16 @@ module RailroadDiagrams
         string + (pad * (gap / pad.length))
       end
 
+      # @rbs part_names: Array[String]
+      # @rbs return: Array[String]
       def get_parts(part_names)
         part_names.map { |name| @parts[name] }
       end
 
+      # @rbs lines: Array[String]
+      # @rbs lefts: Array[String]
+      # @rbs rights: Array[String]
+      # @rbs return: Array[String]
       def enclose_lines(lines, lefts, rights)
         unless lines.length == lefts.length && lines.length == rights.length
           raise 'All arguments must be the same length'
@@ -170,6 +196,9 @@ module RailroadDiagrams
         lines.each_with_index.map { |line, i| lefts[i] + line + rights[i] }
       end
 
+      # @rbs outer_width: Integer
+      # @rbs inner_width: Integer
+      # @rbs return: [Integer, Integer]
       def gaps(outer_width, inner_width)
         diff = outer_width - inner_width
         case INTERNAL_ALIGNMENT
@@ -186,6 +215,10 @@ module RailroadDiagrams
 
       private
 
+      # @rbs rect_type: String
+      # @rbs data: String | TextDiagram
+      # @rbs dashed: bool
+      # @rbs return: TextDiagram
       def rectish(rect_type, data, dashed)
         line_type = dashed ? '_dashed' : ''
         top_left, ctr_left, bot_left, top_right, ctr_right, bot_right, top_horiz, bot_horiz, line, cross =
@@ -242,8 +275,16 @@ module RailroadDiagrams
       end
     end
 
-    attr_reader :entry, :exit, :height, :lines, :width
+    attr_reader :entry #: Integer
+    attr_reader :exit #: Integer
+    attr_reader :height #: Integer
+    attr_reader :lines #: Array[String]
+    attr_reader :width #: Integer
 
+    # @rbs entry: Integer
+    # @rbs exit: Integer
+    # @rbs lines: Array[String]
+    # @rbs return: void
     def initialize(entry, exit, lines)
       @entry = entry
       @exit = exit
@@ -259,6 +300,10 @@ module RailroadDiagrams
       end
     end
 
+    # @rbs new_entry: Integer?
+    # @rbs new_exit: Integer?
+    # @rbs new_lines: Array[String]?
+    # @rbs return: TextDiagram
     def alter(new_entry: nil, new_exit: nil, new_lines: nil)
       self.class.new(
         new_entry || @entry,
@@ -267,6 +312,11 @@ module RailroadDiagrams
       )
     end
 
+    # @rbs item: TextDiagram
+    # @rbs lines_between: Array[String]
+    # @rbs move_entry: bool
+    # @rbs move_exit: bool
+    # @rbs return: TextDiagram
     def append_below(item, lines_between, move_entry: false, move_exit: false)
       new_width = [@width, item.width].max
       new_lines = center(new_width).lines
@@ -279,6 +329,9 @@ module RailroadDiagrams
       self.class.new(new_entry, new_exit, new_lines)
     end
 
+    # @rbs item: TextDiagram
+    # @rbs chars_between: String
+    # @rbs return: TextDiagram
     def append_right(item, chars_between)
       join_line = [@exit, item.entry].max
       new_height = [@height - @exit, item.height - item.entry].max + join_line
@@ -300,6 +353,9 @@ module RailroadDiagrams
       )
     end
 
+    # @rbs new_width: Integer
+    # @rbs pad: String
+    # @rbs return: TextDiagram
     def center(new_width, pad = ' ')
       raise 'Cannot center into smaller width' if width < @width
       return copy if new_width == @width
@@ -312,10 +368,16 @@ module RailroadDiagrams
       self.class.new(@entry, @exit, self.class.enclose_lines(@lines, left, right))
     end
 
+    # @rbs return: TextDiagram
     def copy
       self.class.new(@entry, @exit, @lines.dup)
     end
 
+    # @rbs left: Integer
+    # @rbs right: Integer
+    # @rbs top: Integer
+    # @rbs bottom: Integer
+    # @rbs return: TextDiagram
     def expand(left, right, top, bottom)
       return copy if [left, right, top, bottom].all?(&:zero?)
 
@@ -337,6 +399,8 @@ module RailroadDiagrams
       )
     end
 
+    # @rbs show: bool
+    # @rbs return: (String | nil)
     def dump(show = true)
       result = "height=#{@height}; len(lines)=#{@lines.length}"
 
@@ -364,6 +428,7 @@ module RailroadDiagrams
 
     private
 
+    # @rbs return: String
     def inspect
       output = ["TextDiagram(entry=#{@entry}, exit=#{@exit}, height=#{@height})"]
       @lines.each_with_index do |line, i|

@@ -1,7 +1,10 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class End < DiagramItem
+    # @rbs type: String
+    # @rbs return: void
     def initialize(type = 'simple')
       super('path')
       @width = 20
@@ -10,10 +13,15 @@ module RailroadDiagrams
       @type = type
     end
 
+    # @rbs return: String
     def to_s
       "End(type=#{@type})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs _width: Numeric
+    # @rbs return: End
     def format(x, y, _width)
       @attrs['d'] =
         if @type == 'simple'
@@ -24,6 +32,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       cross, line, tee_left = TextDiagram.get_parts(%w[cross line tee_left])
       end_node =

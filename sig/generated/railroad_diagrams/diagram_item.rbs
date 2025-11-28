@@ -1,0 +1,65 @@
+# Generated from lib/railroad_diagrams/diagram_item.rb with RBS::Inline
+
+module RailroadDiagrams
+  class DiagramItem
+    attr_reader up: Numeric
+
+    attr_reader down: Numeric
+
+    attr_reader height: Numeric
+
+    attr_reader width: Numeric
+
+    attr_reader needs_space: bool
+
+    attr_reader attrs: Hash[String, String | Numeric]
+
+    attr_reader children: Array[DiagramItem | Path | Style | String]
+
+    # @rbs name: String
+    # @rbs attrs: Hash[String, String | Numeric]
+    # @rbs text: String?
+    # @rbs return: void
+    def initialize: (String name, ?attrs: Hash[String, String | Numeric], ?text: String?) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: DiagramItem
+    def format: (Numeric x, Numeric y, Numeric width) -> DiagramItem
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+
+    # @rbs parent: DiagramItem
+    # @rbs return: DiagramItem
+    def add: (DiagramItem parent) -> DiagramItem
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_svg: (^(String) -> void write) -> void
+
+    # @rbs _callback: ^(DiagramItem) -> void
+    # @rbs return: void
+    def walk: (untyped _callback) -> void
+
+    # @rbs return: String
+    def to_str: () -> String
+
+    private
+
+    # @rbs value: DiagramItem | String
+    # @rbs return: DiagramItem
+    def wrap_string: (DiagramItem | String value) -> DiagramItem
+
+    # @rbs outer: Numeric
+    # @rbs inner: Numeric
+    # @rbs return: [Numeric, Numeric]
+    def determine_gaps: (Numeric outer, Numeric inner) -> [ Numeric, Numeric ]
+
+    # @rbs write: ^(String) -> void
+    # @rbs _css: String?
+    # @rbs return: void
+    def write_standalone: (^(String) -> void write, ?untyped _css) -> void
+  end
+end

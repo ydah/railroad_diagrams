@@ -1,0 +1,32 @@
+# Generated from lib/railroad_diagrams.rb with RBS::Inline
+
+module RailroadDiagrams
+  # minimum vertical separation between things. For a 3px stroke, must be at least 4
+  VS: Integer
+
+  # radius of arcs
+  AR: Integer
+
+  # class to put on the root <svg>
+  DIAGRAM_CLASS: String
+
+  # is the stroke width an odd (1px, 3px, etc) pixel length?
+  STROKE_ODD_PIXEL_LENGTH: bool
+
+  # how to align items when they have extra space. left/right/center
+  INTERNAL_ALIGNMENT: String
+
+  # width of each monospace character. play until you find the right value for your font
+  CHAR_WIDTH: Float
+
+  # comments are in smaller text by default
+  COMMENT_CHAR_WIDTH: Integer
+
+  # @rbs val: String | Numeric
+  # @rbs return: String
+  def self.escape_attr: (String | Numeric val) -> String
+
+  # @rbs val: String
+  # @rbs return: String
+  def self.escape_html: (String val) -> String
+end

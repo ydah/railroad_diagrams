@@ -1,7 +1,10 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Stack < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(*items)
       super('g', items)
       @need_space = false
@@ -22,11 +25,16 @@ module RailroadDiagrams
       end
     end
 
+    # @rbs return: String
     def to_s
       items = @items.map(&:to_s).join(', ')
       "Stack(#{items})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Stack
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
       Path.new(x, y).h(left_gap).add(self)
@@ -66,6 +74,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       corner_bot_left, corner_bot_right, corner_top_left, corner_top_right, line, line_vertical = TextDiagram.get_parts(
         %w[corner_bot_left corner_bot_right corner_top_left corner_top_right line line_vertical]

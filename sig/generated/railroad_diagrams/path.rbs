@@ -1,0 +1,76 @@
+# Generated from lib/railroad_diagrams/path.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Path
+    attr_reader x: Numeric
+
+    attr_reader y: Numeric
+
+    attr_reader attrs: Hash[String, String]
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def initialize: (Numeric x, Numeric y) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: Path
+    def m: (Numeric x, Numeric y) -> Path
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: Path
+    def l: (Numeric x, Numeric y) -> Path
+
+    # @rbs val: Numeric
+    # @rbs return: Path
+    def h: (Numeric val) -> Path
+
+    # @rbs val: Numeric
+    # @rbs return: Path
+    def right: (Numeric val) -> Path
+
+    # @rbs val: Numeric
+    # @rbs return: Path
+    def left: (Numeric val) -> Path
+
+    # @rbs val: Numeric
+    # @rbs return: Path
+    def v: (Numeric val) -> Path
+
+    # @rbs val: Numeric
+    # @rbs return: Path
+    def down: (Numeric val) -> Path
+
+    # @rbs val: Numeric
+    # @rbs return: Path
+    def up: (Numeric val) -> Path
+
+    # @rbs start: String
+    # @rbs dir: String
+    # @rbs return: Path
+    def arc_8: (String start, String dir) -> Path
+
+    # @rbs sweep: String
+    # @rbs return: Path
+    def arc: (String sweep) -> Path
+
+    # @rbs parent: DiagramItem
+    # @rbs return: Path
+    def add: (DiagramItem parent) -> Path
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_svg: (^(String) -> void write) -> void
+
+    # @rbs return: Path
+    def format: () -> Path
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+
+    # @rbs return: String
+    def to_s: () -> String
+  end
+end

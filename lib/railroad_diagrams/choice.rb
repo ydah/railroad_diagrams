@@ -1,7 +1,11 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Choice < DiagramMultiContainer
+    # @rbs default: Integer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(default, *items)
       super('g', items)
       raise ArgumentError, 'default index out of range' if default >= items.size
@@ -64,11 +68,16 @@ module RailroadDiagrams
       @needs_space = false
     end
 
+    # @rbs return: String
     def to_s
       items_str = @items.map(&:to_s).join(', ')
       "Choice(#{@default}, #{items_str})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Choice
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
 
@@ -126,6 +135,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       cross, line, line_vertical, roundcorner_bot_left, roundcorner_bot_right, roundcorner_top_left, roundcorner_top_right =
         TextDiagram.get_parts(

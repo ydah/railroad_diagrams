@@ -1,0 +1,121 @@
+# Generated from lib/railroad_diagrams/text_diagram.rb with RBS::Inline
+
+module RailroadDiagrams
+  class TextDiagram
+    PARTS_UNICODE: untyped
+
+    PARTS_ASCII: untyped
+
+    attr_accessor parts: Hash[String, String]?
+
+    # @rbs characters: Hash[String, String]?
+    # @rbs defaults: Hash[String, String]?
+    # @rbs return: void
+    def self.set_formatting: (?Hash[String, String]? characters, ?Hash[String, String]? defaults) -> void
+
+    # @rbs item: String | TextDiagram
+    # @rbs dashed: bool
+    # @rbs return: TextDiagram
+    def self.rect: (String | TextDiagram item, ?dashed: bool) -> TextDiagram
+
+    # @rbs item: String | TextDiagram
+    # @rbs dashed: bool
+    # @rbs return: TextDiagram
+    def self.round_rect: (String | TextDiagram item, ?dashed: bool) -> TextDiagram
+
+    # @rbs *args: (TextDiagram | Array[String] | Numeric | String)
+    # @rbs return: Integer
+    def self.max_width: (*TextDiagram | Array[String] | Numeric | String args) -> Integer
+
+    # @rbs string: String
+    # @rbs width: Integer
+    # @rbs pad: String
+    # @rbs return: String
+    def self.pad_l: (String string, Integer width, String pad) -> String
+
+    # @rbs string: String
+    # @rbs width: Integer
+    # @rbs pad: String
+    # @rbs return: String
+    def self.pad_r: (String string, Integer width, String pad) -> String
+
+    # @rbs part_names: Array[String]
+    # @rbs return: Array[String]
+    def self.get_parts: (Array[String] part_names) -> Array[String]
+
+    # @rbs lines: Array[String]
+    # @rbs lefts: Array[String]
+    # @rbs rights: Array[String]
+    # @rbs return: Array[String]
+    def self.enclose_lines: (Array[String] lines, Array[String] lefts, Array[String] rights) -> Array[String]
+
+    # @rbs outer_width: Integer
+    # @rbs inner_width: Integer
+    # @rbs return: [Integer, Integer]
+    def self.gaps: (Integer outer_width, Integer inner_width) -> [ Integer, Integer ]
+
+    # @rbs rect_type: String
+    # @rbs data: String | TextDiagram
+    # @rbs dashed: bool
+    # @rbs return: TextDiagram
+    private def self.rectish: (String rect_type, String | TextDiagram data, bool dashed) -> TextDiagram
+
+    attr_reader entry: Integer
+
+    attr_reader exit: Integer
+
+    attr_reader height: Integer
+
+    attr_reader lines: Array[String]
+
+    attr_reader width: Integer
+
+    # @rbs entry: Integer
+    # @rbs exit: Integer
+    # @rbs lines: Array[String]
+    # @rbs return: void
+    def initialize: (Integer entry, Integer exit, Array[String] lines) -> void
+
+    # @rbs new_entry: Integer?
+    # @rbs new_exit: Integer?
+    # @rbs new_lines: Array[String]?
+    # @rbs return: TextDiagram
+    def alter: (?new_entry: Integer?, ?new_exit: Integer?, ?new_lines: Array[String]?) -> TextDiagram
+
+    # @rbs item: TextDiagram
+    # @rbs lines_between: Array[String]
+    # @rbs move_entry: bool
+    # @rbs move_exit: bool
+    # @rbs return: TextDiagram
+    def append_below: (TextDiagram item, Array[String] lines_between, ?move_entry: bool, ?move_exit: bool) -> TextDiagram
+
+    # @rbs item: TextDiagram
+    # @rbs chars_between: String
+    # @rbs return: TextDiagram
+    def append_right: (TextDiagram item, String chars_between) -> TextDiagram
+
+    # @rbs new_width: Integer
+    # @rbs pad: String
+    # @rbs return: TextDiagram
+    def center: (Integer new_width, ?String pad) -> TextDiagram
+
+    # @rbs return: TextDiagram
+    def copy: () -> TextDiagram
+
+    # @rbs left: Integer
+    # @rbs right: Integer
+    # @rbs top: Integer
+    # @rbs bottom: Integer
+    # @rbs return: TextDiagram
+    def expand: (Integer left, Integer right, Integer top, Integer bottom) -> TextDiagram
+
+    # @rbs show: bool
+    # @rbs return: (String | nil)
+    def dump: (?bool show) -> (String | nil)
+
+    private
+
+    # @rbs return: String
+    def inspect: () -> String
+  end
+end

@@ -1,7 +1,10 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Sequence < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
     def initialize(*items)
       super('g', items)
       @needs_space = false
@@ -19,11 +22,16 @@ module RailroadDiagrams
       @width -= 10 if @items[-1].needs_space
     end
 
+    # @rbs return: String
     def to_s
       items = @items.map(&:to_s).join(', ')
       "Sequence(#{items})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Sequence
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
       Path.new(x, y).h(left_gap).add(self)
@@ -45,6 +53,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       separator, = TextDiagram.get_parts(['separator'])
       diagram_td = TextDiagram.new(0, 0, [''])

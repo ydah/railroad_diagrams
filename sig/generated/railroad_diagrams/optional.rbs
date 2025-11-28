@@ -1,13 +1,10 @@
-# rbs_inline: enabled
-# frozen_string_literal: true
+# Generated from lib/railroad_diagrams/optional.rb with RBS::Inline
 
 module RailroadDiagrams
   class Optional < DiagramMultiContainer
     # @rbs item: DiagramItem | String
     # @rbs skip: bool
     # @rbs return: Choice
-    def self.new(item, skip = false)
-      Choice.new(skip ? 0 : 1, Skip.new, item)
-    end
+    def self.new: (DiagramItem | String item, ?bool skip) -> Choice
   end
 end

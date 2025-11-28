@@ -1,5 +1,4 @@
-# rbs_inline: enabled
-# frozen_string_literal: true
+# Generated from lib/railroad_diagrams/zero_or_more.rb with RBS::Inline
 
 module RailroadDiagrams
   class ZeroOrMore
@@ -7,8 +6,6 @@ module RailroadDiagrams
     # @rbs repeat: (DiagramItem | String)?
     # @rbs skip: bool
     # @rbs return: Choice
-    def self.new(item, repeat = nil, skip = false)
-      Optional.new(OneOrMore.new(item, repeat), skip)
-    end
+    def self.new: (DiagramItem | String item, ?(DiagramItem | String)? repeat, ?bool skip) -> Choice
   end
 end

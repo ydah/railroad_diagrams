@@ -1,0 +1,25 @@
+# Generated from lib/railroad_diagrams/diagram_multi_container.rb with RBS::Inline
+
+module RailroadDiagrams
+  class DiagramMultiContainer < DiagramItem
+    # @rbs name: String
+    # @rbs items: Array[DiagramItem | String]
+    # @rbs attrs: Hash[String, String | Numeric]?
+    # @rbs text: String?
+    # @rbs return: void
+    def initialize: (String name, Array[DiagramItem | String] items, ?Hash[String, String | Numeric]? attrs, ?String? text) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: DiagramMultiContainer
+    def format: (Numeric x, Numeric y, Numeric width) -> DiagramMultiContainer
+
+    # @rbs callback: ^(DiagramItem) -> void
+    # @rbs return: void
+    def walk: (^(DiagramItem) -> void callback) -> void
+
+    # @rbs return: String
+    def to_str: () -> String
+  end
+end

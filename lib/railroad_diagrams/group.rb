@@ -1,7 +1,11 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Group < DiagramItem
+    # @rbs item: DiagramItem | String
+    # @rbs label: (DiagramItem | String)?
+    # @rbs return: void
     def initialize(item, label = nil)
       super('g')
       @item = wrap_string(item)
@@ -28,10 +32,15 @@ module RailroadDiagrams
       @needs_space = true
     end
 
+    # @rbs return: String
     def to_s
       "Group(#{@item}, label=#{@label})"
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Group
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
       Path.new(x, y).h(left_gap).add(self)
@@ -57,12 +66,15 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs callback: ^(DiagramItem) -> void
+    # @rbs return: void
     def walk(callback)
       callback.call(self)
       item.walk(callback)
       label&.walk(callback)
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       diagram_td = TextDiagram.round_rect(@item.text_diagram, dashed: true)
       if @label

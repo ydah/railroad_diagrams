@@ -1,7 +1,11 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Diagram < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs type: String
+    # @rbs return: void
     def initialize(*items, **kwargs)
       super('svg', items.to_a, { 'class' => DIAGRAM_CLASS })
       @type = kwargs.fetch(:type, 'simple')
@@ -30,6 +34,7 @@ module RailroadDiagrams
       @formatted = false
     end
 
+    # @rbs return: String
     def to_s
       items = items.map(&:to_s).join(', ')
       pieces = items ? [items] : []
@@ -37,6 +42,11 @@ module RailroadDiagrams
       "Diagram(#{pieces.join(', ')})"
     end
 
+    # @rbs padding_top: Numeric
+    # @rbs padding_right: Numeric?
+    # @rbs padding_bottom: Numeric?
+    # @rbs padding_left: Numeric?
+    # @rbs return: Diagram
     def format(padding_top = 20, padding_right = nil, padding_bottom = nil, padding_left = nil)
       padding_right = padding_top if padding_right.nil?
       padding_bottom = padding_top if padding_bottom.nil?
@@ -69,6 +79,7 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       separator, = TextDiagram.get_parts(['separator'])
       diagram_td = @items[0].text_diagram
@@ -80,12 +91,16 @@ module RailroadDiagrams
       diagram_td
     end
 
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
     def write_svg(write)
       format unless @formatted
 
       super
     end
 
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
     def write_text(write)
       output = text_diagram
       output = "#{output.lines.join("\n")}\n"
@@ -93,6 +108,9 @@ module RailroadDiagrams
       write.call(output)
     end
 
+    # @rbs write: ^(String) -> void
+    # @rbs css: String?
+    # @rbs return: void
     def write_standalone(write, css = nil)
       format unless @formatted
       css = Style.default_style if css

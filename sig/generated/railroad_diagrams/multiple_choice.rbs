@@ -1,0 +1,27 @@
+# Generated from lib/railroad_diagrams/multiple_choice.rb with RBS::Inline
+
+module RailroadDiagrams
+  class MultipleChoice < DiagramMultiContainer
+    # @rbs default: Integer
+    # @rbs type: String
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
+    def initialize: (Integer default, String type, *DiagramItem | String items) -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: MultipleChoice
+    def format: (Numeric x, Numeric y, Numeric width) -> MultipleChoice
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+
+    private
+
+    def double_enumerate: (untyped seq) -> untyped
+  end
+end

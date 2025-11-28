@@ -1,51 +1,78 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 module RailroadDiagrams
   class Path
-    attr_reader :x, :y, :attrs
+    attr_reader :x #: Numeric
+    attr_reader :y #: Numeric
+    attr_reader :attrs #: Hash[String, String]
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
     def initialize(x, y)
       @x = x
       @y = y
       @attrs = { 'd' => "M#{x} #{y}" }
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: Path
     def m(x, y)
       @attrs['d'] += "m#{x} #{y}"
       self
     end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: Path
     def l(x, y)
       @attrs['d'] += "l#{x} #{y}"
       self
     end
 
+    # @rbs val: Numeric
+    # @rbs return: Path
     def h(val)
       @attrs['d'] += "h#{val}"
       self
     end
 
+    # @rbs val: Numeric
+    # @rbs return: Path
     def right(val)
       h([0, val].max)
     end
 
+    # @rbs val: Numeric
+    # @rbs return: Path
     def left(val)
       h(-[0, val].max)
     end
 
+    # @rbs val: Numeric
+    # @rbs return: Path
     def v(val)
       @attrs['d'] += "v#{val}"
       self
     end
 
+    # @rbs val: Numeric
+    # @rbs return: Path
     def down(val)
       v([0, val].max)
     end
 
+    # @rbs val: Numeric
+    # @rbs return: Path
     def up(val)
       v(-[0, val].max)
     end
 
+    # @rbs start: String
+    # @rbs dir: String
+    # @rbs return: Path
     def arc_8(start, dir)
       arc = AR
       s2 = 1 / Math.sqrt(2) * arc
@@ -78,6 +105,8 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs sweep: String
+    # @rbs return: Path
     def arc(sweep)
       x = AR
       y = AR
@@ -88,11 +117,15 @@ module RailroadDiagrams
       self
     end
 
+    # @rbs parent: DiagramItem
+    # @rbs return: Path
     def add(parent)
       parent.children << self
       self
     end
 
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
     def write_svg(write)
       write.call('<path')
       @attrs.sort.each do |name, value|
@@ -101,15 +134,18 @@ module RailroadDiagrams
       write.call(' />')
     end
 
+    # @rbs return: Path
     def format
       @attrs['d'] += 'h.5'
       self
     end
 
+    # @rbs return: TextDiagram
     def text_diagram
       TextDiagram.new(0, 0, [])
     end
 
+    # @rbs return: String
     def to_s
       "Path(#{@x.inspect}, #{@y.inspect})"
     end

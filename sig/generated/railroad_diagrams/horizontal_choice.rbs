@@ -1,0 +1,25 @@
+# Generated from lib/railroad_diagrams/horizontal_choice.rb with RBS::Inline
+
+module RailroadDiagrams
+  class HorizontalChoice < DiagramMultiContainer
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: (HorizontalChoice | Sequence)
+    def self.new: (*DiagramItem | String items) -> (HorizontalChoice | Sequence)
+
+    # @rbs *items: (DiagramItem | String)
+    # @rbs return: void
+    def initialize: (*DiagramItem | String items) -> void
+
+    # @rbs return: String
+    def to_s: () -> String
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: HorizontalChoice
+    def format: (Numeric x, Numeric y, Numeric width) -> HorizontalChoice
+
+    # @rbs return: TextDiagram
+    def text_diagram: () -> TextDiagram
+  end
+end
