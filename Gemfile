@@ -5,14 +5,11 @@ source "https://rubygems.org"
 gemspec
 
 gem "rake"
+gem 'rspec'
+gem 'simplecov', require: false
 
-group :development do
+if !ENV['GITHUB_ACTION'] || ENV['INSTALL_STEEP'] == 'true'
   gem 'rbs', require: false
   gem 'rbs-inline', require: false
   gem 'steep', require: false
-end
-
-group :test do
-  gem 'rspec', '~> 3.12'
-  gem 'simplecov', require: false
 end
