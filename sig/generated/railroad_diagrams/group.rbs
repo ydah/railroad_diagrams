@@ -22,5 +22,31 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    private
+
+    # @rbs label: (DiagramItem | String)?
+    # @rbs return: (DiagramItem | nil)
+    def prepare_label: ((DiagramItem | String)? label) -> (DiagramItem | nil)
+
+    # @rbs return: void
+    def calculate_dimensions: () -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs left_gap: Numeric
+    # @rbs right_gap: Numeric
+    # @rbs return: void
+    def add_edge_paths: (Numeric x, Numeric y, Numeric left_gap, Numeric right_gap) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def add_group_box: (Numeric x, Numeric y) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def format_contents: (Numeric x, Numeric y) -> void
   end
 end

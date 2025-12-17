@@ -22,5 +22,24 @@ module RailroadDiagrams
     # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void
     def walk: (^(DiagramItem) -> void callback) -> void
+
+    private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs left_gap: Numeric
+    # @rbs right_gap: Numeric
+    # @rbs return: void
+    def add_edge_paths: (Numeric x, Numeric y, Numeric left_gap, Numeric right_gap) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def draw_main_item: (Numeric x, Numeric y) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def draw_repeat_arc: (Numeric x, Numeric y) -> void
   end
 end

@@ -18,5 +18,55 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def format_items_above_default: (Numeric x, Numeric y, Numeric inner_width, DiagramItem default) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs return: void
+    def format_default_item: (Numeric x, Numeric y, Numeric inner_width) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def format_items_below_default: (Numeric x, Numeric y, Numeric inner_width, DiagramItem default) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs return: void
+    def add_upward_path: (Numeric x, Numeric y, Numeric distance) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs item: DiagramItem
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def add_downward_return_path: (Numeric x, Numeric y, Numeric distance, DiagramItem item, DiagramItem default) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs return: void
+    def add_downward_path: (Numeric x, Numeric y, Numeric distance) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs item: DiagramItem
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def add_upward_return_path: (Numeric x, Numeric y, Numeric distance, DiagramItem item, DiagramItem default) -> void
   end
 end

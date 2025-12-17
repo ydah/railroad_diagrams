@@ -32,5 +32,50 @@ module RailroadDiagrams
     # @rbs css: String?
     # @rbs return: void
     def write_standalone: (^(String) -> void write, ?String? css) -> void
+
+    private
+
+    # @rbs return: void
+    def ensure_start_and_end_items: () -> void
+
+    # @rbs return: void
+    def calculate_dimensions: () -> void
+
+    # @rbs return: DiagramItem
+    def create_group_element: () -> DiagramItem
+
+    # @rbs g: DiagramItem
+    # @rbs padding_left: Numeric
+    # @rbs padding_top: Numeric
+    # @rbs return: void
+    def format_items_into_group: (DiagramItem g, Numeric padding_left, Numeric padding_top) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs item: DiagramItem
+    # @rbs g: DiagramItem
+    # @rbs return: Numeric
+    def add_leading_spacing: (Numeric x, Numeric y, DiagramItem item, DiagramItem g) -> Numeric
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs item: DiagramItem
+    # @rbs g: DiagramItem
+    # @rbs return: Numeric
+    def add_trailing_spacing: (Numeric x, Numeric y, DiagramItem item, DiagramItem g) -> Numeric
+
+    # @rbs padding_top: Numeric
+    # @rbs padding_right: Numeric
+    # @rbs padding_bottom: Numeric
+    # @rbs padding_left: Numeric
+    # @rbs return: void
+    def set_svg_attributes: (Numeric padding_top, Numeric padding_right, Numeric padding_bottom, Numeric padding_left) -> void
+
+    # @rbs css: String?
+    # @rbs return: void
+    def add_style_and_namespaces: (String? css) -> void
+
+    # @rbs return: void
+    def cleanup_standalone_artifacts: () -> void
   end
 end

@@ -17,5 +17,43 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    private
+
+    # @rbs return: void
+    def calculate_dimensions: () -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs left_gap: Numeric
+    # @rbs right_gap: Numeric
+    # @rbs return: void
+    def add_edge_paths: (Numeric x, Numeric y, Numeric left_gap, Numeric right_gap) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def format_items: (Numeric x, Numeric y) -> void
+
+    # @rbs item: DiagramItem
+    # @rbs index: Integer
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: [Numeric, Numeric]
+    def format_single_item: (DiagramItem item, Integer index, Numeric x, Numeric y) -> [ Numeric, Numeric ]
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs item: DiagramItem
+    # @rbs index: Integer
+    # @rbs return: Numeric
+    def add_leading_space: (Numeric x, Numeric y, DiagramItem item, Integer index) -> Numeric
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs item: DiagramItem
+    # @rbs index: Integer
+    # @rbs return: Numeric
+    def add_trailing_space: (Numeric x, Numeric y, DiagramItem item, Integer index) -> Numeric
   end
 end

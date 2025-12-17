@@ -17,5 +17,37 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    private
+
+    # @rbs return: void
+    def calculate_dimensions: () -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: [Numeric, Numeric]
+    def setup_initial_path: (Numeric x, Numeric y) -> [ Numeric, Numeric ]
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs x_initial: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs return: [Numeric, Numeric]
+    def format_stacked_items: (Numeric x, Numeric y, Numeric x_initial, Numeric inner_width) -> [ Numeric, Numeric ]
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs x_initial: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs item: DiagramItem
+    # @rbs index: Integer
+    # @rbs return: [Numeric, Numeric]
+    def add_loop_back_path: (Numeric x, Numeric y, Numeric x_initial, Numeric inner_width, DiagramItem item, Integer index) -> [ Numeric, Numeric ]
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs right_gap: Numeric
+    # @rbs return: void
+    def add_final_paths: (Numeric x, Numeric y, Numeric right_gap) -> void
   end
 end

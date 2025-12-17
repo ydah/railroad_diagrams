@@ -31,30 +31,46 @@ module RailroadDiagrams
     # @rbs return: Comment
     def format(x, y, _width)
       left_gap, right_gap = determine_gaps(width, @width)
+      add_connecting_paths(x, y, left_gap, right_gap)
+      add_text_element(x + left_gap, y)
+      self
+    end
 
-      # Hook up the two sides if self is narrower than its stated width.
+    # @rbs return: TextDiagram
+    def text_diagram
+      TextDiagram.new(0, 0, [@text])
+    end
+
+    private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs left_gap: Numeric
+    # @rbs right_gap: Numeric
+    # @rbs return: void
+    def add_connecting_paths(x, y, left_gap, right_gap)
       Path.new(x, y).h(left_gap).add(self)
       Path.new(x + left_gap + @width, y).h(right_gap).add(self)
+    end
 
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def add_text_element(x, y)
       text = DiagramItem.new(
         'text',
-        attrs: { 'x' => x + left_gap + (@width / 2), 'y' => y + 4, 'class' => 'comment' },
+        attrs: { 'x' => x + (@width / 2), 'y' => y + 4, 'class' => 'comment' },
         text: @text
       )
+
       if @href
         a = DiagramItem.new('a', attrs: { 'xlink:href' => @href }, text: text).add(self)
         text.add(a)
       else
         text.add(self)
       end
-      DiagramItem.new('title', attrs: {}, text: @title).add(self) if @title
-      self
-    end
 
-    # @rbs return: TextDiagram
-    def text_diagram
-      # NOTE: href, title, and cls are ignored for text diagrams.
-      TextDiagram.new(0, 0, [@text])
+      DiagramItem.new('title', attrs: {}, text: @title).add(self) if @title
     end
   end
 end

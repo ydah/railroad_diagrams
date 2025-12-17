@@ -48,6 +48,17 @@ module RailroadDiagrams
 
     private
 
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_opening_tag: (^(String) -> void write) -> void
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_children: (^(String) -> void write) -> void
+
+    # @rbs return: bool
+    def container_element?: () -> bool
+
     # @rbs value: DiagramItem | String
     # @rbs return: DiagramItem
     def wrap_string: (DiagramItem | String value) -> DiagramItem

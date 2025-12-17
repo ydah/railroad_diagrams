@@ -20,5 +20,19 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs left_gap: Numeric
+    # @rbs right_gap: Numeric
+    # @rbs return: void
+    def add_connecting_paths: (Numeric x, Numeric y, Numeric left_gap, Numeric right_gap) -> void
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs return: void
+    def add_text_element: (Numeric x, Numeric y) -> void
   end
 end

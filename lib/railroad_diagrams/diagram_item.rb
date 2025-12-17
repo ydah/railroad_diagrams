@@ -49,19 +49,8 @@ module RailroadDiagrams
     # @rbs write: ^(String) -> void
     # @rbs return: void
     def write_svg(write)
-      write.call("<#{@name}")
-      @attrs.sort.each do |name, value|
-        write.call(" #{name}=\"#{RailroadDiagrams.escape_attr(value)}\"")
-      end
-      write.call('>')
-      write.call("\n") if %w[g svg].include?(@name)
-      @children.each do |child|
-        if child.is_a?(DiagramItem) || child.is_a?(Path) || child.is_a?(Style)
-          child.write_svg(write)
-        else
-          write.call(RailroadDiagrams.escape_html(child))
-        end
-      end
+      write_opening_tag(write)
+      write_children(write)
       write.call("</#{@name}>")
     end
 
@@ -78,14 +67,38 @@ module RailroadDiagrams
 
     private
 
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_opening_tag(write)
+      write.call("<#{@name}")
+      @attrs.sort.each do |name, value|
+        write.call(" #{name}=\"#{RailroadDiagrams.escape_attr(value)}\"")
+      end
+      write.call('>')
+      write.call("\n") if container_element?
+    end
+
+    # @rbs write: ^(String) -> void
+    # @rbs return: void
+    def write_children(write)
+      @children.each do |child|
+        if child.respond_to?(:write_svg)
+          child.write_svg(write)
+        else
+          write.call(RailroadDiagrams.escape_html(child))
+        end
+      end
+    end
+
+    # @rbs return: bool
+    def container_element?
+      %w[g svg].include?(@name)
+    end
+
     # @rbs value: DiagramItem | String
     # @rbs return: DiagramItem
     def wrap_string(value)
-      if value.is_a?(DiagramItem)
-        value
-      else
-        Terminal.new(value)
-      end
+      value.is_a?(DiagramItem) ? value : Terminal.new(value)
     end
 
     # @rbs outer: Numeric
@@ -93,9 +106,10 @@ module RailroadDiagrams
     # @rbs return: [Numeric, Numeric]
     def determine_gaps(outer, inner)
       diff = outer - inner
-      if INTERNAL_ALIGNMENT == 'left'
+      case INTERNAL_ALIGNMENT
+      when 'left'
         [0, diff]
-      elsif INTERNAL_ALIGNMENT == 'right'
+      when 'right'
         [diff, 0]
       else
         [diff / 2, diff / 2]

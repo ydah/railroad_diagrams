@@ -80,8 +80,6 @@ module RailroadDiagrams
     # @rbs return: Choice
     def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
-
-      # Hook up the two sides if self is narrower than its stated width.
       Path.new(x, y).h(left_gap).add(self)
       Path.new(x + left_gap + @width, y + @height).h(right_gap).add(self)
       x += left_gap
@@ -89,48 +87,9 @@ module RailroadDiagrams
       inner_width = @width - (AR * 4)
       default = @items[@default]
 
-      # Do the elements that curve above
-      distance_from_y = 0
-      (@default - 1).downto(0) do |i|
-        item = @items[i]
-        lower_item = @items[i + 1]
-        distance_from_y += lower_item.up + @separators[i] + item.down + item.height
-        Path.new(x, y)
-            .arc('se')
-            .up(distance_from_y - (AR * 2))
-            .arc('wn')
-            .add(self)
-        item.format(x + (AR * 2), y - distance_from_y, inner_width).add(self)
-        Path.new(x + (AR * 2) + inner_width, y - distance_from_y + item.height)
-            .arc('ne')
-            .down(distance_from_y - item.height + default.height - (AR * 2))
-            .arc('ws')
-            .add(self)
-      end
-
-      # Do the straight-line path.
-      Path.new(x, y).right(AR * 2).add(self)
-      @items[@default].format(x + (AR * 2), y, inner_width).add(self)
-      Path.new(x + (AR * 2) + inner_width, y + @height).right(AR * 2).add(self)
-
-      # Do the elements that curve below
-      distance_from_y = 0
-      (@default + 1...@items.size).each do |i|
-        item = @items[i]
-        upper_item = @items[i - 1]
-        distance_from_y += upper_item.height + upper_item.down + @separators[i - 1] + item.up
-        Path.new(x, y)
-            .arc('ne')
-            .down(distance_from_y - (AR * 2))
-            .arc('ws')
-            .add(self)
-        item.format(x + (AR * 2), y + distance_from_y, inner_width).add(self)
-        Path.new(x + (AR * 2) + inner_width, y + distance_from_y + item.height)
-            .arc('se')
-            .up(distance_from_y - (AR * 2) + item.height - default.height)
-            .arc('wn')
-            .add(self)
-      end
+      format_items_above_default(x, y, inner_width, default)
+      format_default_item(x, y, inner_width)
+      format_items_below_default(x, y, inner_width, default)
 
       self
     end
@@ -144,11 +103,9 @@ module RailroadDiagrams
           ]
         )
 
-      # Format all the child items, so we can know the maximum width.
       item_tds = @items.map { |item| item.text_diagram.expand(1, 1, 0, 0) }
       max_item_width = item_tds.map(&:width).max
       diagram_td = TextDiagram.new(0, 0, [])
-      # Format the choice collection.
       item_tds.each_with_index do |item_td, i|
         left_pad, right_pad = TextDiagram.gaps(max_item_width, item_td.width)
         item_td = item_td.expand(left_pad, right_pad, 0, 0)
@@ -158,46 +115,37 @@ module RailroadDiagrams
         move_entry = false
         move_exit = false
         if i <= @default
-          # Item below the line: round off the entry/exit lines downwards.
           left_lines[item_td.entry] = roundcorner_top_left
           right_lines[item_td.exit] = roundcorner_top_right
           if i.zero?
-            # First item and above the line: also remove ascenders above the item's entry and exit, suppress the separator above it.
             has_separator = false
             (0...item_td.entry).each { |j| left_lines[j] = ' ' }
             (0...item_td.exit).each { |j| right_lines[j] = ' ' }
           end
         end
         if i >= @default
-          # Item below the line: round off the entry/exit lines downwards.
           left_lines[item_td.entry] = roundcorner_bot_left
           right_lines[item_td.exit] = roundcorner_bot_right
           if i.zero?
-            # First item and below the line: also suppress the separator above it.
             has_separator = false
           end
           if i == @items.size - 1
-            # Last item and below the line: also remove descenders below the item's entry and exit
             (item_td.entry + 1...item_td.height).each { |j| left_lines[j] = ' ' }
             (item_td.exit + 1...item_td.height).each { |j| right_lines[j] = ' ' }
           end
         end
         if i == @default
-          # Item on the line: entry/exit are horizontal, and sets the outer entry/exit.
           left_lines[item_td.entry] = cross
           right_lines[item_td.exit] = cross
           move_entry = true
           move_exit = true
           if i.zero? && i == @items.size - 1
-            # Only item and on the line: set entry/exit for straight through.
             left_lines[item_td.entry] = line
             right_lines[item_td.exit] = line
           elsif i.zero?
-            # First item and on the line: set entry/exit for no ascenders.
             left_lines[item_td.entry] = roundcorner_top_right
             right_lines[item_td.exit] = roundcorner_top_left
           elsif i == @items.size - 1
-            # Last item and on the line: set entry/exit for no descenders.
             left_lines[item_td.entry] = roundcorner_bot_right
             right_lines[item_td.exit] = roundcorner_bot_left
           end
@@ -217,6 +165,106 @@ module RailroadDiagrams
         diagram_td = diagram_td.append_below(item_td, separator, move_entry: move_entry, move_exit: move_exit)
       end
       diagram_td
+    end
+
+    private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def format_items_above_default(x, y, inner_width, default)
+      distance_from_y = 0
+      (@default - 1).downto(0) do |i|
+        item = @items[i]
+        lower_item = @items[i + 1]
+        distance_from_y += lower_item.up + @separators[i] + item.down + item.height
+
+        add_upward_path(x, y, distance_from_y)
+        item.format(x + (AR * 2), y - distance_from_y, inner_width).add(self)
+        add_downward_return_path(x + (AR * 2) + inner_width, y, distance_from_y, item, default)
+      end
+    end
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs return: void
+    def format_default_item(x, y, inner_width)
+      Path.new(x, y).right(AR * 2).add(self)
+      @items[@default].format(x + (AR * 2), y, inner_width).add(self)
+      Path.new(x + (AR * 2) + inner_width, y + @height).right(AR * 2).add(self)
+    end
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs inner_width: Numeric
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def format_items_below_default(x, y, inner_width, default)
+      distance_from_y = 0
+      (@default + 1...@items.size).each do |i|
+        item = @items[i]
+        upper_item = @items[i - 1]
+        distance_from_y += upper_item.height + upper_item.down + @separators[i - 1] + item.up
+
+        add_downward_path(x, y, distance_from_y)
+        item.format(x + (AR * 2), y + distance_from_y, inner_width).add(self)
+        add_upward_return_path(x + (AR * 2) + inner_width, y, distance_from_y, item, default)
+      end
+    end
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs return: void
+    def add_upward_path(x, y, distance)
+      Path.new(x, y)
+          .arc('se')
+          .up(distance - (AR * 2))
+          .arc('wn')
+          .add(self)
+    end
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs item: DiagramItem
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def add_downward_return_path(x, y, distance, item, default)
+      Path.new(x, y - distance + item.height)
+          .arc('ne')
+          .down(distance - item.height + default.height - (AR * 2))
+          .arc('ws')
+          .add(self)
+    end
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs return: void
+    def add_downward_path(x, y, distance)
+      Path.new(x, y)
+          .arc('ne')
+          .down(distance - (AR * 2))
+          .arc('ws')
+          .add(self)
+    end
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs distance: Numeric
+    # @rbs item: DiagramItem
+    # @rbs default: DiagramItem
+    # @rbs return: void
+    def add_upward_return_path(x, y, distance, item, default)
+      Path.new(x, y + distance + item.height)
+          .arc('se')
+          .up(distance - (AR * 2) + item.height - default.height)
+          .arc('wn')
+          .add(self)
     end
   end
 end
