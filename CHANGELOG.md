@@ -7,6 +7,7 @@
 - Simplify grammar trees and report undefined references, duplicate definitions, unused rules, and repeated alternatives.
 - Render multi-rule grammar documents with linked references, search, text alternatives, and lint findings.
 - Build a gallery of node examples in every bundled theme and publish it with GitHub Pages.
+- Run a browser-only Ruby playground with shareable examples and bundled offline runtime assets.
 
 ## 0.7.0 - 2026-09-30
 

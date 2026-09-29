@@ -4,6 +4,7 @@ require 'erb'
 require 'fileutils'
 require_relative '../lib/railroad_diagrams'
 require_relative '../spec/support/examples_loader'
+require_relative 'build_playground_bundle'
 
 module SiteBuild
   NODES = {
@@ -46,6 +47,9 @@ module SiteBuild
         File.write(File.join(directory, 'index.html'), template.result(binding))
       end
     end
+    PlaygroundBundle.build(File.join(directory, 'playground_bundle.js'))
+    FileUtils.cp(File.expand_path('../docs/playground.html', __dir__), File.join(directory, 'playground.html'))
+    FileUtils.cp(File.expand_path('../docs/playground.js', __dir__), File.join(directory, 'playground.js'))
   end
 end
 

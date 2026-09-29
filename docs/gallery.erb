@@ -35,6 +35,7 @@ pre { overflow-x: auto; color: var(--ink); }
 <div class="layout">
 <aside><nav aria-label="Gallery navigation">
 <a href="<%= prefix %>index.html">Overview</a>
+<a href="<%= prefix %>playground.html">Playground</a>
 <h2>Themes</h2>
 <% ExamplesLoader::THEMES.each do |name| %>
 <a href="<%= prefix %>themes/<%= name %>.html"<%= ' aria-current="page"' if name == theme %>><%= name.tr('_', ' ') %></a>

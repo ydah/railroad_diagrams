@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Playground · Railroad diagrams</title>
+<style>
+:root { color-scheme: light; --ink: #183047; --muted: #516779; --line: #bfd0d9; --paper: #f3f7f9; --white: #fff; --accent: #176b91; }
+* { box-sizing: border-box; }
+body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font: 1rem/1.5 system-ui, sans-serif; }
+header { padding: 1.25rem clamp(1rem, 3vw, 3rem); border-bottom: 1px solid var(--line); background: var(--white); }
+header a { color: var(--accent); }
+h1 { margin: .35rem 0 0; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.04em; }
+main { display: grid; grid-template-columns: minmax(18rem, 1fr) minmax(18rem, 1.3fr); gap: 1.5rem; padding: 1.5rem clamp(1rem, 3vw, 3rem); }
+section { min-width: 0; }
+h2 { margin: 0 0 .6rem; font-size: 1.1rem; }
+textarea { width: 100%; min-height: 27rem; padding: 1rem; border: 1px solid var(--line); border-radius: .35rem; resize: vertical; background: var(--white); color: var(--ink); font: .95rem/1.45 ui-monospace, monospace; }
+button { margin-top: .7rem; border: 0; border-radius: .3rem; padding: .65rem 1.2rem; color: white; background: var(--accent); font: 600 1rem system-ui, sans-serif; cursor: pointer; }
+button:disabled { opacity: .55; cursor: wait; }
+button:focus-visible, textarea:focus-visible, a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.output { min-height: 15rem; padding: 1rem; border: 1px solid var(--line); border-radius: .35rem; overflow: auto; background: var(--white); }
+.output img { max-width: 100%; height: auto; }
+pre { overflow: auto; white-space: pre; }
+#status { color: var(--muted); min-height: 1.5rem; }
+@media (max-width: 48rem) { main { grid-template-columns: 1fr; } textarea { min-height: 17rem; } }
+</style>
+</head>
+<body>
+<header><a href="index.html">Gallery</a><h1>Try a diagram</h1></header>
+<main>
+<section><h2>Ruby DSL</h2><label for="source">Edit the diagram</label>
+<textarea id="source" spellcheck="false">diagram(
+  seq(
+    "SELECT",
+    opt("DISTINCT"),
+    nt("column"),
+    "FROM",
+    nt("table")
+  )
+)</textarea>
+<button id="run" type="button" disabled>Loading Ruby…</button><p id="status" role="status"></p></section>
+<section><h2>Preview</h2><div class="output" id="preview" aria-live="polite"></div>
+<details><summary>Text diagram</summary><pre id="text"></pre></details></section>
+</main>
+<script type="module" src="playground.js"></script>
+</body>
+</html>

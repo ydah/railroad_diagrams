@@ -13,6 +13,8 @@ RSpec.describe SiteBuild do
       expect(REXML::XPath.match(index, '//article').size).to eq(described_class::NODES.size)
       expect(Dir[File.join(directory, 'themes', '*.html')].size).to eq(ExamplesLoader::THEMES.size)
       expect(REXML::XPath.match(index, '//nav/a').map { |link| link.attributes['href'] }).to include('themes/dark.html')
+      expect(File.read(File.join(directory, 'playground.js'))).to include('./vendor/ruby+stdlib.wasm')
+      expect(File.read(File.join(directory, 'playground_bundle.js'))).to include('playground_render')
     end
   end
 end

@@ -60,4 +60,10 @@ namespace :site do
     require_relative 'script/build_site'
     SiteBuild.build
   end
+
+  desc 'Download the pinned ruby.wasm runtime for offline use'
+  task :vendor do
+    require_relative 'script/vendor_wasm'
+    PlaygroundVendor.build
+  end
 end
