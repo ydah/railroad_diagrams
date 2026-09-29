@@ -5,6 +5,9 @@ require 'optparse'
 
 module RailroadDiagrams
   class Command
+    FORMATS = %w[svg ascii unicode standalone].freeze #: Array[String]
+    DEMO_FILE = File.expand_path('../../examples/demo.rb', __dir__) #: String
+
     # @rbs return: void
     def initialize
       @format = 'svg'
@@ -13,13 +16,13 @@ module RailroadDiagrams
     # @rbs argv: Array[String]
     # @rbs return: void
     def run(argv)
-      OptionParser.new do |opts|
+      parser = OptionParser.new do |opts|
         opts.banner = <<~BANNER
           This is a test runner for railroad_diagrams:
           Usage: railroad_diagrams [options] [files]
         BANNER
 
-        opts.on('-f', '--format FORMAT', 'Output format (svg, ascii, unicode, standalone)') do |format|
+        opts.on('-f', '--format FORMAT', FORMATS, "Output format (#{FORMATS.join(', ')})") do |format|
           @format = format
         end
         opts.on('-h', '--help', 'Print this help') do
@@ -30,7 +33,13 @@ module RailroadDiagrams
           puts "railroad_diagrams #{RailroadDiagrams::VERSION}"
           exit 0
         end
-        opts.parse!(argv)
+      end
+      begin
+        parser.parse!(argv)
+      rescue OptionParser::ParseError => e
+        warn "railroad_diagrams: #{e.message}"
+        warn parser.banner
+        exit 2
       end
 
       @test_list = argv
@@ -59,8 +68,8 @@ module RailroadDiagrams
 
       puts '</head><body>'
 
-      File.open('test.rb', 'r:utf-8') do |fh|
-        eval(fh.read, binding, 'test.rb')
+      File.open(DEMO_FILE, 'r:utf-8') do |fh|
+        eval(fh.read, binding, DEMO_FILE) # rubocop:disable Security/Eval
       end
 
       puts '</body></html>'

@@ -71,11 +71,13 @@ module RailroadDiagrams
     # @rbs return: void
     def set_svg_attributes: (Numeric padding_top, Numeric padding_right, Numeric padding_bottom, Numeric padding_left) -> void
 
-    # @rbs css: String?
-    # @rbs return: void
-    def add_style_and_namespaces: (String? css) -> void
+    # css: nil / true => 既定CSS、false => <style> なし、String => そのCSS
+    # @rbs css: (String | bool)?
+    # @rbs return: Style?
+    def add_style_and_namespaces: ((String | bool)? css) -> Style?
 
+    # @rbs style: Style?
     # @rbs return: void
-    def cleanup_standalone_artifacts: () -> void
+    def cleanup_standalone_artifacts: (Style? style) -> void
   end
 end

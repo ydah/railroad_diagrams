@@ -29,4 +29,9 @@ module RailroadDiagrams
   # @rbs val: String
   # @rbs return: String
   def self.escape_html: (String val) -> String
+
+  # 指数表記を使わず、Integer はそのまま、Float は小数6桁で丸めて末尾の0を除く
+  # @rbs val: Numeric
+  # @rbs return: String
+  def self.format_number: (Numeric val) -> String
 end

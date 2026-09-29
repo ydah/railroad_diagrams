@@ -14,9 +14,9 @@ module RailroadDiagrams
 
     # @rbs x: Numeric
     # @rbs y: Numeric
-    # @rbs _width: Numeric
+    # @rbs width: Numeric
     # @rbs return: Comment
-    def format: (Numeric x, Numeric y, untyped _width) -> Comment
+    def format: (Numeric x, Numeric y, Numeric width) -> Comment
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram

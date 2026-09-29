@@ -1,7 +1,18 @@
 # Generated from lib/railroad_diagrams/diagram_item.rb with RBS::Inline
 
 module RailroadDiagrams
+  # format を呼ぶたびに前回の描画結果（子要素）を捨てて冪等にする（BUG-05）
+  module ResetChildrenOnFormat
+    # @rbs *args: untyped
+    # @rbs return: untyped
+    def format: (*untyped args) -> untyped
+  end
+
   class DiagramItem
+    # @rbs subclass: Class
+    # @rbs return: void
+    def self.inherited: (Class subclass) -> void
+
     attr_reader up: Numeric
 
     attr_reader down: Numeric
@@ -39,9 +50,14 @@ module RailroadDiagrams
     # @rbs return: void
     def write_svg: (^(String) -> void write) -> void
 
-    # @rbs _callback: ^(DiagramItem) -> void
+    # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void
-    def walk: (untyped _callback) -> void
+    def walk: (^(DiagramItem) -> void callback) -> void
+
+    # @rbs write: ^(String) -> void
+    # @rbs _css: String?
+    # @rbs return: void
+    def write_standalone: (^(String) -> void write, ?untyped _css) -> void
 
     # @rbs return: String
     def to_str: () -> String
@@ -67,10 +83,5 @@ module RailroadDiagrams
     # @rbs inner: Numeric
     # @rbs return: [Numeric, Numeric]
     def determine_gaps: (Numeric outer, Numeric inner) -> [ Numeric, Numeric ]
-
-    # @rbs write: ^(String) -> void
-    # @rbs _css: String?
-    # @rbs return: void
-    def write_standalone: (^(String) -> void write, ?untyped _css) -> void
   end
 end

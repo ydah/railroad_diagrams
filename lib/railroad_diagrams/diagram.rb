@@ -17,8 +17,8 @@ module RailroadDiagrams
 
     # @rbs return: String
     def to_s
-      items = items.map(&:to_s).join(', ')
-      pieces = items ? [items] : []
+      items = @items.map(&:to_s).join(', ')
+      pieces = items.empty? ? [] : [items]
       pieces.push("type=#{@type}") if @type != 'simple'
       "Diagram(#{pieces.join(', ')})"
     end
@@ -75,9 +75,12 @@ module RailroadDiagrams
     # @rbs return: void
     def write_standalone(write, css = nil)
       format unless @formatted
-      add_style_and_namespaces(css)
-      super(write)
-      cleanup_standalone_artifacts
+      style = add_style_and_namespaces(css)
+      begin
+        super(write)
+      ensure
+        cleanup_standalone_artifacts(style)
+      end
     end
 
     private
@@ -169,18 +172,21 @@ module RailroadDiagrams
       @attrs['viewBox'] = "0 0 #{@attrs['width']} #{@attrs['height']}"
     end
 
-    # @rbs css: String?
-    # @rbs return: void
+    # css: nil / true => 既定CSS、false => <style> なし、String => そのCSS
+    # @rbs css: (String | bool)?
+    # @rbs return: Style?
     def add_style_and_namespaces(css)
-      css = Style.default_style if css
-      Style.new(css).add(self)
+      css = Style.default_style if css.nil? || css == true
+      style = css ? Style.new(css).add(self) : nil
       @attrs['xmlns'] = 'http://www.w3.org/2000/svg'
       @attrs['xmlns:xlink'] = 'http://www.w3.org/1999/xlink'
+      style
     end
 
+    # @rbs style: Style?
     # @rbs return: void
-    def cleanup_standalone_artifacts
-      @children.pop
+    def cleanup_standalone_artifacts(style)
+      @children.delete_at(@children.rindex { |c| c.equal?(style) }) if style
       @attrs.delete('xmlns')
       @attrs.delete('xmlns:xlink')
     end

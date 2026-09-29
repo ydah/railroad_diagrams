@@ -27,9 +27,9 @@ module RailroadDiagrams
 
     # @rbs x: Numeric
     # @rbs y: Numeric
-    # @rbs _width: Numeric
+    # @rbs width: Numeric
     # @rbs return: Comment
-    def format(x, y, _width)
+    def format(x, y, width)
       left_gap, right_gap = determine_gaps(width, @width)
       add_connecting_paths(x, y, left_gap, right_gap)
       add_text_element(x + left_gap, y)

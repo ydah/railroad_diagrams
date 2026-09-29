@@ -39,7 +39,7 @@ RSpec.describe RailroadDiagrams::DiagramItem do
   describe '#text_diagram' do
     it 'raises NotImplementedError' do
       item = described_class.new('g')
-      expect { item.text_diagram }.to raise_error(NoMethodError)
+      expect { item.text_diagram }.to raise_error(NotImplementedError)
     end
   end
 

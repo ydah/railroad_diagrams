@@ -24,7 +24,7 @@ module RailroadDiagrams
     # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void
     def walk(callback)
-      callback(self)
+      callback.call(self)
       @items.each { |item| item.walk(callback) }
     end
 

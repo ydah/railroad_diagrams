@@ -2,6 +2,10 @@
 
 module RailroadDiagrams
   class Command
+    FORMATS: Array[String]
+
+    DEMO_FILE: String
+
     # @rbs return: void
     def initialize: () -> void
 

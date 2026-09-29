@@ -26,3 +26,10 @@ task type_check: [:rbs_inline, :steep]
 
 # Default task - Run tests and type checking
 task default: [:spec, :type_check]
+
+namespace :golden do
+  desc 'Regenerate golden files (review the diff before committing!)'
+  task :update do
+    sh({ 'GOLDEN_UPDATE' => '1' }, 'bundle exec rspec spec/golden_spec.rb')
+  end
+end

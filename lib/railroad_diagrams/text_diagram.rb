@@ -181,7 +181,7 @@ module RailroadDiagrams
       # @rbs part_names: Array[String]
       # @rbs return: Array[String]
       def get_parts(part_names)
-        part_names.map { |name| @parts[name] }
+        (@parts || PARTS_UNICODE).values_at(*part_names)
       end
 
       # @rbs lines: Array[String]
@@ -357,7 +357,7 @@ module RailroadDiagrams
     # @rbs pad: String
     # @rbs return: TextDiagram
     def center(new_width, pad = ' ')
-      raise 'Cannot center into smaller width' if width < @width
+      raise ArgumentError, "Cannot center into smaller width (#{new_width} < #{@width})" if new_width < @width
       return copy if new_width == @width
 
       total_padding = new_width - @width
@@ -384,9 +384,10 @@ module RailroadDiagrams
       new_lines = []
       top.times { new_lines << (' ' * (@width + left + right)) }
 
-      @lines.each do |line|
-        left_part = (line == @lines[@entry] ? self.class.parts['line'] : ' ') * left
-        right_part = (line == @lines[@exit] ? self.class.parts['line'] : ' ') * right
+      line_char, = self.class.get_parts(['line'])
+      @lines.each_with_index do |line, i|
+        left_part = (i == @entry ? line_char : ' ') * left
+        right_part = (i == @exit ? line_char : ' ') * right
         new_lines << "#{left_part}#{line}#{right_part}"
       end
 
@@ -404,7 +405,7 @@ module RailroadDiagrams
     def dump(show = true)
       result = "height=#{@height}; len(lines)=#{@lines.length}"
 
-      result += "; entry outside diagram: entry=#{@ntry}" if @entry > @lines.length
+      result += "; entry outside diagram: entry=#{@entry}" if @entry > @lines.length
       result += "; exit outside diagram: exit=#{@exit}" if @exit > @lines.length
 
       (0...[@lines.length, @entry + 1, @exit + 1].max).each do |y|
@@ -425,8 +426,6 @@ module RailroadDiagrams
         result
       end
     end
-
-    private
 
     # @rbs return: String
     def inspect

@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+require 'bundler/setup'
+require 'railroad_diagrams'
+require 'irb'
+include RailroadDiagrams # rubocop:disable Style/MixinUsage
+IRB.start(__FILE__)

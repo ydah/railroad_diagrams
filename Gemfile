@@ -7,6 +7,7 @@ gemspec
 gem "rake"
 gem 'rspec'
 gem 'simplecov', require: false
+gem 'rexml', require: false
 
 if !ENV['GITHUB_ACTION'] || ENV['INSTALL_STEEP'] == 'true'
   gem 'rbs', require: false

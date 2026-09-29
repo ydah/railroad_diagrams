@@ -8,7 +8,9 @@ module RailroadDiagrams
     # @rbs return: void
     def initialize(default, *items)
       super('g', items)
-      raise ArgumentError, 'default index out of range' if default >= items.size
+      unless default.is_a?(Integer) && (0...items.size).cover?(default)
+        raise ArgumentError, "default index out of range: #{default.inspect} (0...#{items.size})"
+      end
 
       @default = default
       @width = (AR * 4) + @items.map(&:width).max

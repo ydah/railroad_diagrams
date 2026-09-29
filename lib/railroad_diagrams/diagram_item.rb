@@ -2,7 +2,24 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # format を呼ぶたびに前回の描画結果（子要素）を捨てて冪等にする（BUG-05）
+  module ResetChildrenOnFormat
+    # @rbs *args: untyped
+    # @rbs return: untyped
+    def format(*args)
+      @children.clear
+      super
+    end
+  end
+
   class DiagramItem
+    # @rbs subclass: Class
+    # @rbs return: void
+    def self.inherited(subclass)
+      super
+      subclass.prepend(ResetChildrenOnFormat)
+    end
+
     attr_reader :up #: Numeric
     attr_reader :down #: Numeric
     attr_reader :height #: Numeric
@@ -36,7 +53,7 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram
-      raise NotImplementedError 'Virtual'
+      raise NotImplementedError, "#{self.class}#text_diagram is not implemented"
     end
 
     # @rbs parent: DiagramItem
@@ -54,10 +71,17 @@ module RailroadDiagrams
       write.call("</#{@name}>")
     end
 
-    # @rbs _callback: ^(DiagramItem) -> void
+    # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void
-    def walk(_callback)
-      callback(self)
+    def walk(callback)
+      callback.call(self)
+    end
+
+    # @rbs write: ^(String) -> void
+    # @rbs _css: String?
+    # @rbs return: void
+    def write_standalone(write, _css = nil)
+      write_svg(write)
     end
 
     # @rbs return: String
@@ -112,15 +136,9 @@ module RailroadDiagrams
       when 'right'
         [diff, 0]
       else
-        [diff / 2, diff / 2]
+        half = diff.is_a?(Integer) && diff.odd? ? diff / 2.0 : diff / 2
+        [half, half]
       end
-    end
-
-    # @rbs write: ^(String) -> void
-    # @rbs _css: String?
-    # @rbs return: void
-    def write_standalone(write, _css = nil)
-      write_svg(write)
     end
   end
 end

@@ -112,7 +112,7 @@ module RailroadDiagrams
     # @rbs return: void
     def format_contents(x, y)
       @item.format(x, y, @width).add(self)
-      @label&.format(x, y - (@box_up + @label.down + @label.height), @width)&.add(self)
+      @label&.format(x, y - (@box_up + @label.down + @label.height), @label.width)&.add(self)
     end
   end
 end

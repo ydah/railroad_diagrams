@@ -26,15 +26,27 @@ module RailroadDiagrams
   # @rbs val: String | Numeric
   # @rbs return: String
   def self.escape_attr(val)
-    return val.gsub('&', '&amp;').gsub("'", '&apos;').gsub('"', '&quot;') if val.is_a?(String)
+    return val.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub("'", '&apos;').gsub('"', '&quot;') if val.is_a?(String)
 
-    '%g' % val
+    format_number(val)
   end
 
   # @rbs val: String
   # @rbs return: String
   def self.escape_html(val)
-    escape_attr(val).gsub('<', '&lt;')
+    escape_attr(val)
+  end
+
+  # 指数表記を使わず、Integer はそのまま、Float は小数6桁で丸めて末尾の0を除く
+  # @rbs val: Numeric
+  # @rbs return: String
+  def self.format_number(val)
+    return val.to_s if val.is_a?(Integer) || !val.finite?
+
+    rounded = val.round(6)
+    return rounded.to_i.to_s if rounded == rounded.to_i
+
+    Kernel.format('%.6f', rounded).sub(/0+\z/, '')
   end
 end
 

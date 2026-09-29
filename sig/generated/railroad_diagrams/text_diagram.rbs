@@ -113,8 +113,6 @@ module RailroadDiagrams
     # @rbs return: (String | nil)
     def dump: (?bool show) -> (String | nil)
 
-    private
-
     # @rbs return: String
     def inspect: () -> String
   end

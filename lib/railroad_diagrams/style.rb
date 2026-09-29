@@ -76,7 +76,7 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram
-      TextDiagram.new
+      TextDiagram.new(0, 0, [])
     end
 
     # @rbs write: ^(String) -> void
