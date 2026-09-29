@@ -47,6 +47,8 @@ module RailroadDiagrams
     # @rbs return: Array[String]
     def self.get_parts: (Array[String] part_names) -> Array[String]
 
+    def self.with_parts: (untyped parts) -> untyped
+
     # @rbs lines: Array[String]
     # @rbs lefts: Array[String]
     # @rbs rights: Array[String]

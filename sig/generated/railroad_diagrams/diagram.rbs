@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/diagram.rb with RBS::Inline
 
 module RailroadDiagrams
+  # A complete railroad diagram that can be rendered to SVG, text, or HTML.
+  # @example
+  #   Diagram.new('SELECT', NonTerminal.new('column')).to_svg
   class Diagram < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
@@ -31,20 +34,28 @@ module RailroadDiagrams
 
     # @rbs write: ^(String) -> void
     # @rbs return: void
+    # @example
+    #   Diagram.new('token').write_svg(->(chunk) { print chunk })
     def write_svg: (^(String) -> void write) -> void
 
     # @rbs write: untyped
     # @rbs escape_html: bool
     # @rbs return: void
+    # @example
+    #   Diagram.new('token').write_text(->(chunk) { print chunk })
     def write_text: (untyped write, ?escape_html: bool) -> void
 
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_svg(theme: :dark)
     def to_svg: (**untyped options) -> String
 
     # @rbs css: (String | bool)?
     # @rbs css_variables: bool
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_standalone_svg(theme: :print)
     def to_standalone_svg: (?css: (String | bool)?, ?css_variables: bool, **untyped options) -> String
 
     # @rbs charset: Symbol
@@ -52,21 +63,29 @@ module RailroadDiagrams
     # @rbs strip_trailing: bool
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_text(charset: :ascii)
     def to_text: (?charset: Symbol, ?escape_html: bool, ?strip_trailing: bool, **untyped options) -> String
 
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_markdown
     def to_markdown: (**untyped options) -> String
 
     # @rbs title: String
     # @rbs charset: Symbol
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_html(title: 'Grammar')
     def to_html: (?title: String, ?charset: Symbol, **untyped options) -> String
 
     # @rbs write: ^(String) -> void
     # @rbs css: String?
     # @rbs return: void
+    # @example
+    #   Diagram.new('token').write_standalone(->(chunk) { print chunk })
     def write_standalone: (^(String) -> void write, ?String? css) -> void
 
     private

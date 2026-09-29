@@ -2,20 +2,6 @@
 
 module RailroadDiagrams
   class Command
-    FORMATS: Array[String]
-
-    DEMO_FILE: String
-
-    # @rbs return: void
-    def initialize: () -> void
-
-    # @rbs argv: Array[String]
-    # @rbs return: void
-    def run: (Array[String] argv) -> void
-
-    # @rbs name: String
-    # @rbs diagram: Diagram
-    # @rbs return: void
-    def add: (String name, Diagram diagram) -> void
+    def run: (untyped argv) -> untyped
   end
 end

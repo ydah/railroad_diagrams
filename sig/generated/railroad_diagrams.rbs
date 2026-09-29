@@ -1,5 +1,8 @@
 # Generated from lib/railroad_diagrams.rb with RBS::Inline
 
+# Build and render railroad diagrams for grammar rules.
+# @example
+#   RailroadDiagrams::Diagram.new('SELECT').to_svg
 module RailroadDiagrams
   # minimum vertical separation between things. For a 3px stroke, must be at least 4
   VS: Integer
@@ -24,14 +27,23 @@ module RailroadDiagrams
 
   # @rbs val: String | Numeric
   # @rbs return: String
+  # @example
+  #   RailroadDiagrams.escape_attr('A&B') #=> "A&amp;B"
   def self.escape_attr: (String | Numeric val) -> String
 
   # @rbs val: String
   # @rbs return: String
+  # @example
+  #   RailroadDiagrams.escape_html('<term>') #=> "&lt;term&gt;"
   def self.escape_html: (String val) -> String
 
   # 指数表記を使わず、Integer はそのまま、Float は小数6桁で丸めて末尾の0を除く
   # @rbs val: Numeric
   # @rbs return: String
+  # @example
+  #   RailroadDiagrams.format_number(2.0) #=> "2"
   def self.format_number: (Numeric val) -> String
+
+  module Importers
+  end
 end
