@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.7.0 - 2026-09-30
+
 ### Added
 
 - A builder DSL, coercion for strings, symbols, arrays, and nil, and structural JSON/YAML serialization.
