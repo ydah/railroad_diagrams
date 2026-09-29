@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="<%= RailroadDiagrams.escape_attr(@locale.to_s) %>">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title><%= RailroadDiagrams.escape_html(@title) %></title>
+<style>
+<%= css %>
+body { max-width: 72rem; margin: 0 auto; padding: 1.5rem; font-family: system-ui, sans-serif; line-height: 1.5; }
+nav ul { columns: 2; padding-left: 1.25rem; }
+section { margin: 2rem 0; border-top: 1px solid #8886; padding-top: 1rem; }
+section svg { max-width: 100%; height: auto; }
+pre { overflow-x: auto; }
+@media (max-width: 40rem) { nav ul { columns: 1; } }
+</style>
+</head>
+<body>
+<main>
+<h1><%= RailroadDiagrams.escape_html(@title) %></h1>
+<nav aria-label="<%= labels[:rules] %>">
+<% if interactive %><label for="rule-search"><%= labels[:search] %></label> <input id="rule-search" type="search" /><% end %>
+<ul>
+<% navigation.each do |section| %>
+<li data-rule="<%= RailroadDiagrams.escape_attr(section[:name].downcase) %>"><a href="#<%= section[:id] %>"><%= RailroadDiagrams.escape_html(section[:name]) %></a></li>
+<% end %>
+</ul>
+</nav>
+<% sections.each do |section| %>
+<section id="<%= section[:id] %>" data-rule="<%= RailroadDiagrams.escape_attr(section[:name].downcase) %>">
+<h2><%= RailroadDiagrams.escape_html(section[:name]) %></h2>
+<%= section[:svg] %>
+<details><summary><%= labels[:text] %></summary><pre><%= RailroadDiagrams.escape_html(section[:text]) %></pre></details>
+<% unless section[:referenced_by].empty? %><p><%= labels[:referenced_by] %>: <%= section[:referenced_by].map { |name| "<a href=\"##{sections.find { |source| source[:name] == name }[:id]}\">#{RailroadDiagrams.escape_html(name)}</a>" }.join(', ') %></p><% end %>
+</section>
+<% end %>
+<% unless warnings.empty? %>
+<aside><h2><%= labels[:warnings] %></h2><ul>
+<% warnings.each do |warning| %><li><%= RailroadDiagrams.escape_html(warning.message) %></li><% end %>
+</ul></aside>
+<% end %>
+</main>
+<% if interactive %>
+<script>document.getElementById('rule-search').addEventListener('input', function () {
+  document.querySelectorAll('[data-rule]').forEach(function (item) {
+    item.hidden = !item.dataset.rule.includes(this.value.toLowerCase());
+  }, this);
+});</script>
+<% end %>
+</body>
+</html>

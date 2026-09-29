@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Added
+
+- Simplify grammar trees and report undefined references, duplicate definitions, unused rules, and repeated alternatives.
+- Render multi-rule grammar documents with linked references, search, text alternatives, and lint findings.
+
 ## 0.7.0 - 2026-09-30
 
 ### Added
