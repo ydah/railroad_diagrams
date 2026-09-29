@@ -1,4 +1,6 @@
 /.bundle/
+/.idea/
+/.vscode/
 /.yardoc
 /_yardoc/
 /coverage/
@@ -7,3 +9,4 @@
 /spec/reports/
 /tmp/
 Gemfile.lock
+*.gem
