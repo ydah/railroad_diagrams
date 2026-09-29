@@ -4,9 +4,12 @@ on:
     branches:
       - main
   pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   type-check:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     env:
       INSTALL_STEEP: 'true'
     steps:
@@ -18,3 +21,7 @@ jobs:
           bundler-cache: true
       - name: Run Steep check
         run: bundle exec steep check
+      - name: Check generated signatures
+        run: |
+          bundle exec rbs-inline --output=sig/generated lib
+          git diff --exit-code sig/generated

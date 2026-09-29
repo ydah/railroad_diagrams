@@ -1,0 +1,25 @@
+name: Lrama compatibility
+on:
+  push:
+    branches: [main]
+  pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: railroad_diagrams
+      - uses: actions/checkout@v7
+        with:
+          repository: ruby/lrama
+          ref: master
+          path: lrama
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+      - run: ruby spec/compat/lrama_smoke.rb ../lrama
+        working-directory: railroad_diagrams

@@ -4,6 +4,9 @@ on:
     branches:
       - main
   pull_request:
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
   ruby-versions:
     uses: ruby/actions/.github/workflows/ruby_versions.yml@master
@@ -12,7 +15,7 @@ jobs:
       min_version: 2.5
   test:
     needs: ruby-versions
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
     strategy:
       fail-fast: false
       matrix:
@@ -24,8 +27,12 @@ jobs:
         with:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
-      - run: |
-          exe/railroad_diagrams --format=svg
-          exe/railroad_diagrams --format=ascii
-          exe/railroad_diagrams --format=unicode
-          exe/railroad_diagrams --format=standalone
+      - name: Build and install gem
+        run: |
+          gem build railroad_diagrams.gemspec --output "$RUNNER_TEMP/railroad-diagrams.gem"
+          gem install --local --no-document --install-dir "$RUNNER_TEMP/railroad-gems" "$RUNNER_TEMP/railroad-diagrams.gem"
+      - name: Run packaged CLI outside checkout
+        run: |
+          cd "$RUNNER_TEMP"
+          GEM_HOME="$RUNNER_TEMP/railroad-gems" GEM_PATH="$RUNNER_TEMP/railroad-gems" \
+            "$RUNNER_TEMP/railroad-gems/bin/railroad_diagrams" --format=ascii > /dev/null

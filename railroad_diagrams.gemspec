@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = Gem::Requirement.new('>= 2.5.0')
 
   spec.metadata['homepage_uri']          = spec.homepage
-  spec.metadata['source_code_uri']       = spec.homepage
+  spec.metadata['source_code_uri']       = "#{spec.homepage}/tree/main"
   spec.metadata['changelog_uri']         = "#{spec.homepage}/blob/main/CHANGELOG.md"
   spec.metadata['documentation_uri']     = 'https://www.rubydoc.info/gems/railroad_diagrams'
   spec.metadata['bug_tracker_uri']       = "#{spec.homepage}/issues"
