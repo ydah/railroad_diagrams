@@ -225,6 +225,12 @@ RSpec.describe RailroadDiagrams::MultipleChoice do
       expect(node.children).to be_empty
     end
 
+    it 'uses Japanese tooltips when requested' do
+      diagram = RailroadDiagrams::Diagram.new(described_class.new(0, 'any', 'a', 'b'))
+      expect(diagram.to_svg(locale: :ja)).to include('1つ以上の分岐を、それぞれ1回ずつ、任意の順序で通る')
+      expect(diagram.to_svg).to include('take one or more branches, once each, in any order')
+    end
+
     it 'preserves SVG geometry for children with nonzero height' do
       items = [RailroadDiagrams::Stack.new('a', 'b'), 'middle', RailroadDiagrams::Stack.new('c', 'd')]
       node = described_class.new(1, 'any', *items)

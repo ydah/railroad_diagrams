@@ -2,6 +2,17 @@
 
 ## Unreleased
 
+### Added
+
+- Built-in themes for classic, dark, automatic, print, and high-contrast rendering.
+- Accessible diagram titles and descriptions, Japanese labels, and safe links with configurable SVG link attributes.
+- Standalone HTML, Markdown text output, square-corner text, and optional Start and End markers.
+
+### Fixed
+
+- Keep linked labels single and declare the SVG link namespace when needed.
+- Safely serialize CSS that contains XML or style terminators.
+
 ## 0.5.0 - 2026-09-30
 
 ### Added

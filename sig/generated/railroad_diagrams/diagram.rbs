@@ -5,7 +5,7 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
     # @rbs return: void
-    def initialize: (*DiagramItem | String items, ?type: String, **untyped unknown) -> void
+    def initialize: (*DiagramItem | String items, ?type: String, ?title: untyped, ?desc: untyped, **untyped unknown) -> void
 
     # @rbs return: String
     def to_s: () -> String
@@ -42,13 +42,27 @@ module RailroadDiagrams
     def to_svg: (**untyped options) -> String
 
     # @rbs css: (String | bool)?
+    # @rbs css_variables: bool
+    # @rbs **options: untyped
     # @rbs return: String
-    def to_standalone_svg: (?css: (String | bool)?) -> String
+    def to_standalone_svg: (?css: (String | bool)?, ?css_variables: bool, **untyped options) -> String
 
     # @rbs charset: Symbol
     # @rbs escape_html: bool
+    # @rbs strip_trailing: bool
+    # @rbs **options: untyped
     # @rbs return: String
-    def to_text: (?charset: Symbol, ?escape_html: bool) -> String
+    def to_text: (?charset: Symbol, ?escape_html: bool, ?strip_trailing: bool, **untyped options) -> String
+
+    # @rbs **options: untyped
+    # @rbs return: String
+    def to_markdown: (**untyped options) -> String
+
+    # @rbs title: String
+    # @rbs charset: Symbol
+    # @rbs **options: untyped
+    # @rbs return: String
+    def to_html: (?title: String, ?charset: Symbol, **untyped options) -> String
 
     # @rbs write: ^(String) -> void
     # @rbs css: String?
@@ -56,6 +70,10 @@ module RailroadDiagrams
     def write_standalone: (^(String) -> void write, ?String? css) -> void
 
     private
+
+    def visible_nodes: (untyped context) -> untyped
+
+    def add_accessible_name: (untyped root, untyped context) -> untyped
 
     def svg_path: (untyped x, untyped y, untyped length) -> untyped
 

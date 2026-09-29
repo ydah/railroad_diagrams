@@ -2,6 +2,7 @@
 
 module ExamplesLoader
   EXAMPLE_FILES = Dir[File.expand_path('../../examples/*.rb', __dir__)].sort.freeze
+  THEMES = %w[default classic dark auto print high_contrast].freeze
 
   class Collector
     include RailroadDiagrams
@@ -39,6 +40,10 @@ module ExamplesLoader
     name.gsub(/[^A-Za-z0-9]/) { |c| c == ' ' ? '_' : format('x%X', c.ord) }
   end
 
+  THEME_RENDERERS = THEMES.each_with_object({}) do |theme, renderers|
+    renderers["standalone-#{theme}"] = ->(d) { d.to_standalone_svg(theme: theme.to_sym) }
+  end.freeze
+
   RENDERERS = {
     'svg' => ->(d) { s = +''; d.write_svg(s.method(:<<)); s },
     'svg-optimized' => ->(d) { d.to_svg(precision: 2, optimize_paths: true) },
@@ -51,11 +56,11 @@ module ExamplesLoader
       RailroadDiagrams::TextDiagram.set_formatting(RailroadDiagrams::TextDiagram::PARTS_UNICODE)
       s = +''; d.write_text(s.method(:<<)); s
     }
-  }.freeze
+  }.merge(THEME_RENDERERS).freeze
 
   EXTENSIONS = {
     'svg' => 'svg', 'svg-optimized' => 'svg', 'standalone' => 'svg', 'ascii' => 'txt', 'unicode' => 'txt'
-  }.freeze
+  }.merge(THEME_RENDERERS.keys.each_with_object({}) { |format, extensions| extensions[format] = 'svg' }).freeze
 
   def render(name, format)
     RENDERERS.fetch(format).call(load.fetch(name))

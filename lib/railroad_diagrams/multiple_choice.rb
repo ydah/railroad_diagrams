@@ -178,7 +178,7 @@ module RailroadDiagrams
       group << @items[@default].render_svg(context, x + 30 + arc, y, inner_width)
       group << svg_path(Svg::PathData.new(x + 30 + arc + inner_width, y + metrics.height).h(arc))
       render_svg_below(context, group, x, y, inner_width)
-      group << render_svg_annotation(x, y, metrics.width)
+      group << render_svg_annotation(context, x, y, metrics.width)
       group
     end
 
@@ -242,9 +242,10 @@ module RailroadDiagrams
       end
     end
 
-    def render_svg_annotation(x, y, width)
+    def render_svg_annotation(context, x, y, width)
       group = Svg::Element.new('g', { 'class' => 'diagram-text' })
-      title = @type == 'any' ? 'take one or more branches, once each, in any order' : 'take all branches, once each, in any order'
+      key = @type == 'any' ? :multiple_choice_any_tooltip : :multiple_choice_all_tooltip
+      title = I18n.t(key, locale: context.options.locale)
       group << Svg::Element.new('title', {}, [Svg::TextNode.new(title)])
       left_path = {
         'd' => "M #{x + 30} #{y - 10} h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z",

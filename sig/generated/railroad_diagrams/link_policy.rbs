@@ -1,0 +1,12 @@
+# Generated from lib/railroad_diagrams/link_policy.rb with RBS::Inline
+
+module RailroadDiagrams
+  module LinkPolicy
+    # @rbs url: String
+    # @rbs policy: (:safe | :allow_all | Proc)
+    # @rbs return: bool
+    def self?.allowed?: (String url, ?policy: :safe | :allow_all | Proc) -> bool
+
+    def self?.safe?: (untyped url) -> untyped
+  end
+end

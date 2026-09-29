@@ -50,18 +50,18 @@ module RailroadDiagrams
       metrics = context.metrics(self)
       left_gap, right_gap = context.gaps(width, metrics.width)
       group = Svg::Element.new('g', @attrs.dup)
+      group << (Svg::Element.new('title') << Svg::TextNode.new(@title)) if @title
       group << Svg::Element.new('path', { 'd' => Svg::PathData.new(x, y).h(left_gap) }, self_closing: true)
       group << Svg::Element.new('path', { 'd' => Svg::PathData.new(x + left_gap + metrics.width, y).h(right_gap) }, self_closing: true)
       text = Svg::Element.new('text', { 'x' => x + left_gap + (metrics.width / 2), 'y' => y + 4, 'class' => 'comment' })
       text << Svg::TextNode.new(@text)
-      if @href
-        link = Svg::Element.new('a', { 'xlink:href' => @href })
-        link << text << text
+      if (attrs = context.link_attrs(@href))
+        link = Svg::Element.new('a', attrs)
+        link << text
         group << link
       else
         group << text
       end
-      group << (Svg::Element.new('title') << Svg::TextNode.new(@title)) if @title
       group
     end
 

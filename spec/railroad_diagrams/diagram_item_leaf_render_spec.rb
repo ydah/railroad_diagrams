@@ -5,13 +5,13 @@ require 'spec_helper'
 RSpec.describe RailroadDiagrams::DiagramItem do
   %w[Terminal NonTerminal Comment].each do |name|
     it "renders #{name} through a Context without mutating the node" do
-      node = RailroadDiagrams.const_get(name).new('<&', '#target', 'tip')
+      node = RailroadDiagrams.const_get(name).new('<&')
       context = RailroadDiagrams::Context.new
       metrics = context.metrics(node)
       svg = RailroadDiagrams::Svg::Serializer.call(node.render_svg(context, 0, 20, metrics.width + 10))
       expect(node.children).to be_empty
 
-      legacy = RailroadDiagrams.const_get(name).new('<&', '#target', 'tip')
+      legacy = RailroadDiagrams.const_get(name).new('<&')
       legacy.format(0, 20, legacy.width + 10)
       output = +''
       legacy.write_svg(output)

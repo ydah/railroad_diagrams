@@ -1,0 +1,56 @@
+<%= declarations %><%= color_selector %> {
+  color: <%= value.call('--rr-text') %>;
+}
+svg.railroad-diagram {
+  background-color: <%= value.call('--rr-bg') %>;
+}
+svg.railroad-diagram path {
+  stroke-width:<%= value.call('--rr-stroke-width') %>;
+  stroke:<%= value.call('--rr-track-stroke') %>;
+  fill:<%= value.call('--rr-track-fill') %>;
+}
+svg.railroad-diagram text {
+  font:<%= value.call('--rr-font') %>;
+  text-anchor:middle;
+  white-space: pre;<%= text_fill %>
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: <%= value.call('--rr-stroke-width') %>;
+  stroke: <%= value.call('--rr-stroke') %>;
+  fill: <%= value.call('--rr-diagram-text-fill') %>;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: <%= value.call('--rr-hover-fill') %>;
+}
+svg.railroad-diagram text.label {
+  text-anchor:start;
+}
+svg.railroad-diagram text.comment {
+  font:<%= value.call('--rr-comment-font') %>;
+}
+svg.railroad-diagram rect {
+  stroke-width:<%= value.call('--rr-stroke-width') %>;
+  stroke: <%= value.call('--rr-stroke') %>;
+  fill:<%= value.call('--rr-rect-fill') %>;
+}
+svg.railroad-diagram path {
+  stroke: <%= value.call('--rr-stroke') %>;
+}
+svg.railroad-diagram .terminal rect {
+  fill: <%= value.call('--rr-terminal-fill') %>;
+}
+svg.railroad-diagram .non-terminal rect {
+  fill: <%= value.call('--rr-nonterminal-fill') %>;
+}
+svg.railroad-diagram rect.group-box {
+  stroke: <%= value.call('--rr-group-stroke') %>;
+  stroke-dasharray: 10 5;
+  fill: none;
+}

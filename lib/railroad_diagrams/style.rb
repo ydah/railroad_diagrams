@@ -98,9 +98,7 @@ module RailroadDiagrams
     # @rbs write: ^(String) -> void
     # @rbs return: void
     def write_svg(write)
-      # Write included stylesheet as CDATA. See https://developer.mozilla.org/en-US/docs/Web/SVG/Element/style
-      cdata = "/* <![CDATA[ */\n#{@css}\n/* ]]> */\n"
-      write.call("<style>#{cdata}</style>")
+      Writer.wrap(write).call(Svg::Serializer.call(render_svg(nil)))
     end
 
     def render_svg(_context)

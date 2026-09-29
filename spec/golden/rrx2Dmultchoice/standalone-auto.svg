@@ -1,0 +1,127 @@
+<svg class="railroad-diagram" height="122" viewBox="0 0 198.5 122" width="198.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 51v20m10 -20v20m-10 -10h20" /></g><path d="M40 61h10" /><g>
+<path d="M50 61h0.0" /><path d="M148.5 61h0.0" /><path d="M80.0 61v-20a10 10 0 0 1 10 -10" /><g class="terminal ">
+<path d="M90.0 31h0.0" /><path d="M118.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="90" y="20"></rect><text x="104.25" y="35">1</text></g><path d="M118.5 31a10 10 0 0 1 10 10v10" /><path d="M80.0 61h10" /><g class="terminal ">
+<path d="M90.0 61h0.0" /><path d="M118.5 61h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="90" y="50"></rect><text x="104.25" y="65">2</text></g><path d="M118.5 61h10" /><path d="M80.0 61v20a10 10 0 0 0 10 10" /><g class="terminal ">
+<path d="M90.0 91h0.0" /><path d="M118.5 91h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="90" y="80"></rect><text x="104.25" y="95">3</text></g><path d="M118.5 91a10 10 0 0 0 10 -10v-10" /><g class="diagram-text">
+<title>take all branches, once each, in any order</title><path class="diagram-text" d="M 80.0 51 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="65" y="65">all</text><path class="diagram-text" d="M 128.5 51 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="138.5" y="65">↺</text></g></g><path d="M148.5 61h10" /><path d="M 158.5 61 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g><style>/* <![CDATA[ */
+* {
+  color: #333333;
+}
+svg.railroad-diagram {
+  background-color: white;
+}
+svg.railroad-diagram path {
+  stroke-width:3;
+  stroke:black;
+  fill:rgba(0,0,0,0);
+}
+svg.railroad-diagram text {
+  font:bold 14px monospace;
+  text-anchor:middle;
+  white-space: pre;
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: 3;
+  stroke: #333333;
+  fill: white;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: #eee;
+}
+svg.railroad-diagram text.label {
+  text-anchor:start;
+}
+svg.railroad-diagram text.comment {
+  font:italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width:3;
+  stroke: #333333;
+  fill:hsl(120,100%,90%);
+}
+svg.railroad-diagram path {
+  stroke: #333333;
+}
+svg.railroad-diagram .terminal rect {
+  fill: hsl(190, 100%, 83%);
+}
+svg.railroad-diagram .non-terminal rect {
+  fill: hsl(223, 100%, 83%);
+}
+svg.railroad-diagram rect.group-box {
+  stroke: gray;
+  stroke-dasharray: 10 5;
+  fill: none;
+}
+@media (prefers-color-scheme: dark) {
+  svg.railroad-diagram * {
+    color: #f0f0f0;
+  }
+  svg.railroad-diagram {
+    background-color: #1e1e1e;
+  }
+  svg.railroad-diagram path {
+    stroke-width:3;
+    stroke:#d4d4d4;
+    fill:rgba(0,0,0,0);
+  }
+  svg.railroad-diagram text {
+    font:bold 14px monospace;
+    text-anchor:middle;
+    white-space: pre;
+    fill: #f0f0f0;
+  }
+  svg.railroad-diagram text.diagram-text {
+    font-size: 12px;
+  }
+  svg.railroad-diagram text.diagram-arrow {
+    font-size: 16px;
+  }
+  svg.railroad-diagram path.diagram-text {
+    stroke-width: 3;
+    stroke: #d4d4d4;
+    fill: #1e1e1e;
+    cursor: help;
+  }
+  svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+    fill: #444444;
+  }
+  svg.railroad-diagram text.label {
+    text-anchor:start;
+  }
+  svg.railroad-diagram text.comment {
+    font:italic 12px monospace;
+  }
+  svg.railroad-diagram rect {
+    stroke-width:3;
+    stroke: #d4d4d4;
+    fill:#333333;
+  }
+  svg.railroad-diagram path {
+    stroke: #d4d4d4;
+  }
+  svg.railroad-diagram .terminal rect {
+    fill: hsl(190, 60%, 30%);
+  }
+  svg.railroad-diagram .non-terminal rect {
+    fill: hsl(223, 50%, 35%);
+  }
+  svg.railroad-diagram rect.group-box {
+    stroke: #888;
+    stroke-dasharray: 10 5;
+    fill: none;
+  }
+}
+
+/* ]]> */
+</style></svg>

@@ -16,6 +16,8 @@ module RailroadDiagrams
 
     attr_reader ids: untyped
 
+    attr_reader uses_xlink: untyped
+
     def initialize: (?untyped options, ?parts: untyped) -> untyped
 
     def self.legacy: () -> untyped
@@ -25,5 +27,7 @@ module RailroadDiagrams
     def text_width: (untyped text, ?untyped role) -> untyped
 
     def gaps: (untyped outer, untyped inner) -> untyped
+
+    def link_attrs: (untyped url) -> untyped
   end
 end

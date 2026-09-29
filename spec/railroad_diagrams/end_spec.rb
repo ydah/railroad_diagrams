@@ -106,4 +106,46 @@ RSpec.describe RailroadDiagrams::End do
       expect(end_node.to_s).to eq('End(type=complex)')
     end
   end
+
+  describe 'labeled ends' do
+    %w[simple complex].each do |type|
+      it "renders the #{type} label the same way through legacy and Context APIs" do
+        end_node = described_class.new(type, label: 'DONE')
+        context = RailroadDiagrams::Context.new
+        metrics = context.metrics(end_node)
+        svg = RailroadDiagrams::Svg::Serializer.call(end_node.render_svg(context, 10, 100, metrics.width))
+        text = end_node.render_text(context).lines
+        expect(end_node.children).to be_empty
+        end_node.format(10, 100, end_node.width)
+
+        expect(svg).to eq(svg_output(end_node))
+        expect(svg).to include('style="text-anchor:end"')
+        expect(text).to eq(end_node.text_diagram.lines)
+      end
+    end
+
+    it 'measures the label using Context character width without changing legacy dimensions' do
+      end_node = described_class.new(label: '日本')
+      context = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(char_width: 10))
+      expect([end_node.width, context.metrics(end_node).width]).to eq([44.0, 50])
+      expect([context.metrics(end_node).up, context.metrics(end_node).height, context.metrics(end_node).down]).to eq([10, 0, 10])
+      svg = RailroadDiagrams::Svg::Serializer.call(end_node.render_svg(context, 0, 100, 50))
+      expect(svg).to include('h 50', 'x="50"')
+    end
+
+    it 'right aligns its text label and uses Context text characters' do
+      end_node = described_class.new(label: 'A')
+      ascii = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(text_charset: :ascii))
+      expect(end_node.render_text(ascii).lines).to eq(['  A', '-+|'])
+    end
+
+    it 'preserves the unlabeled path element and its serialized output' do
+      end_node = described_class.new
+      context = RailroadDiagrams::Context.new
+      expect(end_node.instance_variable_get(:@name)).to eq('path')
+      expect(RailroadDiagrams::Svg::Serializer.call(end_node.render_svg(context, 10, 20, 20))).to eq(
+        '<path d="M 10 20 h 20 m -10 -10 v 20 m 10 -20 v 20"></path>'
+      )
+    end
+  end
 end

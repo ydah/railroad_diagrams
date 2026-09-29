@@ -1,0 +1,14 @@
+# Generated from lib/railroad_diagrams/i18n.rb with RBS::Inline
+
+module RailroadDiagrams
+  module I18n
+    # rubocop:disable-next Style/FormatStringToken
+    MESSAGES: untyped
+
+    # @rbs key: Symbol
+    # @rbs locale: Symbol
+    # @rbs **values: untyped
+    # @rbs return: String
+    def self?.t: (Symbol key, ?locale: Symbol, **untyped values) -> String
+  end
+end

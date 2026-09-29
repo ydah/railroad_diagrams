@@ -18,6 +18,18 @@ RSpec.describe 'Golden outputs' do
       expect(%w[width height viewBox].map { |key| root.attributes[key] }.join(' ')).not_to match(/\.\d{3,}/)
     end
 
+    it "#{name} default standalone SVG matches the existing golden file" do
+      actual = ExamplesLoader.load.fetch(name).to_standalone_svg(theme: :default)
+      expect(actual).to eq(File.read(ExamplesLoader.golden_path(name, 'standalone'), encoding: 'utf-8'))
+    end
+
+    ExamplesLoader::THEMES.each do |theme|
+      it "#{name} standalone #{theme} SVG is valid XML" do
+        path = ExamplesLoader.golden_path(name, "standalone-#{theme}")
+        expect(REXML::Document.new(File.read(path, encoding: 'utf-8')).root.name).to eq('svg')
+      end
+    end
+
     ExamplesLoader::RENDERERS.each_key do |format|
       it "#{name} (#{format}) matches the golden file" do
         actual = ExamplesLoader.render(name, format)

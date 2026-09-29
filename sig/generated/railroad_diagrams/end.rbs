@@ -3,8 +3,9 @@
 module RailroadDiagrams
   class End < DiagramItem
     # @rbs type: String
+    # @rbs label: String?
     # @rbs return: void
-    def initialize: (?String type) -> void
+    def initialize: (?String type, ?label: String?) -> void
 
     # @rbs return: String
     def to_s: () -> String
@@ -18,12 +19,18 @@ module RailroadDiagrams
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
 
-    def measure: (untyped _context) -> untyped
+    def measure: (untyped context) -> untyped
 
     def render_svg: (untyped context, untyped x, untyped y, untyped _width) -> untyped
 
     def render_text: (untyped context) -> untyped
 
     def child_nodes: () -> untyped
+
+    private
+
+    def legacy_path: (untyped x, untyped y, untyped width) -> untyped
+
+    def text_with_label: (untyped cross, untyped line, untyped tee_left) -> untyped
   end
 end

@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'rexml/document'
 
 RSpec.describe RailroadDiagrams::Diagram do
   describe 'context rendering' do
@@ -43,6 +44,30 @@ RSpec.describe RailroadDiagrams::Diagram do
         end
       end
       expect(results.map(&:value)).to all(be(true))
+    end
+
+    it 'adds deterministic accessible names and descriptions on request' do
+      diagram = described_class.new('SELECT', title: 'SELECT文', desc: :auto)
+      first = REXML::Document.new(diagram.to_svg(locale: :ja))
+      second = REXML::Document.new(described_class.new('SELECT', title: 'SELECT文', desc: :auto).to_svg(locale: :ja))
+      title = first.root.elements['title']
+      description = first.root.elements['desc']
+      expect(first.root.attributes['role']).to eq('img')
+      expect(first.root.attributes['aria-labelledby']).to eq("#{title.attributes['id']} #{description.attributes['id']}")
+      expect(title.text).to eq('SELECT文')
+      expect(description.text).to include('順に: 「SELECT」')
+      expect(second.root.elements['title'].attributes['id']).to eq(title.attributes['id'])
+      expect(described_class.new('OTHER', title: 'SELECT文').to_svg).not_to include(title.attributes['id'])
+    end
+
+    it 'can omit automatic start and end markers from SVG and text' do
+      diagram = described_class.new('A')
+      full = REXML::Document.new(diagram.to_svg)
+      omitted = REXML::Document.new(diagram.to_svg(show_start: false, show_end: false))
+      expect(omitted.root.attributes['width'].to_f).to be < full.root.attributes['width'].to_f
+      expect(omitted.to_s).not_to include('m -10 -10 v 20')
+      options = RailroadDiagrams.default_options.merge(show_start: false, show_end: false)
+      expect(diagram.render_text(RailroadDiagrams::Context.new(options)).lines.join).to include('A')
     end
   end
 

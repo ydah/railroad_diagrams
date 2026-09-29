@@ -1,0 +1,70 @@
+<svg class="railroad-diagram" height="100" viewBox="0 0 466.5 100" width="466.5" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><path d="M40 31h10" /><g class="terminal ">
+<path d="M50 31h0.0" /><path d="M78.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="50" y="20"></rect><text x="64.25" y="35">#</text></g><path d="M78.5 31h10" /><path d="M88.5 31h10" /><g>
+<path d="M98.5 31h0.0" /><path d="M416.5 31h0.0" /><path d="M98.5 31h10" /><g>
+<path d="M108.5 31h0.0" /><path d="M406.5 31h0.0" /><path d="M108.5 31h20" /><g class="non-terminal ">
+<path d="M128.5 31h0.0" /><path d="M386.5 31h0.0" /><rect height="22" width="258" x="128.5" y="20"></rect><text x="257.5" y="35">a-z A-Z 0-9 _ - or non-ASCII</text></g><path d="M386.5 31h20" /><path d="M108.5 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g class="non-terminal ">
+<path d="M128.5 61h93.5" /><path d="M293.0 61h93.5" /><rect height="22" width="71" x="222" y="50"></rect><text x="257.5" y="65">escape</text></g><path d="M386.5 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /></g><path d="M406.5 31h10" /><path d="M108.5 31a10 10 0 0 0 -10 10v29a10 10 0 0 0 10 10" /><g>
+<path d="M108.5 80h298.0" /></g><path d="M406.5 80a10 10 0 0 0 10 -10v-29a10 10 0 0 0 -10 -10" /></g><path d="M416.5 31h10" /><path d="M 426.5 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g><style>/* <![CDATA[ */
+svg.railroad-diagram * {
+  color: black;
+}
+svg.railroad-diagram {
+  background-color: white;
+}
+svg.railroad-diagram path {
+  stroke-width:3;
+  stroke:black;
+  fill:rgba(0,0,0,0);
+}
+svg.railroad-diagram text {
+  font:bold 14px monospace;
+  text-anchor:middle;
+  white-space: pre;
+  fill: black;
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: 3;
+  stroke: black;
+  fill: white;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: white;
+}
+svg.railroad-diagram text.label {
+  text-anchor:start;
+}
+svg.railroad-diagram text.comment {
+  font:italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width:3;
+  stroke: black;
+  fill:none;
+}
+svg.railroad-diagram path {
+  stroke: black;
+}
+svg.railroad-diagram .terminal rect {
+  fill: none;
+}
+svg.railroad-diagram .non-terminal rect {
+  fill: none;
+}
+svg.railroad-diagram rect.group-box {
+  stroke: black;
+  stroke-dasharray: 10 5;
+  fill: none;
+}
+
+/* ]]> */
+</style></svg>

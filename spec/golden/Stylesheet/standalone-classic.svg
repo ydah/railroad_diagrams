@@ -1,0 +1,74 @@
+<svg class="railroad-diagram" height="198" viewBox="0 0 353.0 198" width="353.0" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 119v20m10 -20v20m-10 -10h20" /></g><g>
+<path d="M40 129h0.0" /><path d="M313.0 129h0.0" /><path d="M40.0 129a10 10 0 0 0 10 -10v-89a10 10 0 0 1 10 -10" /><g>
+<path d="M60.0 20h233.0" /></g><path d="M293.0 20a10 10 0 0 1 10 10v89a10 10 0 0 0 10 10" /><path d="M40.0 129h20" /><g>
+<path d="M60.0 129h0.0" /><path d="M293.0 129h0.0" /><path d="M60.0 129h10" /><g>
+<path d="M70.0 129h0.0" /><path d="M283.0 129h0.0" /><path d="M70.0 129a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /><g class="non-terminal ">
+<path d="M90.0 99h0.0" /><path d="M263.0 99h0.0" /><rect height="22" width="173" x="90" y="88"></rect><text x="176.5" y="103">&lt;whitespace-token&gt;</text></g><path d="M263.0 99a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><path d="M70.0 129a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10" /><g class="non-terminal ">
+<path d="M90.0 69h29.75" /><path d="M233.25 69h29.75" /><rect height="22" width="113.5" x="119.75" y="58"></rect><text x="176.5" y="73">&lt;CDC-token&gt;</text></g><path d="M263.0 69a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10" /><path d="M70.0 129a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10" /><g class="non-terminal ">
+<path d="M90.0 39h29.75" /><path d="M233.25 39h29.75" /><rect height="22" width="113.5" x="119.75" y="28"></rect><text x="176.5" y="43">&lt;CDO-token&gt;</text></g><path d="M263.0 39a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10" /><path d="M70.0 129h20" /><g class="non-terminal ">
+<path d="M90.0 129h17.0" /><path d="M246.0 129h17.0" /><rect height="22" width="139" x="107" y="118"></rect><text x="176.5" y="133">Qualified rule</text></g><path d="M263.0 129h20" /><path d="M70.0 129a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g class="non-terminal ">
+<path d="M90.0 159h46.75" /><path d="M216.25 159h46.75" /><rect height="22" width="79.5" x="136.75" y="148"></rect><text x="176.5" y="163">At-rule</text></g><path d="M263.0 159a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /></g><path d="M283.0 129h10" /><path d="M70.0 129a10 10 0 0 0 -10 10v29a10 10 0 0 0 10 10" /><g>
+<path d="M70.0 178h213.0" /></g><path d="M283.0 178a10 10 0 0 0 10 -10v-29a10 10 0 0 0 -10 -10" /></g><path d="M293.0 129h20" /></g><path d="M 313.0 129 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g><style>/* <![CDATA[ */
+svg.railroad-diagram * {
+  color: black;
+}
+svg.railroad-diagram {
+  background-color: hsl(30,20%,95%);
+}
+svg.railroad-diagram path {
+  stroke-width:3;
+  stroke:black;
+  fill:rgba(0,0,0,0);
+}
+svg.railroad-diagram text {
+  font:bold 14px monospace;
+  text-anchor:middle;
+  white-space: pre;
+  fill: black;
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: 3;
+  stroke: black;
+  fill: white;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: #eee;
+}
+svg.railroad-diagram text.label {
+  text-anchor:start;
+}
+svg.railroad-diagram text.comment {
+  font:italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width:3;
+  stroke: black;
+  fill:hsl(120,100%,90%);
+}
+svg.railroad-diagram path {
+  stroke: black;
+}
+svg.railroad-diagram .terminal rect {
+  fill: hsl(120,100%,90%);
+}
+svg.railroad-diagram .non-terminal rect {
+  fill: hsl(120,100%,90%);
+}
+svg.railroad-diagram rect.group-box {
+  stroke: gray;
+  stroke-dasharray: 10 5;
+  fill: none;
+}
+
+/* ]]> */
+</style></svg>

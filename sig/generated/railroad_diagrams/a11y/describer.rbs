@@ -1,0 +1,27 @@
+# Generated from lib/railroad_diagrams/a11y/describer.rb with RBS::Inline
+
+module RailroadDiagrams
+  module A11y
+    module Describer
+      DEFAULT_MAX_LENGTH: ::Integer
+
+      # @rbs node: DiagramItem
+      # @rbs locale: Symbol
+      # @rbs max_length: Integer
+      # @rbs return: String
+      def self?.call: (DiagramItem node, ?locale: Symbol, ?max_length: Integer) -> String
+
+      def self?.describe: (untyped node, untyped locale) -> untyped
+
+      def self?.describe_label: (untyped node, untyped locale) -> untyped
+
+      def self?.describe_choice: (untyped node, untyped locale) -> untyped
+
+      def self?.describe_zero_or_more: (untyped item, untyped locale) -> untyped
+
+      def self?.describe_list: (untyped key, untyped children, untyped locale) -> untyped
+
+      def self?.describe_joined: (untyped key, untyped descriptions, untyped locale) -> untyped
+    end
+  end
+end
