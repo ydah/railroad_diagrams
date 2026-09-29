@@ -62,6 +62,9 @@ module RailroadDiagrams
     # @rbs return: String
     def to_str: () -> String
 
+    # @rbs return: String
+    def inspect: () -> String
+
     private
 
     # @rbs write: ^(String) -> void

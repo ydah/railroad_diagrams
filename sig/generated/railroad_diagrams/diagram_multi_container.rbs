@@ -20,6 +20,6 @@ module RailroadDiagrams
     def walk: (^(DiagramItem) -> void callback) -> void
 
     # @rbs return: String
-    def to_str: () -> String
+    def inspect: () -> String
   end
 end

@@ -212,6 +212,13 @@ RSpec.describe 'Edge Cases' do
       one_or_more = items.find { |i| i.is_a?(RailroadDiagrams::OneOrMore) }
       expect(one_or_more).not_to be_nil
     end
+
+    it 'returns the documented factory classes for short sequences' do
+      expect(RailroadDiagrams::HorizontalChoice.new('a')).to be_instance_of(RailroadDiagrams::Sequence)
+      expect(RailroadDiagrams::OptionalSequence.new('a')).to be_instance_of(RailroadDiagrams::Sequence)
+      expect(RailroadDiagrams::HorizontalChoice.new('a', 'b')).to be_instance_of(RailroadDiagrams::HorizontalChoice)
+      expect(RailroadDiagrams::OptionalSequence.new('a', 'b')).to be_instance_of(RailroadDiagrams::OptionalSequence)
+    end
   end
 
   describe 'Formatting without prior formatting' do

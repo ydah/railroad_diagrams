@@ -29,7 +29,7 @@ module RailroadDiagrams
     end
 
     # @rbs return: String
-    def to_str
+    def inspect
       "DiagramMultiContainer(#{@name}, #{@items}, #{@attrs}, #{@children})"
     end
   end

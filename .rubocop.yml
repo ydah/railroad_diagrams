@@ -1,0 +1,10 @@
+AllCops:
+  TargetRubyVersion: 2.5
+  NewCops: enable
+  Exclude:
+    - 'sig/**/*'
+    - 'spec/golden/**/*'
+    - 'vendor/**/*'
+plugins:
+  - rubocop-rspec
+inherit_from: .rubocop_todo.yml

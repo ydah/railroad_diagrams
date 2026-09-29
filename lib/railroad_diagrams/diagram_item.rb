@@ -87,6 +87,12 @@ module RailroadDiagrams
 
     # @rbs return: String
     def to_str
+      Deprecation.warn('DiagramItem#to_str is deprecated; use #inspect')
+      inspect
+    end
+
+    # @rbs return: String
+    def inspect
       "DiagramItem(#{@name}, #{@attrs}, #{@children})"
     end
 

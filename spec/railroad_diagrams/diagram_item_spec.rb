@@ -148,13 +148,21 @@ RSpec.describe RailroadDiagrams::DiagramItem do
   end
 
   describe '#to_str' do
-    it 'returns debug string' do
+    it 'warns and returns the debug string' do
       item = described_class.new('rect', attrs: { 'x' => '10' })
-      result = item.to_str
+      result = nil
+      expect { result = item.to_str }.to output(/DEPRECATION.*to_str/).to_stderr
       expect(result).to include('DiagramItem')
       expect(result).to include('rect')
       expect(result).to include('x')
       expect(result).to include('10')
+      expect(item.inspect).to eq(result)
+    end
+
+    it 'warns when String concatenation coerces a container' do
+      item = RailroadDiagrams::Sequence.new('a', 'b')
+      expect { 'x' + item }.to output(/DEPRECATION.*to_str/).to_stderr
+      expect(item.inspect).to start_with('DiagramMultiContainer(')
     end
   end
 end

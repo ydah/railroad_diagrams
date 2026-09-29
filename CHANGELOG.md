@@ -17,11 +17,18 @@
 - Golden output and XML well-formedness checks.
 - String-returning SVG and text APIs, flexible output writers, and a shared error hierarchy.
 - Unicode 16.0 display-width tables and international text examples.
+- CI checks minimum line and branch coverage.
+- RuboCop checks Ruby 2.5 syntax and new style violations.
+- README node guide, migration notes, and contribution templates.
 
 ### Changed
 
 - Invalid `AlternatingSequence` arity now raises `ArgumentError` via `InvalidArgument`.
 - Comments retain their legacy CSS class and also carry `comment`.
+
+### Deprecated
+
+- `DiagramItem#to_str` now warns; use `#inspect` for debug output.
 
 ## 0.3.0 - 2025-02-24
 

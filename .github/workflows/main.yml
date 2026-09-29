@@ -29,3 +29,25 @@ jobs:
           bundler-cache: true
       - name: Run RSpec
         run: bundle exec rspec
+  coverage:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - name: Check line and branch coverage
+        env:
+          COVERAGE: '1'
+        run: bundle exec rspec --format progress
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+      - name: Run RuboCop
+        run: bundle exec rubocop --no-parallel

@@ -1,3 +1,12 @@
+if ENV['COVERAGE']
+  require 'simplecov'
+  SimpleCov.start do
+    enable_coverage :branch
+    skip '/spec/'
+    minimum_coverage line: 95, branch: 85
+  end
+end
+
 require 'railroad_diagrams'
 
 RSpec.configure do |config|
