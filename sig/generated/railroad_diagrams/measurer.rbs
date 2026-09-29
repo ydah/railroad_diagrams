@@ -1,0 +1,11 @@
+# Generated from lib/railroad_diagrams/measurer.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Measurer
+    class Monospace
+      def initialize: (untyped options) -> untyped
+
+      def width: (untyped text, ?untyped role) -> untyped
+    end
+  end
+end

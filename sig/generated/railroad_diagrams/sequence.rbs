@@ -18,7 +18,31 @@ module RailroadDiagrams
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
 
+    # @rbs context: Context
+    # @rbs return: Metrics
+    def measure: (Context context) -> Metrics
+
+    # @rbs context: Context
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Svg::Element
+    def render_svg: (Context context, Numeric x, Numeric y, Numeric width) -> Svg::Element
+
+    # @rbs context: Context
+    # @rbs return: TextDiagram
+    def render_text: (Context context) -> TextDiagram
+
+    # @rbs return: Array[DiagramItem]
+    def child_nodes: () -> Array[DiagramItem]
+
     private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs length: Numeric
+    # @rbs return: Svg::Element
+    def svg_path: (Numeric x, Numeric y, Numeric length) -> Svg::Element
 
     # @rbs return: void
     def calculate_dimensions: () -> void

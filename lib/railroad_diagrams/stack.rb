@@ -77,7 +77,123 @@ module RailroadDiagrams
       diagram_td.append_right(right_td, '')
     end
 
+    def measure(context)
+      item_metrics = @items.map { |item| context.metrics(item) }
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      width = item_metrics.map { |metrics| metrics.width + (metrics.needs_space ? 20 : 0) }.max
+      width += arc * 2 if item_metrics.size > 1
+
+      height = 0
+      item_metrics.each_with_index do |metrics, index|
+        height += metrics.height
+        height += [arc * 2, metrics.up + separation].max if index.positive?
+        height += [arc * 2, metrics.down + separation].max if index < item_metrics.size - 1
+      end
+      Metrics.new(width: width, up: item_metrics.first.up, height: height,
+                  down: item_metrics.last.down, needs_space: true)
+    end
+
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g')
+      add_svg_path(group, Svg::PathData.new(x, y, arc_radius: arc).h(left_gap))
+      x += left_gap
+      x_initial = x
+
+      inner_width = metrics.width
+      if @items.size > 1
+        add_svg_path(group, Svg::PathData.new(x, y, arc_radius: arc).h(arc))
+        x += arc
+        inner_width -= arc * 2
+      end
+
+      @items.each_with_index do |item, index|
+        item_metrics = context.metrics(item)
+        group << item.render_svg(context, x, y, inner_width)
+        x += inner_width
+        y += item_metrics.height
+        next if index == @items.size - 1
+
+        next_metrics = context.metrics(@items[index + 1])
+        loop_back = Svg::PathData.new(x, y, arc_radius: arc)
+                                 .arc('ne')
+                                 .v([0, item_metrics.down + separation - (arc * 2)].max)
+                                 .arc('es').h(-inner_width).arc('nw')
+                                 .v([0, next_metrics.up + separation - (arc * 2)].max)
+                                 .arc('ws')
+        add_svg_path(group, loop_back)
+        y += [item_metrics.down + separation, arc * 2].max +
+             [next_metrics.up + separation, arc * 2].max
+        x = x_initial + arc
+      end
+
+      if @items.size > 1
+        add_svg_path(group, Svg::PathData.new(x, y, arc_radius: arc).h(arc))
+        x += arc
+      end
+      add_svg_path(group, Svg::PathData.new(x, y, arc_radius: arc).h(right_gap))
+      group
+    end
+
+    def render_text(context)
+      corner_bot_left, corner_bot_right, corner_top_left, corner_top_right, line, line_vertical =
+        context.parts.values_at(*%w[corner_bot_left corner_bot_right corner_top_left corner_top_right line line_vertical])
+      item_tds = @items.map { |item| item.render_text(context) }
+      max_width = item_tds.map(&:width).max
+      left_lines = []
+      right_lines = []
+      expanded = []
+
+      item_tds.each_with_index do |item_td, index|
+        if index.zero?
+          left_lines << (line * 2)
+          left_lines.concat([' ' * 2] * (item_td.height - item_td.entry - 1))
+        else
+          left_lines << (corner_top_left + line)
+          left_lines.concat(["#{line_vertical} "] * item_td.entry)
+          left_lines << (corner_bot_left + line)
+          left_lines.concat([' ' * 2] * (item_td.height - item_td.entry - 1))
+          right_lines.concat([' ' * 2] * item_td.exit)
+        end
+        if index < item_tds.size - 1
+          right_lines << (line + corner_top_right)
+          right_lines.concat([" #{line_vertical}"] * (item_td.height - item_td.exit - 1))
+          right_lines << (line + corner_bot_right)
+        else
+          right_lines << (line * 2)
+        end
+
+        left_pad, = context.gaps(max_width, item_td.width)
+        left_pad = left_pad.floor
+        right_pad = max_width - item_td.width - left_pad
+        lines = item_td.lines.each_with_index.map do |text, row|
+          left = (row == item_td.entry ? line : ' ') * left_pad
+          right = (row == item_td.exit ? line : ' ') * right_pad
+          "#{left}#{text}#{right}"
+        end
+        expanded << TextDiagram.new(item_td.entry, item_td.exit, lines)
+      end
+
+      middle = TextDiagram.new(expanded.first.entry, expanded.first.exit,
+                               Text::Builder.stack(expanded, [line * max_width]))
+      left = TextDiagram.new(0, 0, left_lines)
+      right = TextDiagram.new(0, right_lines.size - 1, right_lines)
+      left.append_right(middle, '').append_right(right, '')
+    end
+
+    def child_nodes
+      @items.dup
+    end
+
     private
+
+    def add_svg_path(group, path_data)
+      group << Svg::Element.new('path', { 'd' => path_data }, self_closing: true)
+    end
 
     # @rbs return: void
     def calculate_dimensions

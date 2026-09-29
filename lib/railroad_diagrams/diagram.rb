@@ -46,17 +46,80 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram
-      return TextDiagram.new(0, 0, []) if @items.empty?
+      render_text(Context.legacy)
+    end
 
-      separator, = TextDiagram.get_parts(['separator'])
-      render_items = @items.reject { |item| item.is_a?(Style) }
-      diagram_td = render_items[0].text_diagram
-      render_items[1..-1].each do |item|
-        item_td = item.text_diagram
-        item_td = item_td.expand(1, 1, 0, 0) if item.needs_space
-        diagram_td = diagram_td.append_right(item_td, separator)
+    def measure(context)
+      up = 0
+      down = 0
+      height = 0
+      width = 0
+      children = child_nodes.map { |item| context.metrics(item) }
+      children.each do |item|
+        width += item.width + (item.needs_space ? 20 : 0)
+        up = [up, item.up - height].max
+        height += item.height
+        down = [down - item.height, item.down].max
       end
-      diagram_td
+      width -= 10 if children.first&.needs_space
+      width -= 10 if children.last&.needs_space
+      Metrics.new(width: width, up: up, height: height, down: down, needs_space: false)
+    end
+
+    # rubocop:disable-next Metrics/ParameterLists
+    def render_svg(context, _x = 0, _y = 0, _width = nil, padding_top: 20, padding_right: nil,
+                   padding_bottom: nil, padding_left: nil)
+      padding_right ||= padding_top
+      padding_bottom ||= padding_top
+      padding_left ||= padding_right
+      metrics = context.metrics(self)
+      svg_width = metrics.width + padding_left + padding_right
+      svg_height = metrics.up + metrics.height + metrics.down + padding_top + padding_bottom
+      precision = context.options.precision
+      rendered_width = precision ? Svg::NumberFormat.call(svg_width, precision) : svg_width.to_s
+      rendered_height = precision ? Svg::NumberFormat.call(svg_height, precision) : svg_height.to_s
+      attrs = @attrs.merge('class' => context.options.diagram_class,
+                           'width' => rendered_width, 'height' => rendered_height,
+                           'viewBox' => "0 0 #{rendered_width} #{rendered_height}")
+      root = Svg::Element.new('svg', attrs)
+      group_attrs = context.options.stroke_odd_pixel_length ? { 'transform' => 'translate(.5 .5)' } : {}
+      group = Svg::Element.new('g', group_attrs)
+      x = padding_left
+      y = padding_top + metrics.up
+      @items.each do |item|
+        if item.is_a?(Style)
+          root << item.render_svg(context)
+          next
+        end
+        child = context.metrics(item)
+        if child.needs_space
+          group << svg_path(x, y, 10)
+          x += 10
+        end
+        group << item.render_svg(context, x, y, child.width)
+        x += child.width
+        y += child.height
+        if child.needs_space
+          group << svg_path(x, y, 10)
+          x += 10
+        end
+      end
+      root << group
+    end
+
+    def render_text(context)
+      render_items = child_nodes
+      return TextDiagram.new(0, 0, []) if render_items.empty?
+
+      diagrams = render_items.map do |item|
+        diagram = item.render_text(context)
+        context.metrics(item).needs_space ? diagram.expand(1, 1, 0, 0) : diagram
+      end
+      Text::Builder.row(diagrams, context.parts.fetch('separator'))
+    end
+
+    def child_nodes
+      @items.reject { |item| item.is_a?(Style) }
     end
 
     # @rbs write: ^(String) -> void
@@ -79,10 +142,10 @@ module RailroadDiagrams
     end
 
     # @rbs return: String
-    def to_svg
-      out = +''
-      write_svg(out)
-      out
+    def to_svg(**options)
+      context = Context.new(RailroadDiagrams.default_options.merge(**options))
+      Svg::Serializer.call(render_svg(context), precision: context.options.precision,
+                                                optimize_paths: context.options.optimize_paths)
     end
 
     # @rbs css: (String | bool)?
@@ -97,15 +160,9 @@ module RailroadDiagrams
     # @rbs escape_html: bool
     # @rbs return: String
     def to_text(charset: :unicode, escape_html: false)
-      parts = { unicode: TextDiagram::PARTS_UNICODE, ascii: TextDiagram::PARTS_ASCII }.fetch(charset) do
-        raise InvalidArgument, "unknown charset: #{charset.inspect}"
-      end
-      previous = TextDiagram.parts
-      TextDiagram.set_formatting(parts)
-      output = "#{text_diagram.lines.join("\n")}\n"
+      context = Context.new(RailroadDiagrams.default_options.merge(text_charset: charset))
+      output = "#{render_text(context).lines.join("\n")}\n"
       escape_html ? output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;') : output
-    ensure
-      TextDiagram.parts = previous if defined?(previous)
     end
 
     # @rbs write: ^(String) -> void
@@ -122,6 +179,10 @@ module RailroadDiagrams
     end
 
     private
+
+    def svg_path(x, y, length)
+      Svg::Element.new('path', { 'd' => Svg::PathData.new(x, y).h(length) }, self_closing: true)
+    end
 
     # @rbs return: void
     def ensure_start_and_end_items

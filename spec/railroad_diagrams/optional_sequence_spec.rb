@@ -129,4 +129,45 @@ RSpec.describe RailroadDiagrams::OptionalSequence do
       expect(result).to include('Terminal')
     end
   end
+
+  describe 'context rendering' do
+    let(:node) { described_class.new('A', RailroadDiagrams::Choice.new(0, 'B', 'C'), 'D') }
+    let(:legacy_svg) do
+      copy = described_class.new('A', RailroadDiagrams::Choice.new(0, 'B', 'C'), 'D')
+      copy.format(0, 100, copy.width)
+      output = +''
+      copy.write_svg(output)
+      output
+    end
+
+    it 'keeps the upper bypass separate from a deep final branch' do
+      node = described_class.new('a', RailroadDiagrams::Choice.new(1, 'x', 'y'))
+      lines = node.render_text(RailroadDiagrams::Context.new).lines.map(&:rstrip)
+      expect(lines).to eq([
+                            '', '                 ╭───╮', '              ╭──│ x │──╮',
+                            '              │  ╰───╯  │', '╭───────────╮ │         │',
+                            '│  ╭───╮    │ │  ╭───╮  │', '╯──│ a │──╮─╰─╯──│ y │──╰─╭',
+                            '   ╰───╯  │      ╰───╯    │', '          ╰───────────────╯'
+                          ])
+    end
+
+    it 'preserves legacy SVG and text output without mutating children' do
+      context = RailroadDiagrams::Context.new
+      expected_text = node.text_diagram.lines
+      children = node.children.dup
+
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(context, 0, 100, context.metrics(node).width))).to eq(legacy_svg)
+      expect(node.render_text(context).lines).to eq(expected_text)
+      expect(node.children).to eq(children)
+      expect(node.child_nodes.length).to eq(3)
+    end
+
+    it 'uses the supplied arc radius independently' do
+      small = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(arc_radius: 10))
+      large = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(arc_radius: 12))
+      expect(large.metrics(node).width).to be > small.metrics(node).width
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(small, 0, 100, small.metrics(node).width))).to include('a10 10')
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(large, 0, 100, large.metrics(node).width))).to include('a12 12')
+    end
+  end
 end

@@ -20,6 +20,15 @@ module RailroadDiagrams
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
 
+    def measure: (untyped context) -> untyped
+
+    # rubocop:disable-next Metrics/ParameterLists
+    def render_svg: (untyped context, ?untyped _x, ?untyped _y, ?untyped _width, ?padding_top: untyped, ?padding_right: untyped, ?padding_bottom: untyped, ?padding_left: untyped) -> untyped
+
+    def render_text: (untyped context) -> untyped
+
+    def child_nodes: () -> untyped
+
     # @rbs write: ^(String) -> void
     # @rbs return: void
     def write_svg: (^(String) -> void write) -> void
@@ -30,7 +39,7 @@ module RailroadDiagrams
     def write_text: (untyped write, ?escape_html: bool) -> void
 
     # @rbs return: String
-    def to_svg: () -> String
+    def to_svg: (**untyped options) -> String
 
     # @rbs css: (String | bool)?
     # @rbs return: String
@@ -47,6 +56,8 @@ module RailroadDiagrams
     def write_standalone: (^(String) -> void write, ?String? css) -> void
 
     private
+
+    def svg_path: (untyped x, untyped y, untyped length) -> untyped
 
     # @rbs return: void
     def ensure_start_and_end_items: () -> void

@@ -2,6 +2,18 @@
 
 ## Unreleased
 
+### Added
+
+- Per-call SVG rendering options for arc radius, alignment, measurement, number precision, and path optimization.
+- Immutable text character sets, including square Unicode corners.
+- A rendering benchmark and warning-only CI comparison.
+
+### Fixed
+
+- Render shared nodes repeatedly without changing their SVG children or text character set.
+- Keep optional-sequence bypass lines separate from deep final branches.
+- Reduce text rendering time for large diagrams.
+
 ## 0.4.0 - 2026-09-30
 
 ### Fixed

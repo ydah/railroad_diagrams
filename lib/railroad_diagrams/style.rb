@@ -102,5 +102,9 @@ module RailroadDiagrams
       cdata = "/* <![CDATA[ */\n#{@css}\n/* ]]> */\n"
       write.call("<style>#{cdata}</style>")
     end
+
+    def render_svg(_context)
+      Svg::StyleText.new(@css)
+    end
   end
 end

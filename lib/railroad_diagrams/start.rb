@@ -69,5 +69,39 @@ module RailroadDiagrams
       start_td = TextDiagram.new(0, 0, [start])
       label_td.append_below(start_td, [], move_entry: true, move_exit: true)
     end
+
+    def measure(context)
+      width = @label ? [20, context.text_width(@label, :label) + 10].max : 20
+      Metrics.new(width: width, up: 10, height: 0, down: 10, needs_space: false)
+    end
+
+    def render_svg(context, x, y, _width)
+      width = context.metrics(self).width
+      path = Svg::PathData.new(x, y - 10, arc_radius: context.options.arc_radius).v(20)
+      if @type == 'complex'
+        path.m(0, -10).h(width)
+      else
+        path.m(10, -20).v(20).m(-10, -10).h(width)
+      end
+      group = Svg::Element.new('g', @attrs.dup)
+      group << Svg::Element.new('path', { 'd' => path }, self_closing: true)
+      if @label
+        text = Svg::Element.new('text', { 'x' => x, 'y' => y - 15, 'style' => 'text-anchor:start' })
+        group << (text << Svg::TextNode.new(@label))
+      end
+      group
+    end
+
+    def render_text(context)
+      cross, line, tee_right = context.parts.values_at('cross', 'line', 'tee_right')
+      start = @type == 'simple' ? tee_right + cross + line : tee_right + line
+      label = TextDiagram.new(0, 0, @label ? [@label] : [])
+      start = TextDiagram.pad_r(start, [label.width, Unicode::DisplayWidth.of(start)].max, line) if @label
+      label.append_below(TextDiagram.new(0, 0, [start]), [], move_entry: true, move_exit: true)
+    end
+
+    def child_nodes
+      []
+    end
   end
 end

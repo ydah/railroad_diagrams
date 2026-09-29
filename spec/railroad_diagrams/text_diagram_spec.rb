@@ -299,6 +299,24 @@ RSpec.describe RailroadDiagrams::TextDiagram do
 
       expect(joined.lines[0].length).to eq(4)
     end
+
+    it 'preserves display widths and leaves its inputs independent' do
+      top = described_class.new(0, 0, ['猫'])
+      bottom = described_class.new(0, 0, ['A'])
+      joined = top.append_below(bottom, ['─'])
+
+      expect([joined.width, joined.entry, joined.exit, joined.lines]).to eq([2, 0, 0, ['猫', '─ ', 'A ']])
+      joined.lines[0] = 'XX'
+      expect(top.lines).to eq(['猫'])
+      expect(bottom.lines).to eq(['A'])
+    end
+
+    it 'still rejects a separator wider than both diagrams' do
+      top = described_class.new(0, 0, ['A'])
+      bottom = described_class.new(0, 0, ['B'])
+
+      expect { top.append_below(bottom, ['wide']) }.to raise_error(ArgumentError, /negative argument/)
+    end
   end
 
   describe '#append_right' do
@@ -324,6 +342,17 @@ RSpec.describe RailroadDiagrams::TextDiagram do
       joined = left.append_right(right, '-')
 
       expect(joined.lines.join("\n")).to include('-')
+    end
+
+    it 'preserves Unicode display widths while joining different entry and exit rows' do
+      left = described_class.new(0, 1, ['猫', '犬'])
+      right = described_class.new(1, 0, ['A', 'B'])
+      joined = left.append_right(right, '─')
+
+      expect([joined.width, joined.entry, joined.exit, joined.lines]).to eq([4, 0, 0, ['猫 A', '犬─B']])
+      joined.lines[0] = 'xxxx'
+      expect(left.lines).to eq(['猫', '犬'])
+      expect(right.lines).to eq(['A', 'B'])
     end
   end
 
@@ -368,6 +397,8 @@ RSpec.describe RailroadDiagrams::TextDiagram do
       expect(copy.exit).to eq(original.exit)
       expect(copy.lines).to eq(original.lines)
       expect(copy).not_to eq(original)
+      copy.lines[0] = 'B'
+      expect(original.lines).to eq(['A'])
     end
   end
 

@@ -1,6 +1,51 @@
 require 'spec_helper'
 
 RSpec.describe RailroadDiagrams::Diagram do
+  describe 'context rendering' do
+    let(:shared) { RailroadDiagrams::Terminal.new('shared') }
+    let(:diagram) { described_class.new(shared) }
+
+    it 'renders with per-call arc radius without changing the shared node' do
+      default = diagram.to_svg
+      custom = diagram.to_svg(arc_radius: 12)
+
+      expect(custom).to include('rx="12"')
+      expect(default).to include('rx="10"')
+      expect(diagram.to_svg(arc_radius: 12)).to eq(custom)
+      expect(described_class.new(shared).to_svg).to eq(default)
+      expect(shared.children).to be_empty
+      expect(diagram.children).to be_empty
+    end
+
+    it 'exposes measured dimensions and child nodes' do
+      context = RailroadDiagrams::Context.new
+      expect(context.metrics(diagram).width).to eq(diagram.width)
+      expect(diagram.child_nodes).to include(shared)
+      expect(diagram.render_text(context).lines).to eq(diagram.text_diagram.lines)
+    end
+
+    it 'preserves legacy SVG bytes through the context renderer' do
+      styled = described_class.new('A', RailroadDiagrams::Style.new('svg { color: red; }'))
+      legacy = +''
+      styled.write_svg(legacy.method(:<<))
+      expect(styled.to_svg).to eq(legacy)
+      expect(styled.to_svg(arc_radius: 10)).to eq(legacy)
+      expect(styled.children).not_to be_empty
+    end
+
+    it 'renders ASCII and Unicode independently across threads' do
+      nested = described_class.new(RailroadDiagrams::Choice.new(0, 'a', 'b'))
+      expected = { ascii: nested.to_text(charset: :ascii), unicode: nested.to_text(charset: :unicode) }
+      results = 8.times.map do |index|
+        Thread.new do
+          charset = index.even? ? :ascii : :unicode
+          Array.new(100) { nested.to_text(charset: charset) == expected.fetch(charset) }.all?
+        end
+      end
+      expect(results.map(&:value)).to all(be(true))
+    end
+  end
+
   describe '#initialize' do
     it 'accepts items' do
       diagram = described_class.new('item')

@@ -1,0 +1,18 @@
+# Generated from lib/railroad_diagrams/metrics.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Metrics < Struct[untyped]
+    attr_accessor width(): untyped
+
+    attr_accessor up(): untyped
+
+    attr_accessor height(): untyped
+
+    attr_accessor down(): untyped
+
+    attr_accessor needs_space(): untyped
+
+    def self.new: (?width: untyped, ?up: untyped, ?height: untyped, ?down: untyped, ?needs_space: untyped) -> instance
+                | ({ ?width: untyped, ?up: untyped, ?height: untyped, ?down: untyped, ?needs_space: untyped }) -> instance
+  end
+end

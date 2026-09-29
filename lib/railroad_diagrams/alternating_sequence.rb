@@ -176,5 +176,159 @@ module RailroadDiagrams
                  .append_right(diagram_td, '')
                  .append_right(TextDiagram.new(1, 1, [corner_top_right, tee_right, corner_bot_right]), '')
     end
+
+    # @rbs context: Context
+    # @rbs return: Metrics
+    def measure(context)
+      arc = context.options.arc_radius
+      vert = context.options.vertical_separation
+      first, second = @items.map { |item| context.metrics(item) }
+      arc_x = 1 / Math.sqrt(2) * arc * 2
+      arc_y = (1 - (1 / Math.sqrt(2))) * arc * 2
+      cross_y = [arc, vert].max
+      cross_x = (cross_y - arc_y) + arc_x
+
+      first_out = [arc + arc, (cross_y / 2) + arc + arc, (cross_y / 2) + vert + first.down].max
+      up = first_out + first.height + first.up
+      second_in = [arc + arc, (cross_y / 2) + arc + arc, (cross_y / 2) + vert + second.up].max
+      down = second_in + second.height + second.down
+      first_width = (first.needs_space ? 20 : 0) + first.width
+      second_width = (second.needs_space ? 20 : 0) + second.width
+      width = (2 * arc) + [first_width, cross_x, second_width].max + (2 * arc)
+      Metrics.new(width: width, up: up, height: 0, down: down, needs_space: false)
+    end
+
+    # @rbs context: Context
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Svg::Element
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      arc = context.options.arc_radius
+      gaps = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << svg_path(Svg::PathData.new(x, y).h([0, gaps[0]].max))
+      x += gaps[0]
+      group << svg_path(Svg::PathData.new(x + metrics.width, y + metrics.height).h([0, gaps[1]].max))
+      first, second = @items
+      first_metrics, second_metrics = @items.map { |item| context.metrics(item) }
+
+      first_in = metrics.up - first_metrics.up
+      first_out = metrics.up - first_metrics.up - first_metrics.height
+      group << svg_path(Svg::PathData.new(x, y, arc_radius: arc).arc('se').v(-[0, first_in - (2 * arc)].max).arc('wn'))
+      group << first.render_svg(context, x + (2 * arc), y - first_in, metrics.width - (4 * arc))
+      path = Svg::PathData.new(x + metrics.width - (2 * arc), y - first_out, arc_radius: arc)
+      group << svg_path(path.arc('ne').v([0, first_out - (2 * arc)].max).arc('ws'))
+
+      second_in = metrics.down - second_metrics.down - second_metrics.height
+      second_out = metrics.down - second_metrics.down
+      group << svg_path(Svg::PathData.new(x, y, arc_radius: arc).arc('ne').v([0, second_in - (2 * arc)].max).arc('ws'))
+      group << second.render_svg(context, x + (2 * arc), y + second_in, metrics.width - (4 * arc))
+      path = Svg::PathData.new(x + metrics.width - (2 * arc), y + second_out, arc_radius: arc)
+      group << svg_path(path.arc('se').v(-[0, second_out - (2 * arc)].max).arc('wn'))
+
+      add_crossovers(group, context, x, y, metrics.width)
+      group
+    end
+
+    # @rbs context: Context
+    # @rbs return: TextDiagram
+    def render_text(context)
+      cross, bottom_left, bottom_right, top_left, top_right, line, vertical, tee_left, tee_right =
+        context.parts.values_at('cross_diag', 'roundcorner_bot_left', 'roundcorner_bot_right',
+                                'roundcorner_top_left', 'roundcorner_top_right', 'line',
+                                'line_vertical', 'tee_left', 'tee_right')
+      first = @items[0].render_text(context)
+      second = @items[1].render_text(context)
+      max_width = [TextDiagram.max_width(first, second), 4].max
+      left_width, right_width = text_gaps(context, max_width, 0)
+      left_lines = []
+      right_lines = []
+      separator = []
+
+      left_size, right_size = text_gaps(context, first.width, 0)
+      diagram = expand_text(first, left_width - left_size, right_width - right_size, line)
+      left_lines += [' ' * 2] * diagram.entry
+      left_lines << (top_left + line)
+      left_lines += ["#{vertical} "] * (diagram.height - diagram.entry - 1)
+      left_lines << (bottom_left + line)
+      right_lines += [' ' * 2] * diagram.entry
+      right_lines << (line + top_right)
+      right_lines += [" #{vertical}"] * (diagram.height - diagram.entry - 1)
+      right_lines << (line + bottom_right)
+      separator << ("#{line * (left_width - 1)}#{top_right} #{top_left}#{line * (right_width - 2)}")
+      separator << ("#{' ' * (left_width - 1)} #{cross} #{' ' * (right_width - 2)}")
+      separator << ("#{line * (left_width - 1)}#{bottom_right} #{bottom_left}#{line * (right_width - 2)}")
+      left_lines << (' ' * 2)
+      right_lines << (' ' * 2)
+
+      left_size, right_size = text_gaps(context, second.width, 0)
+      second = expand_text(second, left_width - left_size, right_width - right_size, line)
+      diagram = diagram.append_below(second, separator, move_entry: true, move_exit: true)
+      left_lines << (top_left + line)
+      left_lines += ["#{vertical} "] * second.entry
+      left_lines << (bottom_left + line)
+      right_lines << (line + top_right)
+      right_lines += [" #{vertical}"] * second.entry
+      right_lines << (line + bottom_right)
+
+      midpoint = first.height + (separator.size / 2)
+      diagram = diagram.alter(new_entry: midpoint, new_exit: midpoint)
+      left_td = TextDiagram.new(midpoint, midpoint, left_lines)
+      right_td = TextDiagram.new(midpoint, midpoint, right_lines)
+      diagram = left_td.append_right(diagram, '').append_right(right_td, '')
+      TextDiagram.new(1, 1, [top_left, tee_left, bottom_left])
+                 .append_right(diagram, '')
+                 .append_right(TextDiagram.new(1, 1, [top_right, tee_right, bottom_right]), '')
+    end
+
+    # @rbs return: Array[DiagramItem]
+    def child_nodes
+      @items.dup
+    end
+
+    private
+
+    def add_crossovers(group, context, x, y, width)
+      arc = context.options.arc_radius
+      arc_x = 1 / Math.sqrt(2) * arc * 2
+      arc_y = (1 - (1 / Math.sqrt(2))) * arc * 2
+      cross_y = [arc, context.options.vertical_separation].max
+      cross_x = (cross_y - arc_y) + arc_x
+      cross_bar = (width - (4 * arc) - cross_x) / 2
+
+      path = Svg::PathData.new(x + arc, y - (cross_y / 2) - arc, arc_radius: arc)
+      path.arc('ws').h([0, cross_bar].max).arc_8('n', 'cw')
+          .l(cross_x - arc_x, cross_y - arc_y).arc_8('sw', 'ccw').h([0, cross_bar].max).arc('ne')
+      group << svg_path(path)
+      path = Svg::PathData.new(x + arc, y + (cross_y / 2) + arc, arc_radius: arc)
+      path.arc('wn').h([0, cross_bar].max).arc_8('s', 'ccw')
+          .l(cross_x - arc_x, -(cross_y - arc_y)).arc_8('nw', 'cw').h([0, cross_bar].max).arc('se')
+      group << svg_path(path)
+    end
+
+    def svg_path(data)
+      Svg::Element.new('path', { 'd' => data }, self_closing: true)
+    end
+
+    def expand_text(diagram, left, right, line)
+      rows = diagram.lines.each_with_index.map do |text, index|
+        "#{index == diagram.entry ? line * left : ' ' * left}#{text}" \
+          "#{index == diagram.exit ? line * right : ' ' * right}"
+      end
+      TextDiagram.new(diagram.entry, diagram.exit, rows)
+    end
+
+    def text_gaps(context, outer, inner)
+      difference = outer - inner
+      case context.options.internal_alignment
+      when :left then [0, difference]
+      when :right then [difference, 0]
+      else
+        left = difference / 2
+        [left, difference - left]
+      end
+    end
   end
 end

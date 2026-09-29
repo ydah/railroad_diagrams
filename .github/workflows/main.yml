@@ -51,3 +51,14 @@ jobs:
           bundler-cache: true
       - name: Run RuboCop
         run: bundle exec rubocop --no-parallel
+  benchmark:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ruby
+      - name: Compare rendering times with recorded baseline
+        run: |
+          ruby -Ilib benchmark/render.rb --json > "$RUNNER_TEMP/railroad-current.json"
+          ruby benchmark/render.rb --compare benchmark/baseline.json "$RUNNER_TEMP/railroad-current.json"

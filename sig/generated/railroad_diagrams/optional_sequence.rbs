@@ -19,7 +19,21 @@ module RailroadDiagrams
     # @rbs return: OptionalSequence
     def format: (Numeric x, Numeric y, Numeric width) -> OptionalSequence
 
+    def measure: (untyped context) -> untyped
+
+    def render_svg: (untyped context, untyped x, untyped y, untyped width) -> untyped
+
+    def render_text: (untyped context) -> untyped
+
+    def child_nodes: () -> untyped
+
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    private
+
+    def path: (untyped x, untyped y, ?untyped arc) -> untyped
+
+    def render_text_diagram: (untyped parts, untyped context) -> untyped
   end
 end

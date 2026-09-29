@@ -2,6 +2,7 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # rubocop:disable-next Metrics/ClassLength
   class Choice < DiagramMultiContainer
     # @rbs default: Integer
     # @rbs *items: (DiagramItem | String)
@@ -169,7 +170,189 @@ module RailroadDiagrams
       diagram_td
     end
 
+    # @rbs context: Context
+    # @rbs return: Metrics
+    def measure(context)
+      choice_layout(context).first
+    end
+
+    # @rbs context: Context
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Svg::Element
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      separators = choice_layout(context).last
+      arc = context.options.arc_radius
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << svg_path(Svg::PathData.new(x, y).h(left_gap))
+      group << svg_path(Svg::PathData.new(x + left_gap + metrics.width, y + metrics.height).h(right_gap))
+      x += left_gap
+      inner_width = metrics.width - (arc * 4)
+      default = context.metrics(@items[@default])
+
+      distance = 0
+      (@default - 1).downto(0) do |index|
+        item = @items[index]
+        child = context.metrics(item)
+        lower = context.metrics(@items[index + 1])
+        distance += lower.up + separators[index] + child.down + child.height
+        path = Svg::PathData.new(x, y, arc_radius: arc).arc('se').v(-[0, distance - (arc * 2)].max).arc('wn')
+        group << svg_path(path)
+        group << item.render_svg(context, x + (arc * 2), y - distance, inner_width)
+        path = Svg::PathData.new(x + (arc * 2) + inner_width, y - distance + child.height,
+                                 arc_radius: arc).arc('ne')
+        path.v([0, distance - child.height + default.height - (arc * 2)].max).arc('ws')
+        group << svg_path(path)
+      end
+
+      group << svg_path(Svg::PathData.new(x, y).h([0, arc * 2].max))
+      group << @items[@default].render_svg(context, x + (arc * 2), y, inner_width)
+      group << svg_path(Svg::PathData.new(x + (arc * 2) + inner_width, y + metrics.height).h([0, arc * 2].max))
+
+      distance = 0
+      (@default + 1...@items.size).each do |index|
+        item = @items[index]
+        child = context.metrics(item)
+        upper = context.metrics(@items[index - 1])
+        distance += upper.height + upper.down + separators[index - 1] + child.up
+        path = Svg::PathData.new(x, y, arc_radius: arc).arc('ne').v([0, distance - (arc * 2)].max).arc('ws')
+        group << svg_path(path)
+        group << item.render_svg(context, x + (arc * 2), y + distance, inner_width)
+        path = Svg::PathData.new(x + (arc * 2) + inner_width, y + distance + child.height,
+                                 arc_radius: arc).arc('se')
+        path.v(-[0, distance - (arc * 2) + child.height - default.height].max).arc('wn')
+        group << svg_path(path)
+      end
+      group
+    end
+
+    # @rbs context: Context
+    # @rbs return: TextDiagram
+    def render_text(context)
+      cross, line, vertical, bottom_left, bottom_right, top_left, top_right =
+        context.parts.values_at('cross', 'line', 'line_vertical', 'roundcorner_bot_left',
+                                'roundcorner_bot_right', 'roundcorner_top_left', 'roundcorner_top_right')
+      items = @items.map { |item| expand_text(item.render_text(context), 1, 1, line) }
+      max_width = items.map(&:width).max
+      diagram = TextDiagram.new(0, 0, [])
+      items.each_with_index do |item, index|
+        left_pad, right_pad = text_gaps(context, max_width, item.width)
+        item = expand_text(item, left_pad, right_pad, line)
+        left_lines = [vertical] * item.height
+        right_lines = [vertical] * item.height
+        separator = index.positive?
+        move_entry = false
+        move_exit = false
+        if index <= @default
+          left_lines[item.entry] = top_left
+          right_lines[item.exit] = top_right
+          if index.zero?
+            (0...item.entry).each { |row| left_lines[row] = ' ' }
+            (0...item.exit).each { |row| right_lines[row] = ' ' }
+          end
+        end
+        if index >= @default
+          left_lines[item.entry] = bottom_left
+          right_lines[item.exit] = bottom_right
+          if index == @items.size - 1
+            (item.entry + 1...item.height).each { |row| left_lines[row] = ' ' }
+            (item.exit + 1...item.height).each { |row| right_lines[row] = ' ' }
+          end
+        end
+        if index == @default
+          left_lines[item.entry] = cross
+          right_lines[item.exit] = cross
+          move_entry = true
+          move_exit = true
+          if index.zero? && index == @items.size - 1
+            left_lines[item.entry] = line
+            right_lines[item.exit] = line
+          elsif index.zero?
+            left_lines[item.entry] = top_right
+            right_lines[item.exit] = top_left
+          elsif index == @items.size - 1
+            left_lines[item.entry] = bottom_right
+            right_lines[item.exit] = bottom_left
+          end
+        end
+        left_join = TextDiagram.new(item.entry, item.entry, left_lines)
+        right_join = TextDiagram.new(item.exit, item.exit, right_lines)
+        item = left_join.append_right(item, '').append_right(right_join, '')
+        between = separator ? [vertical + (' ' * (TextDiagram.max_width(diagram, item) - 2)) + vertical] : []
+        diagram = diagram.append_below(item, between, move_entry: move_entry, move_exit: move_exit)
+      end
+      diagram
+    end
+
+    # @rbs return: Array[DiagramItem]
+    def child_nodes
+      @items.dup
+    end
+
     private
+
+    def choice_layout(context)
+      children = @items.map { |item| context.metrics(item) }
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      width = (arc * 4) + children.map(&:width).max
+      separators = Array.new(children.size - 1, separation)
+      up = 0
+      (@default - 1).downto(0) do |index|
+        arcs = index == @default - 1 ? arc * 2 : arc
+        item = children[index]
+        lower = children[index + 1]
+        entry_delta = lower.up + separation + item.down + item.height
+        exit_delta = lower.height + lower.up + separation + item.down
+        separator = separation
+        separator += [arcs - entry_delta, arcs - exit_delta].max if entry_delta < arcs || exit_delta < arcs
+        separators[index] = separator
+        up += lower.up + separator + item.down + item.height
+      end
+      up += children[0].up
+
+      height = children[@default].height
+      down = 0
+      (@default + 1...children.size).each do |index|
+        arcs = index == @default + 1 ? arc * 2 : arc
+        item = children[index]
+        upper = children[index - 1]
+        entry_delta = upper.height + upper.down + separation + item.up
+        exit_delta = upper.down + separation + item.up + item.height
+        separator = separation
+        separator += [arcs - entry_delta, arcs - exit_delta].max if entry_delta < arcs || exit_delta < arcs
+        separators[index - 1] = separator
+        down += upper.down + separator + item.up + item.height
+      end
+      down += children[-1].down
+      [Metrics.new(width: width, up: up, height: height, down: down, needs_space: false), separators]
+    end
+
+    def svg_path(data)
+      Svg::Element.new('path', { 'd' => data }, self_closing: true)
+    end
+
+    def expand_text(diagram, left, right, line)
+      rows = diagram.lines.each_with_index.map do |text, index|
+        "#{index == diagram.entry ? line * left : ' ' * left}#{text}" \
+          "#{index == diagram.exit ? line * right : ' ' * right}"
+      end
+      TextDiagram.new(diagram.entry, diagram.exit, rows)
+    end
+
+    def text_gaps(context, outer, inner)
+      difference = outer - inner
+      case context.options.internal_alignment
+      when :left then [0, difference]
+      when :right then [difference, 0]
+      else
+        left = difference / 2
+        [left, difference - left]
+      end
+    end
 
     # @rbs x: Numeric
     # @rbs y: Numeric

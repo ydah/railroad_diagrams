@@ -105,6 +105,55 @@ RSpec.describe RailroadDiagrams::Choice do
     end
   end
 
+  describe 'context rendering' do
+    [0, 1, 2].each do |default|
+      it "matches legacy SVG and text with default item #{default}" do
+        context = RailroadDiagrams::Context.new
+        choice = described_class.new(default, 'A', RailroadDiagrams::Skip.new, 'C')
+        legacy = described_class.new(default, 'A', RailroadDiagrams::Skip.new, 'C')
+        legacy.format(0, 100, legacy.width + 11)
+        legacy_svg = +''
+        legacy.write_svg(legacy_svg)
+
+        svg = RailroadDiagrams::Svg::Serializer.call(choice.render_svg(context, 0, 100, context.metrics(choice).width + 11))
+        expect(svg).to eq(legacy_svg)
+        expect(choice.render_text(context).lines).to eq(choice.text_diagram.lines)
+        expect(choice.children).to be_empty
+      end
+    end
+
+    it 'measures and renders independently with a different arc radius' do
+      choice = described_class.new(0, 'A', 'B')
+      default = RailroadDiagrams::Context.new
+      larger = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(arc_radius: 12))
+
+      expect([default.metrics(choice).width, larger.metrics(choice).width, choice.width]).to eq([68.5, 76.5, 68.5])
+      larger_svg = RailroadDiagrams::Svg::Serializer.call(choice.render_svg(larger, 0, 100, larger.metrics(choice).width))
+      default_svg = RailroadDiagrams::Svg::Serializer.call(choice.render_svg(default, 0, 100, default.metrics(choice).width))
+      expect(larger_svg).to include('a12 12')
+      expect(default_svg).to include('a10 10')
+      expect(choice.children).to be_empty
+    end
+
+    it 'renders a shared child twice without moving it' do
+      child = RailroadDiagrams::Terminal.new('A')
+      choice = described_class.new(0, child, child)
+      context = RailroadDiagrams::Context.new
+      group = choice.render_svg(context, 0, 100, context.metrics(choice).width)
+      child_groups = group.children.select { |element| element.name == 'g' }
+
+      expect(choice.child_nodes).to eq([child, child])
+      expect(child_groups.map { |item| item.children.find { |element| element.name == 'rect' }.attrs['y'] }).to eq([89, 119])
+      expect(child.children).to be_empty
+    end
+
+    it 'uses the selected character set through nested branches' do
+      context = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(text_charset: :ascii))
+      choice = described_class.new(0, RailroadDiagrams::Sequence.new('A', 'B'), 'C')
+      expect(choice.render_text(context).lines.join).to match(/\A[\x00-\x7F]*\z/)
+    end
+  end
+
   describe '#to_s' do
     it 'returns debug string with default index' do
       choice = described_class.new(1, 'a', 'b')

@@ -1,0 +1,42 @@
+# Generated from lib/railroad_diagrams/svg/element.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Svg
+    class Element
+      attr_reader name: untyped
+
+      attr_reader attrs: untyped
+
+      attr_reader children: untyped
+
+      attr_reader role: untyped
+
+      attr_reader self_closing: untyped
+
+      def initialize: (untyped name, ?untyped attrs, ?untyped children, ?role: untyped, ?self_closing: untyped) -> untyped
+
+      def <<: (untyped child) -> untyped
+    end
+
+    class TextNode < Struct[untyped]
+      attr_accessor text(): untyped
+
+      def self.new: (?untyped text) -> instance
+                  | (?text: untyped) -> instance
+    end
+
+    class CData < Struct[untyped]
+      attr_accessor text(): untyped
+
+      def self.new: (?untyped text) -> instance
+                  | (?text: untyped) -> instance
+    end
+
+    class StyleText < Struct[untyped]
+      attr_accessor css(): untyped
+
+      def self.new: (?untyped css) -> instance
+                  | (?css: untyped) -> instance
+    end
+  end
+end

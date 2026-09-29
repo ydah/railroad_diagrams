@@ -30,5 +30,22 @@ module RailroadDiagrams
       line, = TextDiagram.get_parts(['line'])
       TextDiagram.new(0, 0, [line])
     end
+
+    def measure(_context)
+      Metrics.new(width: 0, up: 0, height: 0, down: 0, needs_space: false)
+    end
+
+    def render_svg(context, x, y, width)
+      data = Svg::PathData.new(x, y, arc_radius: context.options.arc_radius).h([0, width].max)
+      Svg::Element.new('g') << Svg::Element.new('path', { 'd' => data }, self_closing: true)
+    end
+
+    def render_text(context)
+      TextDiagram.new(0, 0, [context.parts.fetch('line')])
+    end
+
+    def child_nodes
+      []
+    end
   end
 end

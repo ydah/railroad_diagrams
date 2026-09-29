@@ -21,5 +21,33 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    # @rbs context: Context
+    # @rbs return: Metrics
+    def measure: (Context context) -> Metrics
+
+    # @rbs context: Context
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Svg::Element
+    def render_svg: (Context context, Numeric x, Numeric y, Numeric width) -> Svg::Element
+
+    # @rbs context: Context
+    # @rbs return: TextDiagram
+    def render_text: (Context context) -> TextDiagram
+
+    # @rbs return: Array[DiagramItem]
+    def child_nodes: () -> Array[DiagramItem]
+
+    private
+
+    def add_crossovers: (untyped group, untyped context, untyped x, untyped y, untyped width) -> untyped
+
+    def svg_path: (untyped data) -> untyped
+
+    def expand_text: (untyped diagram, untyped left, untyped right, untyped line) -> untyped
+
+    def text_gaps: (untyped context, untyped outer, untyped inner) -> untyped
   end
 end

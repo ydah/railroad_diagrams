@@ -1,0 +1,11 @@
+# Generated from lib/railroad_diagrams/svg/number_format.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Svg
+    module NumberFormat
+      def self?.call: (untyped value, untyped precision, ?kind: untyped) -> untyped
+
+      def self?.legacy: (untyped value, untyped kind) -> untyped
+    end
+  end
+end

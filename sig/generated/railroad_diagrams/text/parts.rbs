@@ -1,0 +1,15 @@
+# Generated from lib/railroad_diagrams/text/parts.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Text
+    module Parts
+      UNICODE: untyped
+
+      UNICODE_SQUARE: untyped
+
+      ASCII: untyped
+
+      def self?.for: (untyped charset) -> untyped
+    end
+  end
+end

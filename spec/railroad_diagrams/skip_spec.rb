@@ -86,4 +86,25 @@ RSpec.describe RailroadDiagrams::Skip do
       expect(skip.to_s).to eq('Skip()')
     end
   end
+
+  describe 'context rendering' do
+    it 'measures and renders without changing the node' do
+      skip = described_class.new
+      context = RailroadDiagrams::Context.new
+      metrics = context.metrics(skip)
+      expect([metrics.width, metrics.up, metrics.height, metrics.down, metrics.needs_space]).to eq([0, 0, 0, 0, false])
+      svg = RailroadDiagrams::Svg::Serializer.call(skip.render_svg(context, 10, 20, 50))
+      expect(svg).to eq("<g>\n<path d=\"M10 20h50\" /></g>")
+      expect(skip.children).to be_empty
+      expect(skip.child_nodes).to eq([])
+    end
+
+    it 'selects text characters from the context' do
+      skip = described_class.new
+      ascii = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(text_charset: :ascii))
+      unicode = RailroadDiagrams::Context.new
+      expect(skip.render_text(ascii).lines).to eq(['-'])
+      expect(skip.render_text(unicode).lines).to eq(['─'])
+    end
+  end
 end

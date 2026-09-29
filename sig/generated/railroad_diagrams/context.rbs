@@ -1,0 +1,29 @@
+# Generated from lib/railroad_diagrams/context.rb with RBS::Inline
+
+module RailroadDiagrams
+  class IdGenerator
+    def initialize: (untyped prefix) -> untyped
+
+    def next: () -> untyped
+  end
+
+  class Context
+    attr_reader options: untyped
+
+    attr_reader measurer: untyped
+
+    attr_reader parts: untyped
+
+    attr_reader ids: untyped
+
+    def initialize: (?untyped options, ?parts: untyped) -> untyped
+
+    def self.legacy: () -> untyped
+
+    def metrics: (untyped node) -> untyped
+
+    def text_width: (untyped text, ?untyped role) -> untyped
+
+    def gaps: (untyped outer, untyped inner) -> untyped
+  end
+end

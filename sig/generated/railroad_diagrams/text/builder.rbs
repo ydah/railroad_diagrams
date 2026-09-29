@@ -1,0 +1,11 @@
+# Generated from lib/railroad_diagrams/text/builder.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Text
+    module Builder
+      def self?.stack: (untyped diagrams, ?untyped between_lines) -> untyped
+
+      def self?.row: (untyped diagrams, untyped separator) -> untyped
+    end
+  end
+end

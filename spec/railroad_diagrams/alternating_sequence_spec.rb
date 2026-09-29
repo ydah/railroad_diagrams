@@ -123,6 +123,56 @@ RSpec.describe RailroadDiagrams::AlternatingSequence do
     end
   end
 
+  describe 'context rendering' do
+    it 'matches legacy dimensions, SVG bytes, and text lines for nested children' do
+      build = -> { described_class.new(RailroadDiagrams::Stack.new('A', 'B'), RailroadDiagrams::Sequence.new('C', 'D')) }
+      node = build.call
+      legacy = build.call
+      context = RailroadDiagrams::Context.new
+      metrics = context.metrics(node)
+      legacy.format(0, 100, legacy.width + 11)
+      legacy_svg = +''
+      legacy.write_svg(legacy_svg)
+
+      expect([metrics.width, metrics.up, metrics.height, metrics.down]).to eq([node.width, node.up, node.height, node.down])
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(context, 0, 100, metrics.width + 11))).to eq(legacy_svg)
+      expect(node.render_text(context).lines).to eq(node.text_diagram.lines)
+    end
+
+    it 'keeps arc radius and vertical separation local to each context' do
+      node = described_class.new('A', 'B')
+      normal = RailroadDiagrams::Context.new
+      wider_arcs = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(arc_radius: 12))
+      more_space = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(vertical_separation: 14))
+
+      expect([normal.metrics(node).width, normal.metrics(node).up]).to eq([88.5, 36])
+      expect([wider_arcs.metrics(node).width, wider_arcs.metrics(node).up]).to eq([96.5, 41])
+      expect([more_space.metrics(node).width, more_space.metrics(node).up]).to eq([88.5, 43])
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(wider_arcs, 0, 100, wider_arcs.metrics(node).width))).to include('a12 12')
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(normal, 0, 100, normal.metrics(node).width))).to include('a10 10')
+      expect(node.width).to eq(88.5)
+    end
+
+    it 'renders a shared child twice without changing it' do
+      child = RailroadDiagrams::Terminal.new('A')
+      node = described_class.new(child, child)
+      context = RailroadDiagrams::Context.new
+      svg = node.render_svg(context, 0, 100, context.metrics(node).width)
+      groups = svg.children.select { |element| element.name == 'g' }
+
+      expect(node.child_nodes).to eq([child, child])
+      expect(groups.map { |group| group.children.find { |element| element.name == 'rect' }.attrs['y'] }).to eq([64, 114])
+      expect(node.children).to be_empty
+      expect(child.children).to be_empty
+    end
+
+    it 'uses ASCII text parts for nested children' do
+      node = described_class.new(RailroadDiagrams::Sequence.new('A', 'B'), 'C')
+      context = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(text_charset: :ascii))
+      expect(node.render_text(context).lines.join).to match(/\A[\x00-\x7F]*\z/)
+    end
+  end
+
   describe '#to_s' do
     it 'returns debug string' do
       alt_seq = described_class.new('a', 'b')

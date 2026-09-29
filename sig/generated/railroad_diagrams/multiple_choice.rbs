@@ -20,7 +20,23 @@ module RailroadDiagrams
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
 
+    def measure: (untyped context) -> untyped
+
+    def render_svg: (untyped context, untyped x, untyped y, untyped width) -> untyped
+
+    def render_text: (untyped context) -> untyped
+
+    def child_nodes: () -> untyped
+
     private
+
+    def svg_path: (untyped data) -> untyped
+
+    def render_svg_above: (untyped context, untyped group, untyped x, untyped y, untyped inner_width) -> untyped
+
+    def render_svg_below: (untyped context, untyped group, untyped x, untyped y, untyped inner_width) -> untyped
+
+    def render_svg_annotation: (untyped x, untyped y, untyped width) -> untyped
 
     def double_enumerate: (untyped seq) -> untyped
   end

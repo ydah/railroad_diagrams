@@ -25,5 +25,7 @@ module RailroadDiagrams
     # @rbs write: ^(String) -> void
     # @rbs return: void
     def write_svg: (^(String) -> void write) -> void
+
+    def render_svg: (untyped _context) -> untyped
   end
 end

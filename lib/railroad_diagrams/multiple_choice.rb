@@ -141,7 +141,127 @@ module RailroadDiagrams
       diagram_td.append_right(repeat_td, '')
     end
 
+    def measure(context)
+      items = @items.map { |item| context.metrics(item) }
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      width = 30 + arc + items.map(&:width).max + arc + 20
+      up = items.first.up
+      down = items.last.down
+      height = items[@default].height
+
+      items.each_with_index do |item, index|
+        minimum = [@default - 1, @default + 1].include?(index) ? 10 + arc : arc
+        if index < @default
+          up += [minimum, item.height + item.down + separation + items[index + 1].up].max
+        elsif index > @default
+          down += [minimum, item.up + separation + items[index - 1].down + items[index - 1].height].max
+        end
+      end
+      down -= items[@default].height
+      Metrics.new(width: width, up: up, height: height, down: down, needs_space: true)
+    end
+
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      items = @items.map { |item| context.metrics(item) }
+      arc = context.options.arc_radius
+      inner_width = items.map(&:width).max
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << svg_path(Svg::PathData.new(x, y).h(left_gap))
+      group << svg_path(Svg::PathData.new(x + left_gap + metrics.width, y + metrics.height).h(right_gap))
+      x += left_gap
+
+      render_svg_above(context, group, x, y, inner_width)
+      group << svg_path(Svg::PathData.new(x + 30, y).h(arc))
+      group << @items[@default].render_svg(context, x + 30 + arc, y, inner_width)
+      group << svg_path(Svg::PathData.new(x + 30 + arc + inner_width, y + metrics.height).h(arc))
+      render_svg_below(context, group, x, y, inner_width)
+      group << render_svg_annotation(x, y, metrics.width)
+      group
+    end
+
+    def render_text(context)
+      any_all = TextDiagram.rect(@type == 'any' ? '1+' : 'all', parts: context.parts)
+      diagram = Choice.new(@default, *@items).render_text(context)
+      repeat = TextDiagram.rect(context.parts.fetch('multi_repeat'), parts: context.parts)
+      any_all.append_right(diagram, '').append_right(repeat, '')
+    end
+
+    def child_nodes
+      @items.dup
+    end
+
     private
+
+    def svg_path(data)
+      Svg::Element.new('path', { 'd' => data }, self_closing: true)
+    end
+
+    def render_svg_above(context, group, x, y, inner_width)
+      above = @items[0...@default].reverse
+      return if above.empty?
+
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      default = context.metrics(@items[@default])
+      first = context.metrics(above.first)
+      distance = [10 + arc, default.up + separation + first.down + first.height].max
+      double_enumerate(above).each do |index, negative_index, item|
+        child = context.metrics(item)
+        group << svg_path(Svg::PathData.new(x + 30, y, arc_radius: arc).v(-[0, distance - arc].max).arc('wn'))
+        group << item.render_svg(context, x + 30 + arc, y - distance, inner_width)
+        return_path = Svg::PathData.new(x + 30 + arc + inner_width, y - distance + child.height, arc_radius: arc)
+                                   .arc('ne').v([0, distance - child.height + default.height - arc - 10].max)
+        group << svg_path(return_path)
+        if negative_index < -1
+          following = context.metrics(above[index + 1])
+          distance += [arc, child.up + separation + following.down + following.height].max
+        end
+      end
+    end
+
+    def render_svg_below(context, group, x, y, inner_width)
+      below = @items[(@default + 1)..-1] || []
+      return if below.empty?
+
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      default = context.metrics(@items[@default])
+      distance = [10 + arc, default.height + default.down + separation + context.metrics(below.first).up].max
+      below.each_with_index do |item, index|
+        child = context.metrics(item)
+        group << svg_path(Svg::PathData.new(x + 30, y, arc_radius: arc).v([0, distance - arc].max).arc('ws'))
+        group << item.render_svg(context, x + 30 + arc, y + distance, inner_width)
+        return_path = Svg::PathData.new(x + 30 + arc + inner_width, y + distance + child.height, arc_radius: arc)
+                                   .arc('se').v(-[0, distance - arc + child.height - default.height - 10].max)
+        group << svg_path(return_path)
+        following = below[index + 1]
+        distance += [arc, child.height + child.down + separation + (following ? context.metrics(following).up : 0)].max
+      end
+    end
+
+    def render_svg_annotation(x, y, width)
+      group = Svg::Element.new('g', { 'class' => 'diagram-text' })
+      title = @type == 'any' ? 'take one or more branches, once each, in any order' : 'take all branches, once each, in any order'
+      group << Svg::Element.new('title', {}, [Svg::TextNode.new(title)])
+      left_path = {
+        'd' => "M #{x + 30} #{y - 10} h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z",
+        'class' => 'diagram-text'
+      }
+      group << Svg::Element.new('path', left_path)
+      group << Svg::Element.new('text', { 'x' => x + 15, 'y' => y + 4, 'class' => 'diagram-text' },
+                                [Svg::TextNode.new(@type == 'any' ? '1+' : 'all')])
+      right_path = {
+        'd' => "M #{x + width - 20} #{y - 10} h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z",
+        'class' => 'diagram-text'
+      }
+      group << Svg::Element.new('path', right_path)
+      group << Svg::Element.new('text', { 'x' => x + width - 10, 'y' => y + 4, 'class' => 'diagram-arrow' },
+                                [Svg::TextNode.new('↺')])
+      group
+    end
 
     def double_enumerate(seq)
       length = seq.length

@@ -3,6 +3,9 @@
 
 module RailroadDiagrams
   class HorizontalChoice < DiagramMultiContainer
+    TEXT_PARTS = %w[line line_vertical roundcorner_bot_left roundcorner_bot_right
+                    roundcorner_top_left roundcorner_top_right].freeze
+
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (HorizontalChoice | Sequence)
     def self.new(*items)
@@ -153,16 +156,129 @@ module RailroadDiagrams
       self
     end
 
+    def measure(context)
+      item_metrics = @items.map { |item| context.metrics(item) }
+      first = item_metrics.first
+      last = item_metrics.last
+      arc = context.options.arc_radius
+      upper_track, lower_track = context_tracks(context, item_metrics)
+      width = arc + (arc * 2 * (item_metrics.size - 1)) +
+              item_metrics.sum { |metrics| metrics.width + (metrics.needs_space ? 20 : 0) } +
+              (last.height.positive? ? arc : 0) + arc
+
+      Metrics.new(width: width, up: [upper_track, last.up].max, height: 0,
+                  down: [lower_track, first.height + first.down].max, needs_space: false)
+    end
+
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      item_metrics = @items.map { |item| context.metrics(item) }
+      first = item_metrics.first
+      last = item_metrics.last
+      arc = context.options.arc_radius
+      upper_track, lower_track = context_tracks(context, item_metrics)
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g')
+      add_svg_path(group, Svg::PathData.new(x, y, arc_radius: arc).h(left_gap))
+      add_svg_path(group, Svg::PathData.new(x + left_gap + metrics.width, y + metrics.height,
+                                            arc_radius: arc).h(right_gap))
+      x += left_gap
+
+      upper_span = item_metrics[0...-1].sum { |item| item.width + (item.needs_space ? 20 : 0) } +
+                   ((item_metrics.size - 2) * arc * 2) - arc
+      upper = Svg::PathData.new(x, y, arc_radius: arc).arc('se')
+                           .v(-[0, upper_track - (arc * 2)].max).arc('wn').h(upper_span)
+      add_svg_path(group, upper)
+
+      lower_span = item_metrics[1..-1].sum { |item| item.width + (item.needs_space ? 20 : 0) } +
+                   ((item_metrics.size - 2) * arc * 2) +
+                   (last.height.positive? ? arc : 0) - arc
+      lower_start = x + arc + first.width + (first.needs_space ? 20 : 0) + (arc * 2)
+      lower = Svg::PathData.new(lower_start, y + lower_track, arc_radius: arc)
+                           .h(lower_span).arc('se').v(-[0, lower_track - (arc * 2)].max).arc('wn')
+      add_svg_path(group, lower)
+
+      @items.each_with_index do |item, index|
+        item_metrics_for_node = item_metrics[index]
+        if index.zero?
+          add_svg_path(group, Svg::PathData.new(x, y, arc_radius: arc).h(arc))
+          x += arc
+        else
+          input = Svg::PathData.new(x, y - upper_track, arc_radius: arc)
+                               .arc('ne').v(upper_track - (arc * 2)).arc('ws')
+          add_svg_path(group, input)
+          x += arc * 2
+        end
+
+        item_width = item_metrics_for_node.width + (item_metrics_for_node.needs_space ? 20 : 0)
+        group << item.render_svg(context, x, y, item_width)
+        x += item_width
+
+        output = if index == @items.size - 1
+                   if item_metrics_for_node.height.zero?
+                     Svg::PathData.new(x, y, arc_radius: arc).h(arc)
+                   else
+                     Svg::PathData.new(x, y + item_metrics_for_node.height, arc_radius: arc).arc('se')
+                   end
+                 elsif index.zero? && item_metrics_for_node.height > lower_track
+                   if item_metrics_for_node.height - lower_track >= arc * 2
+                     Svg::PathData.new(x, y + item_metrics_for_node.height, arc_radius: arc)
+                                  .arc('se').v(lower_track - item_metrics_for_node.height + (arc * 2)).arc('wn')
+                   else
+                     Svg::PathData.new(x, y + item_metrics_for_node.height, arc_radius: arc)
+                                  .l(arc * 2, lower_track - item_metrics_for_node.height)
+                   end
+                 else
+                   Svg::PathData.new(x, y + item_metrics_for_node.height, arc_radius: arc)
+                                .arc('ne').v(lower_track - item_metrics_for_node.height - (arc * 2)).arc('ws')
+                 end
+        add_svg_path(group, output)
+      end
+      group
+    end
+
     # @rbs return: TextDiagram
     def text_diagram
+      render_text_diagram(@items.map(&:text_diagram), TextDiagram.get_parts(TEXT_PARTS))
+    end
+
+    def render_text(context)
+      render_text_diagram(@items.map { |item| item.render_text(context) }, context.parts.values_at(*TEXT_PARTS))
+    end
+
+    def child_nodes
+      @items.dup
+    end
+
+    private
+
+    def context_tracks(context, item_metrics)
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      first = item_metrics.first
+      last = item_metrics.last
+      upper_track = [arc * 2, separation, item_metrics[0...-1].map(&:up).max + separation].max
+      middle_clearance = if item_metrics.size > 2
+                           item_metrics[1...-1].map do |metrics|
+                             metrics.height + [metrics.down + separation, arc * 2].max
+                           end.max
+                         else
+                           0
+                         end
+      lower_track = [separation, middle_clearance, last.height + last.down + separation].max
+      lower_track = [lower_track, first.height + (arc * 2)].max if first.height < lower_track
+      [upper_track, lower_track]
+    end
+
+    def add_svg_path(group, path_data)
+      group << Svg::Element.new('path', { 'd' => path_data }, self_closing: true)
+    end
+
+    def render_text_diagram(item_tds, parts)
       line, line_vertical, roundcorner_bot_left, roundcorner_bot_right,
-      roundcorner_top_left, roundcorner_top_right = TextDiagram.get_parts(
-        %w[line line_vertical roundcorner_bot_left roundcorner_bot_right roundcorner_top_left
-           roundcorner_top_right]
-      )
+      roundcorner_top_left, roundcorner_top_right = parts
 
       # Format all the child items, so we can know the maximum entry, exit, and height.
-      item_tds = @items.map(&:text_diagram)
 
       # diagram_entry: distance from top to lowest entry, aka distance from top to diagram entry, aka final diagram entry and exit.
       diagram_entry = item_tds.map(&:entry).max

@@ -38,7 +38,87 @@ module RailroadDiagrams
       end
     end
 
+    # @rbs context: Context
+    # @rbs return: Metrics
+    def measure(context)
+      up = 0
+      down = 0
+      height = 0
+      width = 0
+      metrics = @items.map { |item| context.metrics(item) }
+
+      metrics.each do |child|
+        width += child.width + (child.needs_space ? 20 : 0)
+        up = [up, child.up - height].max
+        height += child.height
+        down = [down - child.height, child.down].max
+      end
+
+      width -= 10 if metrics.first&.needs_space
+      width -= 10 if metrics.last&.needs_space
+      Metrics.new(width: width, up: up, height: height, down: down, needs_space: true)
+    end
+
+    # @rbs context: Context
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs width: Numeric
+    # @rbs return: Svg::Element
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << svg_path(x, y, left_gap)
+      group << svg_path(x + left_gap + metrics.width, y + metrics.height, right_gap)
+      x += left_gap
+
+      @items.each_with_index do |item, index|
+        child = context.metrics(item)
+        if child.needs_space && index.positive?
+          group << svg_path(x, y, 10)
+          x += 10
+        end
+        group << item.render_svg(context, x, y, child.width)
+        x += child.width
+        y += child.height
+        if child.needs_space && index < @items.length - 1
+          group << svg_path(x, y, 10)
+          x += 10
+        end
+      end
+      group
+    end
+
+    # @rbs context: Context
+    # @rbs return: TextDiagram
+    def render_text(context)
+      line = context.parts.fetch('line')
+      diagrams = @items.map do |item|
+        diagram = item.render_text(context)
+        next diagram unless context.metrics(item).needs_space
+
+        spaced_lines = diagram.lines.each_with_index.map do |text, index|
+          "#{index == diagram.entry ? line : ' '}#{text}#{index == diagram.exit ? line : ' '}"
+        end
+        TextDiagram.new(diagram.entry, diagram.exit, spaced_lines)
+      end
+      Text::Builder.row([TextDiagram.new(0, 0, ['']), *diagrams], context.parts.fetch('separator'))
+    end
+
+    # @rbs return: Array[DiagramItem]
+    def child_nodes
+      @items.dup
+    end
+
     private
+
+    # @rbs x: Numeric
+    # @rbs y: Numeric
+    # @rbs length: Numeric
+    # @rbs return: Svg::Element
+    def svg_path(x, y, length)
+      Svg::Element.new('path', { 'd' => Svg::PathData.new(x, y).h(length) }, self_closing: true)
+    end
 
     # @rbs return: void
     def calculate_dimensions

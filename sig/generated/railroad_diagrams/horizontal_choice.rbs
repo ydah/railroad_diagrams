@@ -2,6 +2,8 @@
 
 module RailroadDiagrams
   class HorizontalChoice < DiagramMultiContainer
+    TEXT_PARTS: untyped
+
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (HorizontalChoice | Sequence)
     def self.new: (*DiagramItem | String items) -> (HorizontalChoice | Sequence)
@@ -19,7 +21,23 @@ module RailroadDiagrams
     # @rbs return: HorizontalChoice
     def format: (Numeric x, Numeric y, Numeric width) -> HorizontalChoice
 
+    def measure: (untyped context) -> untyped
+
+    def render_svg: (untyped context, untyped x, untyped y, untyped width) -> untyped
+
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
+
+    def render_text: (untyped context) -> untyped
+
+    def child_nodes: () -> untyped
+
+    private
+
+    def context_tracks: (untyped context, untyped item_metrics) -> untyped
+
+    def add_svg_path: (untyped group, untyped path_data) -> untyped
+
+    def render_text_diagram: (untyped item_tds, untyped parts) -> untyped
   end
 end

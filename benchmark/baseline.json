@@ -1,0 +1,14 @@
+{
+  "source": "Ruby 3.2 investigation before the rendering rewrite",
+  "note": "Only 200 and 800 node timings were recorded; 100 and 400 nodes are measured but await a recorded baseline.",
+  "seconds": {
+    "200": {
+      "svg": 0.069,
+      "text": 0.235
+    },
+    "800": {
+      "svg": 0.221,
+      "text": 3.754
+    }
+  }
+}

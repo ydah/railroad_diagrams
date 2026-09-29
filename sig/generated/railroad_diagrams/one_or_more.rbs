@@ -19,11 +19,21 @@ module RailroadDiagrams
     # @rbs return: TextDiagram
     def text_diagram: () -> TextDiagram
 
+    def measure: (untyped context) -> untyped
+
+    def render_svg: (untyped context, untyped x, untyped y, untyped width) -> untyped
+
+    def render_text: (untyped context) -> untyped
+
+    def child_nodes: () -> untyped
+
     # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void
     def walk: (^(DiagramItem) -> void callback) -> void
 
     private
+
+    def svg_path: (untyped data) -> untyped
 
     # @rbs x: Numeric
     # @rbs y: Numeric

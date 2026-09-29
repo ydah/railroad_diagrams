@@ -42,6 +42,41 @@ module RailroadDiagrams
       TextDiagram.round_rect(@text)
     end
 
+    def measure(context)
+      Metrics.new(width: context.text_width(@text, :label) + 20,
+                  up: 11, height: 0, down: 11, needs_space: true)
+    end
+
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << Svg::Element.new('path', { 'd' => Svg::PathData.new(x, y).h(left_gap) }, self_closing: true)
+      group << Svg::Element.new('path', { 'd' => Svg::PathData.new(x + left_gap + metrics.width, y).h(right_gap) }, self_closing: true)
+      rect = { 'x' => x + left_gap, 'y' => y - 11, 'width' => metrics.width,
+               'height' => 22, 'rx' => context.options.arc_radius, 'ry' => context.options.arc_radius }
+      group << Svg::Element.new('rect', rect)
+      text = Svg::Element.new('text', { 'x' => x + left_gap + (metrics.width / 2), 'y' => y + 4 })
+      text << Svg::TextNode.new(@text)
+      if @href
+        link = Svg::Element.new('a', { 'xlink:href' => @href })
+        link << text << text
+        group << link
+      else
+        group << text
+      end
+      group << (Svg::Element.new('title') << Svg::TextNode.new(@title)) if @title
+      group
+    end
+
+    def render_text(context)
+      TextDiagram.round_rect(@text, parts: context.parts)
+    end
+
+    def child_nodes
+      []
+    end
+
     private
 
     # @rbs x: Numeric

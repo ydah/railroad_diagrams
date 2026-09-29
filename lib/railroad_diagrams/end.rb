@@ -44,5 +44,30 @@ module RailroadDiagrams
 
       TextDiagram.new(0, 0, [end_node])
     end
+
+    def measure(_context)
+      Metrics.new(width: 20, up: 10, height: 0, down: 10, needs_space: false)
+    end
+
+    def render_svg(context, x, y, _width)
+      data = if context.options.precision || context.options.optimize_paths
+               path = Svg::PathData.new(x, y).h(20)
+               @type == 'simple' ? path.m(-10, -10).v(20).m(10, -20).v(20) : path.m(0, -10).v(20)
+             elsif @type == 'simple'
+               "M #{x} #{y} h 20 m -10 -10 v 20 m 10 -20 v 20"
+             else
+               "M #{x} #{y} h 20 m 0 -10 v 20"
+             end
+      Svg::Element.new('path', { 'd' => data })
+    end
+
+    def render_text(context)
+      cross, line, tee_left = context.parts.values_at('cross', 'line', 'tee_left')
+      TextDiagram.new(0, 0, [@type == 'simple' ? line + cross + tee_left : line + tee_left])
+    end
+
+    def child_nodes
+      []
+    end
   end
 end

@@ -1,0 +1,11 @@
+# Generated from lib/railroad_diagrams/svg/serializer.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Svg
+    module Serializer
+      def self?.call: (untyped element, ?precision: untyped, ?optimize_paths: untyped) -> untyped
+
+      def self?.write: (untyped node, untyped output, untyped precision, untyped optimize_paths) -> untyped
+    end
+  end
+end

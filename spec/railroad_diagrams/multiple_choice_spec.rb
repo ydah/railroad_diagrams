@@ -178,4 +178,94 @@ RSpec.describe RailroadDiagrams::MultipleChoice do
       expect(result).to include('all')
     end
   end
+
+  describe 'Context rendering' do
+    it 'measures from Context options without changing legacy dimensions' do
+      node = described_class.new(1, 'any', 'a', 'longer', 'c')
+      normal = RailroadDiagrams::Context.new
+      wide = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(arc_radius: 12))
+      measured = normal.metrics(node)
+
+      expect([measured.width, measured.up, measured.height, measured.down, measured.needs_space])
+        .to eq([node.width, node.up, node.height, node.down, true])
+      expect(wide.metrics(node).width).to eq(measured.width + 4)
+      expect(normal.metrics(node)).to equal(measured)
+      expect(node.width).to eq(measured.width)
+    end
+
+    it 'matches legacy SVG bytes for branches above, on, and below the default' do # rubocop:disable RSpec/ExampleLength
+      [0, 1, 2].product(%w[any all]).each do |default, type|
+        node = described_class.new(default, type, 'a', 'b', 'c')
+        context = RailroadDiagrams::Context.new
+        actual = RailroadDiagrams::Svg::Serializer.call(
+          node.render_svg(context, 0, 100, context.metrics(node).width + 10)
+        )
+        expect(node.children).to be_empty
+        expect(node.child_nodes.flat_map(&:children)).to be_empty
+
+        legacy = described_class.new(default, type, 'a', 'b', 'c')
+        legacy.format(0, 100, legacy.width + 10)
+        expected = +''
+        legacy.write_svg(expected)
+        expect(actual).to eq(expected)
+      end
+    end
+
+    it 'uses the configured arc radius in SVG without changing the node' do
+      node = described_class.new(1, 'all', 'a', 'b', 'c')
+      normal = RailroadDiagrams::Context.new
+      context = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(arc_radius: 12))
+      first = RailroadDiagrams::Svg::Serializer.call(node.render_svg(normal, 0, 100, normal.metrics(node).width))
+      svg = RailroadDiagrams::Svg::Serializer.call(node.render_svg(context, 0, 100, context.metrics(node).width))
+
+      expect(svg).to include('a12 12')
+      expect(svg).to include('take all branches, once each, in any order')
+      expect(svg).not_to eq(first)
+      expect(RailroadDiagrams::Svg::Serializer.call(node.render_svg(normal, 0, 100, normal.metrics(node).width))).to eq(first)
+      expect(node.children).to be_empty
+    end
+
+    it 'preserves SVG geometry for children with nonzero height' do
+      items = [RailroadDiagrams::Stack.new('a', 'b'), 'middle', RailroadDiagrams::Stack.new('c', 'd')]
+      node = described_class.new(1, 'any', *items)
+      context = RailroadDiagrams::Context.new
+      actual = RailroadDiagrams::Svg::Serializer.call(node.render_svg(context, 0, 100, context.metrics(node).width))
+
+      legacy_items = [RailroadDiagrams::Stack.new('a', 'b'), 'middle', RailroadDiagrams::Stack.new('c', 'd')]
+      legacy = described_class.new(1, 'any', *legacy_items)
+      legacy.format(0, 100, legacy.width)
+      expected = +''
+      legacy.write_svg(expected)
+      expect(actual).to eq(expected)
+    end
+
+    it 'matches legacy text for both branch modes' do
+      unicode = RailroadDiagrams::Context.new
+      %w[any all].each do |type|
+        node = described_class.new(1, type, 'a', 'b', 'c')
+        rendered = node.render_text(unicode)
+        legacy = node.text_diagram
+        expect([rendered.entry, rendered.exit, rendered.lines]).to eq([legacy.entry, legacy.exit, legacy.lines])
+      end
+    end
+
+    it 'uses the Context character set without changing the node' do
+      node = described_class.new(1, 'any', 'a', 'b', 'c')
+      ascii = RailroadDiagrams::Context.new(RailroadDiagrams.default_options.merge(text_charset: :ascii))
+      unicode = RailroadDiagrams::Context.new
+      ascii_text = node.render_text(ascii).lines.join("\n")
+      expect(ascii_text).to include('&')
+      expect(ascii_text.ascii_only?).to be true
+      expect(node.render_text(unicode).lines.join("\n")).to include('↺')
+      expect(node.children).to be_empty
+    end
+
+    it 'exposes child nodes in order without exposing the internal array' do
+      node = described_class.new(0, 'any', 'a', 'b')
+      children = node.child_nodes
+      expect(children.map { |child| child.instance_variable_get(:@text) }).to eq(%w[a b])
+      children.clear
+      expect(node.child_nodes.length).to eq(2)
+    end
+  end
 end

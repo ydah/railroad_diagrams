@@ -134,20 +134,110 @@ module RailroadDiagrams
       self
     end
 
+    def measure(context)
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      children = @items.map { |item| context.metrics(item) }
+      height = children.sum(&:height)
+      width = 0
+      up = 0
+      down = children.first.down
+      height_so_far = 0.0
+
+      children.each_with_index do |item, index|
+        up = [up, [arc * 2, item.up + separation].max - height_so_far].max
+        height_so_far += item.height
+        down = [height + down, height_so_far + [arc * 2, item.down + separation].max].max - height if index.positive?
+        item_width = item.width + (item.needs_space ? 10 : 0)
+        width += index.zero? ? arc + [item_width, arc].max : (arc * 2) + [item_width, arc].max + arc
+      end
+      Metrics.new(width: width, up: up, height: height, down: down, needs_space: false)
+    end
+
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << path(x, y) { |p| p.h([0, left_gap].max) }
+      group << path(x + left_gap + metrics.width, y + metrics.height) { |p| p.h([0, right_gap].max) }
+      x += left_gap
+      upper_line_y = y - metrics.up
+      last = @items.size - 1
+
+      @items.each_with_index do |item, index|
+        child = context.metrics(item)
+        item_space = child.needs_space ? 10 : 0
+        item_width = child.width + item_space
+        if index.zero?
+          group << path(x, y, arc) do |p|
+            p.arc('se').v(-[0, y - upper_line_y - (arc * 2)].max).arc('wn')
+             .h([0, item_width - arc].max).arc('ne')
+             .v([0, y + child.height - upper_line_y - (arc * 2)].max).arc('ws')
+          end
+          group << path(x, y) { |p| p.h([0, item_space + arc].max) }
+          group << item.render_svg(context, x + item_space + arc, y, child.width)
+          x += item_width + arc
+          y += child.height
+          next
+        end
+
+        if index < last
+          group << path(x, upper_line_y, arc) do |p|
+            p.h([0, (arc * 2) + [item_width, arc].max + arc].max).arc('ne')
+             .v([0, y - upper_line_y + child.height - (arc * 2)].max).arc('ws')
+          end
+        end
+        group << path(x, y) { |p| p.h(arc * 2) }
+        group << item.render_svg(context, x + (arc * 2), y, child.width)
+        group << path(x + (arc * 2) + child.width, y + child.height) { |p| p.h([0, item_space + arc].max) }
+        group << path(x, y, arc) do |p|
+          p.arc('ne').v([0, child.height + [child.down + separation, arc * 2].max - (arc * 2)].max)
+           .arc('ws').h([0, item_width - arc].max)
+           .arc('se').v(-[0, child.down + separation - (arc * 2)].max).arc('wn')
+        end
+        x += (arc * 2) + [item_width, arc].max + arc
+        y += child.height
+      end
+      group
+    end
+
+    def render_text(context)
+      render_text_diagram(context.parts, context)
+    end
+
+    def child_nodes
+      @items.dup
+    end
+
     # @rbs return: TextDiagram
     def text_diagram
+      render_text_diagram(Context.legacy.parts, nil)
+    end
+
+    private
+
+    def path(x, y, arc = AR)
+      data = Svg::PathData.new(x, y, arc_radius: arc)
+      yield data
+      Svg::Element.new('path', { 'd' => data }, self_closing: true)
+    end
+
+    def render_text_diagram(parts, context)
       line, line_vertical, roundcorner_bot_left, roundcorner_bot_right,
-      roundcorner_top_left, roundcorner_top_right = TextDiagram.get_parts(
-        %w[line line_vertical roundcorner_bot_left roundcorner_bot_right roundcorner_top_left roundcorner_top_right]
+      roundcorner_top_left, roundcorner_top_right = parts.values_at(
+        'line', 'line_vertical', 'roundcorner_bot_left', 'roundcorner_bot_right',
+        'roundcorner_top_left', 'roundcorner_top_right'
       )
 
       # Format all the child items, so we can know the maximum entry.
-      item_tds = @items.map(&:text_diagram)
+      item_tds = @items.map { |item| context ? item.render_text(context) : item.text_diagram }
 
       # diagramEntry: distance from top to lowest entry, aka distance from top to diagram entry, aka final diagram entry and exit.
       diagram_entry = item_tds.map(&:entry).max
       # SOILHeight: distance from top to lowest entry before rightmost item, aka distance from skip-over-items line to rightmost entry, aka SOIL height.
-      soil_height = item_tds.map(&:entry).max
+      soil_height = item_tds[0...-1].map(&:entry).max
       # topToSOIL: distance from top to skip-over-items line.
       top_to_soil = diagram_entry - soil_height
 
@@ -173,7 +263,7 @@ module RailroadDiagrams
 
           # All items except the leftmost next have a line from skip-over-items line down to their entry,
           # with joining-lines at their entry and at their skip-under-item line:
-          lines = (['  '] * top_to_soil) +
+          lines = (['   '] * top_to_soil) +
                   [line + roundcorner_top_right +
                    # All such items except the rightmost also have a continuation of the skip-over-items line:
                    (i < item_tds.size - 1 ? line : ' ')] +

@@ -1,0 +1,60 @@
+# Generated from lib/railroad_diagrams/options.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Options < Struct[untyped]
+    attr_accessor vertical_separation(): untyped
+
+    attr_accessor arc_radius(): untyped
+
+    attr_accessor diagram_class(): untyped
+
+    attr_accessor stroke_odd_pixel_length(): untyped
+
+    attr_accessor internal_alignment(): untyped
+
+    attr_accessor char_width(): untyped
+
+    attr_accessor comment_char_width(): untyped
+
+    attr_accessor ambiguous_width(): untyped
+
+    attr_accessor measurer(): untyped
+
+    attr_accessor text_charset(): untyped
+
+    attr_accessor escape_html(): untyped
+
+    attr_accessor precision(): untyped
+
+    attr_accessor optimize_paths(): untyped
+
+    attr_accessor href_mode(): untyped
+
+    attr_accessor link_policy(): untyped
+
+    attr_accessor link_target(): untyped
+
+    attr_accessor link_rel(): untyped
+
+    attr_accessor id_prefix(): untyped
+
+    attr_accessor debug(): untyped
+
+    attr_accessor locale(): untyped
+
+    attr_accessor theme(): untyped
+
+    attr_accessor inline_styles(): untyped
+
+    attr_accessor max_width(): untyped
+
+    def self.new: (?vertical_separation: untyped, ?arc_radius: untyped, ?diagram_class: untyped, ?stroke_odd_pixel_length: untyped, ?internal_alignment: untyped, ?char_width: untyped, ?comment_char_width: untyped, ?ambiguous_width: untyped, ?measurer: untyped, ?text_charset: untyped, ?escape_html: untyped, ?precision: untyped, ?optimize_paths: untyped, ?href_mode: untyped, ?link_policy: untyped, ?link_target: untyped, ?link_rel: untyped, ?id_prefix: untyped, ?debug: untyped, ?locale: untyped, ?theme: untyped, ?inline_styles: untyped, ?max_width: untyped) -> instance
+                | ({ ?vertical_separation: untyped, ?arc_radius: untyped, ?diagram_class: untyped, ?stroke_odd_pixel_length: untyped, ?internal_alignment: untyped, ?char_width: untyped, ?comment_char_width: untyped, ?ambiguous_width: untyped, ?measurer: untyped, ?text_charset: untyped, ?escape_html: untyped, ?precision: untyped, ?optimize_paths: untyped, ?href_mode: untyped, ?link_policy: untyped, ?link_target: untyped, ?link_rel: untyped, ?id_prefix: untyped, ?debug: untyped, ?locale: untyped, ?theme: untyped, ?inline_styles: untyped, ?max_width: untyped }) -> instance
+  end
+
+  DEFAULT_OPTIONS: untyped
+
+  def self.default_options: () -> untyped
+
+  def self.configure: () -> untyped
+end

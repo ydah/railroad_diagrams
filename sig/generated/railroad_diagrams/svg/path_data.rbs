@@ -1,0 +1,25 @@
+# Generated from lib/railroad_diagrams/svg/path_data.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Svg
+    class PathData
+      def initialize: (untyped x, untyped y, ?arc_radius: untyped) -> untyped
+
+      def h: (untyped value) -> untyped
+
+      def v: (untyped value) -> untyped
+
+      def l: (untyped x, untyped y) -> untyped
+
+      def m: (untyped x, untyped y) -> untyped
+
+      def arc: (untyped sweep) -> untyped
+
+      def arc_8: (untyped start, untyped dir) -> untyped
+
+      def optimize!: () -> untyped
+
+      def to_s: (?untyped number_format) -> untyped
+    end
+  end
+end

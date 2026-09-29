@@ -53,6 +53,54 @@ module RailroadDiagrams
       diagram_td
     end
 
+    def measure(context)
+      item = context.metrics(@item)
+      label = context.metrics(@label) if @label
+      arc = context.options.arc_radius
+      separation = context.options.vertical_separation
+      item_width = item.width + (item.needs_space ? 20 : 0)
+      box_up = [item.up + separation, arc].max
+      Metrics.new(width: [item_width, label ? label.width : 0, arc * 2].max,
+                  up: box_up + (label ? label.up + label.height + label.down : 0),
+                  height: item.height, down: [item.down + separation, arc].max, needs_space: true)
+    end
+
+    def render_svg(context, x, y, width)
+      metrics = context.metrics(self)
+      item = context.metrics(@item)
+      left_gap, right_gap = context.gaps(width, metrics.width)
+      group = Svg::Element.new('g', @attrs.dup)
+      group << Svg::Element.new('path', { 'd' => Svg::PathData.new(x, y).h(left_gap) }, self_closing: true)
+      group << Svg::Element.new('path', { 'd' => Svg::PathData.new(x + left_gap + metrics.width, y + metrics.height).h(right_gap) }, self_closing: true)
+      x += left_gap
+
+      arc = context.options.arc_radius
+      box_up = [item.up + context.options.vertical_separation, arc].max
+      box = { 'x' => x, 'y' => y - box_up, 'width' => metrics.width,
+              'height' => metrics.height + box_up + metrics.down,
+              'rx' => arc, 'ry' => arc, 'class' => 'group-box' }
+      group << Svg::Element.new('rect', box)
+      group << @item.render_svg(context, x, y, metrics.width)
+      if @label
+        label = context.metrics(@label)
+        group << @label.render_svg(context, x, y - (box_up + label.down + label.height), label.width)
+      end
+      group
+    end
+
+    def render_text(context)
+      diagram = TextDiagram.round_rect(@item.render_text(context), dashed: true, parts: context.parts)
+      if @label
+        label = @label.render_text(context)
+        diagram = label.append_below(diagram, [], move_entry: true, move_exit: true).expand(0, 0, 1, 0)
+      end
+      diagram
+    end
+
+    def child_nodes
+      @label ? [@item, @label] : [@item]
+    end
+
     private
 
     # @rbs label: (DiagramItem | String)?

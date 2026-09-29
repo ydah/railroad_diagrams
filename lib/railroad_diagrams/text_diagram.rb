@@ -3,107 +3,9 @@
 
 module RailroadDiagrams
   class TextDiagram
-    PARTS_UNICODE = { #: Hash[String, String]
-      'cross_diag' => '╳',
-      'corner_bot_left' => '└',
-      'corner_bot_right' => '┘',
-      'corner_top_left' => '┌',
-      'corner_top_right' => '┐',
-      'cross' => '┼',
-      'left' => '│',
-      'line' => '─',
-      'line_vertical' => '│',
-      'multi_repeat' => '↺',
-      'rect_bot' => '─',
-      'rect_bot_dashed' => '┄',
-      'rect_bot_left' => '└',
-      'rect_bot_right' => '┘',
-      'rect_left' => '│',
-      'rect_left_dashed' => '┆',
-      'rect_right' => '│',
-      'rect_right_dashed' => '┆',
-      'rect_top' => '─',
-      'rect_top_dashed' => '┄',
-      'rect_top_left' => '┌',
-      'rect_top_right' => '┐',
-      'repeat_bot_left' => '╰',
-      'repeat_bot_right' => '╯',
-      'repeat_left' => '│',
-      'repeat_right' => '│',
-      'repeat_top_left' => '╭',
-      'repeat_top_right' => '╮',
-      'right' => '│',
-      'roundcorner_bot_left' => '╰',
-      'roundcorner_bot_right' => '╯',
-      'roundcorner_top_left' => '╭',
-      'roundcorner_top_right' => '╮',
-      'roundrect_bot' => '─',
-      'roundrect_bot_dashed' => '┄',
-      'roundrect_bot_left' => '╰',
-      'roundrect_bot_right' => '╯',
-      'roundrect_left' => '│',
-      'roundrect_left_dashed' => '┆',
-      'roundrect_right' => '│',
-      'roundrect_right_dashed' => '┆',
-      'roundrect_top' => '─',
-      'roundrect_top_dashed' => '┄',
-      'roundrect_top_left' => '╭',
-      'roundrect_top_right' => '╮',
-      'separator' => '─',
-      'tee_left' => '┤',
-      'tee_right' => '├'
-    }.freeze
-
-    PARTS_ASCII = { #: Hash[String, String]
-      'cross_diag' => 'X',
-      'corner_bot_left' => '\\',
-      'corner_bot_right' => '/',
-      'corner_top_left' => '/',
-      'corner_top_right' => '\\',
-      'cross' => '+',
-      'left' => '|',
-      'line' => '-',
-      'line_vertical' => '|',
-      'multi_repeat' => '&',
-      'rect_bot' => '-',
-      'rect_bot_dashed' => '-',
-      'rect_bot_left' => '+',
-      'rect_bot_right' => '+',
-      'rect_left' => '|',
-      'rect_left_dashed' => '|',
-      'rect_right' => '|',
-      'rect_right_dashed' => '|',
-      'rect_top' => '-',
-      'rect_top_dashed' => '-',
-      'rect_top_left' => '+',
-      'rect_top_right' => '+',
-      'repeat_bot_left' => '\\',
-      'repeat_bot_right' => '/',
-      'repeat_left' => '|',
-      'repeat_right' => '|',
-      'repeat_top_left' => '/',
-      'repeat_top_right' => '\\',
-      'right' => '|',
-      'roundcorner_bot_left' => '\\',
-      'roundcorner_bot_right' => '/',
-      'roundcorner_top_left' => '/',
-      'roundcorner_top_right' => '\\',
-      'roundrect_bot' => '-',
-      'roundrect_bot_dashed' => '-',
-      'roundrect_bot_left' => '\\',
-      'roundrect_bot_right' => '/',
-      'roundrect_left' => '|',
-      'roundrect_left_dashed' => '|',
-      'roundrect_right' => '|',
-      'roundrect_right_dashed' => '|',
-      'roundrect_top' => '-',
-      'roundrect_top_dashed' => '-',
-      'roundrect_top_left' => '/',
-      'roundrect_top_right' => '\\',
-      'separator' => '-',
-      'tee_left' => '|',
-      'tee_right' => '|'
-    }.freeze
+    PARTS_UNICODE = Text::Parts::UNICODE
+    PARTS_ASCII = Text::Parts::ASCII
+    NARROW_LINE = /\A[ -~\u2500-\u257F]*\z/.freeze
 
     class << self
       attr_accessor :parts #: Hash[String, String]?
@@ -123,16 +25,18 @@ module RailroadDiagrams
 
       # @rbs item: String | TextDiagram
       # @rbs dashed: bool
+      # @rbs parts: Hash[String, String]?
       # @rbs return: TextDiagram
-      def rect(item, dashed: false)
-        rectish('rect', item, dashed)
+      def rect(item, dashed: false, parts: nil)
+        rectish('rect', item, dashed, parts)
       end
 
       # @rbs item: String | TextDiagram
       # @rbs dashed: bool
+      # @rbs parts: Hash[String, String]?
       # @rbs return: TextDiagram
-      def round_rect(item, dashed: false)
-        rectish('roundrect', item, dashed)
+      def round_rect(item, dashed: false, parts: nil)
+        rectish('roundrect', item, dashed, parts)
       end
 
       # @rbs *args: (TextDiagram | Array[String] | Numeric | String)
@@ -183,7 +87,7 @@ module RailroadDiagrams
       # @rbs part_names: Array[String]
       # @rbs return: Array[String]
       def get_parts(part_names)
-        (@parts || PARTS_UNICODE).values_at(*part_names)
+        Context.legacy.parts.values_at(*part_names)
       end
 
       # @rbs lines: Array[String]
@@ -220,22 +124,16 @@ module RailroadDiagrams
       # @rbs rect_type: String
       # @rbs data: String | TextDiagram
       # @rbs dashed: bool
+      # @rbs parts: Hash[String, String]?
       # @rbs return: TextDiagram
-      def rectish(rect_type, data, dashed)
+      def rectish(rect_type, data, dashed, parts)
         line_type = dashed ? '_dashed' : ''
         top_left, ctr_left, bot_left, top_right, ctr_right, bot_right, top_horiz, bot_horiz, line, cross =
-          get_parts([
-                      "#{rect_type}_top_left",
-                      "#{rect_type}_left#{line_type}",
-                      "#{rect_type}_bot_left",
-                      "#{rect_type}_top_right",
-                      "#{rect_type}_right#{line_type}",
-                      "#{rect_type}_bot_right",
-                      "#{rect_type}_top#{line_type}",
-                      "#{rect_type}_bot#{line_type}",
-                      'line',
-                      'cross'
-                    ])
+          (parts || Context.legacy.parts).values_at(
+            "#{rect_type}_top_left", "#{rect_type}_left#{line_type}", "#{rect_type}_bot_left",
+            "#{rect_type}_top_right", "#{rect_type}_right#{line_type}", "#{rect_type}_bot_right",
+            "#{rect_type}_top#{line_type}", "#{rect_type}_bot#{line_type}", 'line', 'cross'
+          )
 
         item_td = data.is_a?(TextDiagram) ? data : new(0, 0, [data])
 
@@ -292,13 +190,13 @@ module RailroadDiagrams
       @exit = exit
       @lines = lines.dup
       @height = lines.size
-      @width = lines.any? ? Unicode::DisplayWidth.of(lines[0]) : 0
+      @width = lines.any? ? line_width(lines[0]) : 0
 
       raise "Entry is not within diagram vertically:\n#{dump(false)}" unless entry <= lines.length
       raise "Exit is not within diagram vertically:\n#{dump(false)}" unless exit <= lines.length
 
       lines.each do |line|
-        raise "Diagram data is not rectangular:\n#{dump(false)}" unless @width == Unicode::DisplayWidth.of(line)
+        raise "Diagram data is not rectangular:\n#{dump(false)}" unless @width == line_width(line)
       end
     end
 
@@ -328,7 +226,7 @@ module RailroadDiagrams
       new_entry = move_entry ? @height + lines_between.size + item.entry : @entry
       new_exit = move_exit ? @height + lines_between.size + item.exit : @exit
 
-      self.class.new(new_entry, new_exit, new_lines)
+      trusted_copy(new_entry, new_exit, new_lines, new_width)
     end
 
     # @rbs item: TextDiagram
@@ -340,18 +238,20 @@ module RailroadDiagrams
 
       left = expand(0, 0, join_line - @exit, new_height - @height - (join_line - @exit))
       right = item.expand(0, 0, join_line - item.entry, new_height - item.height - (join_line - item.entry))
+      separator_width = Unicode::DisplayWidth.of(chars_between)
 
       new_lines = (0...new_height).map do |i|
-        sep = i == join_line ? chars_between : ' ' * Unicode::DisplayWidth.of(chars_between)
+        sep = i == join_line ? chars_between : ' ' * separator_width
         left_line = i < left.lines.size ? left.lines[i] : ' ' * left.width
         right_line = i < right.lines.size ? right.lines[i] : ' ' * right.width
         "#{left_line}#{sep}#{right_line}"
       end
 
-      self.class.new(
+      trusted_copy(
         @entry + (join_line - @exit),
         item.exit + (join_line - item.entry),
-        new_lines
+        new_lines,
+        @width + separator_width + item.width
       )
     end
 
@@ -367,12 +267,13 @@ module RailroadDiagrams
       left = [pad * left_width] * @height
       right = [pad * (total_padding - left_width)] * @height
 
-      self.class.new(@entry, @exit, self.class.enclose_lines(@lines, left, right))
+      new_lines = self.class.enclose_lines(@lines, left, right)
+      pad == ' ' ? trusted_copy(@entry, @exit, new_lines, new_width) : self.class.new(@entry, @exit, new_lines)
     end
 
     # @rbs return: TextDiagram
     def copy
-      self.class.new(@entry, @exit, @lines.dup)
+      trusted_copy(@entry, @exit, @lines.dup, @width)
     end
 
     # @rbs left: Integer
@@ -395,11 +296,13 @@ module RailroadDiagrams
 
       bottom.times { new_lines << (' ' * (@width + left + right)) }
 
-      self.class.new(
-        @entry + top,
-        @exit + top,
-        new_lines
-      )
+      new_width = @width + left + right
+      if [left, right, top, bottom].all? { |amount| amount >= 0 } &&
+         ((left.zero? && right.zero?) || Unicode::DisplayWidth.of(line_char) == 1)
+        trusted_copy(@entry + top, @exit + top, new_lines, new_width)
+      else
+        self.class.new(@entry + top, @exit + top, new_lines)
+      end
     end
 
     # @rbs show: bool
@@ -439,6 +342,23 @@ module RailroadDiagrams
         output << (format('%3d: %-20s %s', i, line.inspect, marker.join(', ')))
       end
       output.join("\n")
+    end
+
+    private
+
+    def line_width(line)
+      NARROW_LINE.match?(line) ? line.length : Unicode::DisplayWidth.of(line)
+    end
+
+    # Call only when every line is built from already rectangular diagrams.
+    def trusted_copy(entry, exit, lines, width)
+      result = dup
+      result.instance_variable_set(:@entry, entry)
+      result.instance_variable_set(:@exit, exit)
+      result.instance_variable_set(:@lines, lines)
+      result.instance_variable_set(:@height, lines.size)
+      result.instance_variable_set(:@width, width)
+      result
     end
   end
 end
