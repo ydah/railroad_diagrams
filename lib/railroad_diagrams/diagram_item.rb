@@ -13,6 +13,8 @@ module RailroadDiagrams
   end
 
   class DiagramItem
+    include Enumerable #[DiagramItem]
+
     # @rbs subclass: Class
     # @rbs return: void
     def self.inherited(subclass)
@@ -79,6 +81,28 @@ module RailroadDiagrams
       callback.call(self)
     end
 
+    def child_nodes
+      []
+    end
+
+    def each_node(&block)
+      return enum_for(:each_node) unless block
+
+      block.call(self)
+      child_nodes.each { |child| child.each_node(&block) if child.respond_to?(:each_node) }
+      self
+    end
+    alias each each_node
+
+    def ==(other)
+      other.class == self.class && structural_state == other.send(:structural_state)
+    end
+    alias eql? ==
+
+    def hash
+      [self.class, structural_state].hash
+    end
+
     # @rbs write: ^(String) -> void
     # @rbs _css: String?
     # @rbs return: void
@@ -94,10 +118,16 @@ module RailroadDiagrams
 
     # @rbs return: String
     def inspect
-      "DiagramItem(#{@name}, #{@attrs}, #{@children})"
+      Introspection.call(self)
     end
 
     private
+
+    def structural_state
+      to_h
+    rescue ParseError
+      [@name, @attrs, @items&.map { |item| item.is_a?(Style) ? item.to_s : item.to_h }]
+    end
 
     def apply_user_attributes(id, data_attrs, cls)
       if id

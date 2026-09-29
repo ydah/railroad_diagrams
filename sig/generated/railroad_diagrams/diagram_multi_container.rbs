@@ -18,8 +18,5 @@ module RailroadDiagrams
     # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void
     def walk: (^(DiagramItem) -> void callback) -> void
-
-    # @rbs return: String
-    def inspect: () -> String
   end
 end

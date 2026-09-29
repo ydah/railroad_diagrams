@@ -1,11 +1,12 @@
 # Generated from lib/railroad_diagrams/zero_or_more.rb with RBS::Inline
 
 module RailroadDiagrams
-  class ZeroOrMore
+  class ZeroOrMore < Optional
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?
     # @rbs skip: bool
-    # @rbs return: Choice
-    def self.new: (DiagramItem | String item, ?(DiagramItem | String)? repeat, ?bool skip, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> Choice
+    # @rbs return: void
+    # rubocop:disable-next Metrics/ParameterLists
+    def initialize: (DiagramItem | String item, ?(DiagramItem | String)? repeat, ?untyped legacy_skip, ?skip: bool, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> void
   end
 end

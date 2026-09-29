@@ -1,0 +1,13 @@
+<svg class="railroad-diagram" data-type="Diagram" data-updown="35 0 19" height="94" viewBox="0 0 208 94" width="208">
+<g transform="translate(.5 .5)">
+<g data-type="Start" data-updown="10 0 10">
+<g>
+<path d="M20 45v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="45" /></g><path d="M40 55h10" /><g data-type="Except" data-updown="35 0 19">
+<g>
+<g>
+<path d="M50 55h0" /><path d="M158 55h0" /><rect class="group-box" height="38" rx="10" ry="10" width="108" x="50" y="36"></rect><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M50 55h18.5" /><path d="M139.5 55h18.5" /><rect height="22" rx="10" ry="10" width="71" x="68.5" y="44"></rect><text x="104" y="59">letter</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="108" x="50" y="44" /></g><g data-type="Comment" data-updown="8 0 8">
+<g class="comment non-terminal ">
+<path d="M50 28h0" /><path d="M158 28h0" /><text class="comment" x="104" y="32">except “[0-9]”</text></g><rect class="debug-bounds" height="16" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="108" x="50" y="20" /></g></g></g><rect class="debug-bounds" height="54" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="108" x="50" y="20" /></g><path d="M158 55h10" /><g data-type="End" data-updown="10 0 10">
+<path d="M 168 55 h 20 m -10 -10 v 20 m 10 -20 v 20"></path><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="168" y="45" /></g></g></svg>

@@ -8,6 +8,7 @@ module RailroadDiagrams
     # @rbs title: String?
     # @rbs cls: String
     # @rbs return: void
+    # rubocop:disable-next Metrics/ParameterLists
     def initialize(text, legacy_href = Deprecation::UNSET, legacy_title = Deprecation::UNSET,
                    href: Deprecation::UNSET, title: Deprecation::UNSET, cls: '', id: nil, attrs: {})
       super('g', attrs: { 'class' => "non-terminal #{cls}" }, id: id, data_attrs: attrs)

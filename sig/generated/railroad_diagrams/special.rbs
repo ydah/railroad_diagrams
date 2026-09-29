@@ -1,0 +1,11 @@
+# Generated from lib/railroad_diagrams/special.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Special < NonTerminal
+    def initialize: (untyped text, ?href: untyped, ?title: untyped, ?cls: untyped, **untyped options) -> untyped
+
+    def to_s: () -> untyped
+
+    def to_h: () -> untyped
+  end
+end

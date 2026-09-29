@@ -23,7 +23,7 @@ diagram = RailroadDiagrams::Diagram.new('SELECT', RailroadDiagrams::Optional.new
 File.write('select.svg', diagram.to_standalone_svg)
 ```
 
-`to_standalone_svg` includes CSS. Use `to_svg` to embed the diagram in a page with your own CSS. Both methods return strings; `write_svg` and `write_standalone` write to an IO, a String, or a callable.
+`to_standalone_svg` includes CSS. Use `to_svg` to embed the diagram in a page with your own CSS. Both methods return strings; `write_svg` and `write_standalone` write to an IO, a String, or a callable. Pass `max_width: 600` to wrap a long sequence across rows.
 
 Select a built-in theme with `to_standalone_svg(theme: :dark)` or use `theme: :auto` to follow the viewer's color scheme. Pass `inline_styles: true` when the destination strips SVG style elements. `to_html(title: 'Syntax')` returns a complete HTML page. For screen readers, pass `title:` and `desc: :auto` to `Diagram.new`; `to_svg(locale: :ja)` produces a Japanese description. Links in `to_svg` allow HTTP, HTTPS, email, and relative URLs by default.
 
@@ -42,14 +42,35 @@ Strings passed as children become `Terminal` nodes. Build larger diagrams by nes
 | `Optional` | `Optional.new('a')` | <img src="docs/images/rrx2Doptional.svg" alt="Optional example" width="180"> |
 | `OneOrMore` | `OneOrMore.new('a', ',')` | <img src="docs/images/rrx2Doneormore.svg" alt="OneOrMore example" width="180"> |
 | `ZeroOrMore` | `ZeroOrMore.new('a', ',')` | <img src="docs/images/rrx2Dzeroormorex2D1.svg" alt="ZeroOrMore example" width="180"> |
-| `Group` | `Group.new('a', 'label')` | <img src="docs/images/rrx2Dgroup.svg" alt="Group example" width="180"> |
+| `Group` | `Group.new('a', label: 'label')` | <img src="docs/images/rrx2Dgroup.svg" alt="Group example" width="180"> |
 | `HorizontalChoice` | `HorizontalChoice.new('a', 'b')` | <img src="docs/images/rrx2Dhorizontalchoice.svg" alt="HorizontalChoice example" width="180"> |
 | `OptionalSequence` | `OptionalSequence.new('a', 'b')` | <img src="docs/images/rrx2Doptionalsequence.svg" alt="OptionalSequence example" width="180"> |
 | `AlternatingSequence` | `AlternatingSequence.new('a', 'b')` | <img src="docs/images/rrx2Dalternatingsequence.svg" alt="AlternatingSequence example" width="180"> |
 | `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | <img src="docs/images/rrx2Dmultchoice.svg" alt="MultipleChoice example" width="180"> |
 | `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | <img src="docs/images/labeledx2Dstart.svg" alt="Start and End example" width="180"> |
+| `ComplexDiagram` | `ComplexDiagram.new('item')` | <img src="docs/images/nodex2Dcomplex.svg" alt="Complex diagram example" width="180"> |
+| `Block` | `Block.new(width: 50)` | <img src="docs/images/nodex2Dblock.svg" alt="Block example" width="180"> |
+| `Repeat` | `Repeat.new('item', min: 2, max: 4)` | <img src="docs/images/nodex2Drepeat.svg" alt="Counted repeat example" width="180"> |
+| `SeparatedList` | `SeparatedList.new('item', ',')` | <img src="docs/images/nodex2Dlist.svg" alt="Separated list example" width="180"> |
+| `Except` | `Except.new('letter', '[0-9]')` | <img src="docs/images/nodex2Dexcept.svg" alt="Exclusion example" width="180"> |
+| `CharClass` | `CharClass.new('[a-z]')` | <img src="docs/images/nodex2Dcharx2Dclass.svg" alt="Character class example" width="180"> |
+| `Special` | `Special.new('any character')` | <img src="docs/images/nodex2Dspecial.svg" alt="Special token example" width="180"> |
 
 `Optional` is a `Choice` subclass, and `ZeroOrMore` is an `Optional` subclass. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child.
+
+## Builder and structured data
+
+```ruby
+diagram = RailroadDiagrams.diagram do
+  seq('SELECT', opt('DISTINCT'), nt(:table))
+end
+
+json = diagram.to_json
+same_diagram = RailroadDiagrams.from_json(json)
+puts same_diagram == diagram
+```
+
+The builder converts strings to terminals, symbols to nonterminals, nil to `Skip`, and arrays to `Sequence`. Direct constructors keep their existing conversion rules. `RailroadDiagrams.build` returns a node; a block with one argument receives the builder. The [DSL demo](examples/demo_dsl.rb) matches all bundled diagrams. `to_h`, `from_h`, `to_yaml`, and `from_yaml` use the [version 1 schema](schema/v1.json). `each_node` walks the tree in depth-first order.
 
 ## Text output
 
@@ -65,7 +86,7 @@ Labels use Unicode display widths, so CJK and emoji fit their boxes. Ambiguous-w
 
 ## Demo CLI
 
-`railroad_diagrams --format=svg > demo.html` writes an HTML page containing the bundled examples. Formats: `svg`, `standalone`, `ascii`, and `unicode`. Pass example names after the options to select diagrams. This command runs the bundled demo; use the Ruby API for your own diagrams.
+`railroad_diagrams --format=svg > demo.html` writes an HTML page containing the bundled examples. Formats: `svg`, `standalone`, `ascii`, and `unicode`. Pass example names after the options to select diagrams. `--max-width 600` wraps SVG examples. This command runs the bundled demo; use the Ruby API for your own diagrams.
 
 ## Configuration and compatibility
 

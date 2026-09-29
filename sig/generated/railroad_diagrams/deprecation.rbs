@@ -2,6 +2,10 @@
 
 module RailroadDiagrams
   module Deprecation
+    UNSET: untyped
+
+    def self.positional_argument: (untyped name, untyped legacy, untyped keyword, ?untyped default) -> untyped
+
     # @rbs message: String
     # @rbs uplevel: Integer
     # @rbs return: void

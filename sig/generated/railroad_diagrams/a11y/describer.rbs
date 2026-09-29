@@ -11,6 +11,7 @@ module RailroadDiagrams
       # @rbs return: String
       def self?.call: (DiagramItem node, ?locale: Symbol, ?max_length: Integer) -> String
 
+      # rubocop:disable-next Metrics/CyclomaticComplexity
       def self?.describe: (untyped node, untyped locale) -> untyped
 
       def self?.describe_label: (untyped node, untyped locale) -> untyped

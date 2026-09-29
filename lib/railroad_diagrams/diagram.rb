@@ -163,10 +163,13 @@ module RailroadDiagrams
     def to_svg(**options)
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
       validate_inline_styles!(context)
-      Svg::Serializer.call(render_svg(context), precision: context.options.precision,
-                                                optimize_paths: context.options.optimize_paths,
-                                                inline_styles: context.options.inline_styles,
-                                                theme: Theme[context.options.theme])
+      diagram = context.options.max_width.nil? ? self : Transform::AutoWrap.call(self, context, max_width: context.options.max_width)
+      Svg::Serializer.call(
+        diagram.render_svg(context), precision: context.options.precision,
+                                     optimize_paths: context.options.optimize_paths,
+                                     inline_styles: context.options.inline_styles,
+                                     theme: Theme[context.options.theme]
+      )
     end
 
     # @rbs css: (String | bool)?
@@ -176,7 +179,8 @@ module RailroadDiagrams
     def to_standalone_svg(css: nil, css_variables: false, **options)
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
       validate_inline_styles!(context, css: css)
-      root = render_svg(context)
+      diagram = context.options.max_width.nil? ? self : Transform::AutoWrap.call(self, context, max_width: context.options.max_width)
+      root = diagram.render_svg(context)
       root.attrs['xmlns'] = 'http://www.w3.org/2000/svg'
       root.attrs['xmlns:xlink'] = 'http://www.w3.org/1999/xlink'
       css = Theme[context.options.theme].css(css_variables: css_variables) if css.nil? || css == true

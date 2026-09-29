@@ -1,0 +1,28 @@
+# Generated from lib/railroad_diagrams/block.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Block < DiagramItem
+    # rubocop:disable-next Metrics/ParameterLists
+    def initialize: (?width: untyped, ?up: untyped, ?height: untyped, ?down: untyped, ?needs_space: untyped, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> untyped
+
+    def to_s: () -> untyped
+
+    def format: (untyped x, untyped y, untyped width) -> untyped
+
+    def text_diagram: () -> untyped
+
+    def measure: (untyped _context) -> untyped
+
+    def render_svg: (untyped context, untyped x, untyped y, untyped width) -> untyped
+
+    def render_text: (untyped context) -> untyped
+
+    def child_nodes: () -> untyped
+
+    def to_h: () -> untyped
+
+    private
+
+    def rectangle: (untyped x, untyped y, untyped width) -> untyped
+  end
+end

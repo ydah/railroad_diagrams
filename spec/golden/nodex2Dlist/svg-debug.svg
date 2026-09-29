@@ -1,0 +1,13 @@
+<svg class="railroad-diagram" data-type="Diagram" data-updown="11 0 41" height="92" viewBox="0 0 174.0 92" width="174.0">
+<g transform="translate(.5 .5)">
+<g data-type="Start" data-updown="10 0 10">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="21" /></g><path d="M40 31h10" /><g data-type="SeparatedList" data-updown="11 0 41">
+<g>
+<g>
+<path d="M50 31h0.0" /><path d="M124.0 31h0.0" /><path d="M50.0 31h10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 31h0.0" /><path d="M114.0 31h0.0" /><rect height="22" rx="10" ry="10" width="54" x="60" y="20"></rect><text x="87" y="35">item</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="54" x="60" y="20" /></g><path d="M114.0 31h10" /><path d="M60.0 31a10 10 0 0 0 -10 10v10a10 10 0 0 0 10 10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 61h12.75" /><path d="M101.25 61h12.75" /><rect height="22" rx="10" ry="10" width="28.5" x="72.75" y="50"></rect><text x="87" y="65">,</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="54" x="60" y="50" /></g><path d="M114.0 61a10 10 0 0 0 10 -10v-10a10 10 0 0 0 -10 -10" /></g></g><rect class="debug-bounds" height="52" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="74" x="50" y="20" /></g><path d="M124.0 31h10" /><g data-type="End" data-updown="10 0 10">
+<path d="M 134.0 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="134" y="21" /></g></g></svg>

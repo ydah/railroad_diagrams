@@ -25,6 +25,7 @@ module RailroadDiagrams
         graphemes.first(max_length - 1).join + ellipsis
       end
 
+      # rubocop:disable-next Metrics/CyclomaticComplexity
       def describe(node, locale)
         case node
         when Terminal, NonTerminal, Comment
@@ -32,6 +33,7 @@ module RailroadDiagrams
         when Start then I18n.t(:describe_start, locale: locale)
         when End then I18n.t(:describe_end, locale: locale)
         when Skip then I18n.t(:describe_skip, locale: locale)
+        when Block then locale == :ja ? '矩形' : 'block'
         when Style then ''
         when Diagram
           describe_list(:describe_sequence, node.child_nodes.reject { |child| child.is_a?(Start) || child.is_a?(End) }, locale)
@@ -56,6 +58,9 @@ module RailroadDiagrams
           return describe(item, locale) unless label
 
           I18n.t(:describe_group, locale: locale, label: describe(label, locale), item: describe(item, locale))
+        when ExpandedNode
+          expanded = node.instance_variable_get(locale == :ja ? :@japanese : :@expanded)
+          describe(expanded || node.instance_variable_get(:@expanded), locale)
         else
           raise InvalidArgument, "unsupported diagram node: #{node.class}"
         end

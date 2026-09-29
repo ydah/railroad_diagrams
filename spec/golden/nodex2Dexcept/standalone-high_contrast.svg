@@ -1,0 +1,68 @@
+<svg class="railroad-diagram" height="94" viewBox="0 0 208 94" width="208" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 45v20m10 -20v20m-10 -10h20" /></g><path d="M40 55h10" /><g>
+<g>
+<path d="M50 55h0" /><path d="M158 55h0" /><rect class="group-box" height="38" rx="10" ry="10" width="108" x="50" y="36"></rect><g class="terminal ">
+<path d="M50 55h18.5" /><path d="M139.5 55h18.5" /><rect height="22" rx="10" ry="10" width="71" x="68.5" y="44"></rect><text x="104" y="59">letter</text></g><g class="comment non-terminal ">
+<path d="M50 28h0" /><path d="M158 28h0" /><text class="comment" x="104" y="32">except “[0-9]”</text></g></g></g><path d="M158 55h10" /><path d="M 168 55 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g><style>/* <![CDATA[ */
+svg.railroad-diagram * {
+  color: white;
+}
+svg.railroad-diagram {
+  background-color: black;
+}
+svg.railroad-diagram path {
+  stroke-width:4;
+  stroke:white;
+  fill:rgba(0,0,0,0);
+}
+svg.railroad-diagram text {
+  font:bold 14px monospace;
+  text-anchor:middle;
+  white-space: pre;
+  fill: white;
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: 4;
+  stroke: white;
+  fill: black;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: #222222;
+}
+svg.railroad-diagram text.label {
+  text-anchor:start;
+}
+svg.railroad-diagram text.comment {
+  font:italic 12px monospace;
+}
+svg.railroad-diagram rect {
+  stroke-width:4;
+  stroke: white;
+  fill:black;
+}
+svg.railroad-diagram path {
+  stroke: white;
+}
+svg.railroad-diagram .terminal rect {
+  fill: black;
+}
+svg.railroad-diagram .non-terminal rect {
+  fill: black;
+}
+svg.railroad-diagram rect.group-box {
+  stroke: white;
+  stroke-dasharray: 10 5;
+  fill: none;
+}
+
+/* ]]> */
+</style></svg>

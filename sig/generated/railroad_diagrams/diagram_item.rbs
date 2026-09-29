@@ -9,6 +9,8 @@ module RailroadDiagrams
   end
 
   class DiagramItem
+    include Enumerable[DiagramItem]
+
     # @rbs subclass: Class
     # @rbs return: void
     def self.inherited: (Class subclass) -> void
@@ -54,6 +56,18 @@ module RailroadDiagrams
     # @rbs return: void
     def walk: (^(DiagramItem) -> void callback) -> void
 
+    def child_nodes: () -> untyped
+
+    def each_node: () ?{ (?) -> untyped } -> untyped
+
+    alias each each_node
+
+    def ==: (untyped other) -> untyped
+
+    alias eql? ==
+
+    def hash: () -> untyped
+
     # @rbs write: ^(String) -> void
     # @rbs _css: String?
     # @rbs return: void
@@ -66,6 +80,8 @@ module RailroadDiagrams
     def inspect: () -> String
 
     private
+
+    def structural_state: () -> untyped
 
     def apply_user_attributes: (untyped id, untyped data_attrs, untyped cls) -> untyped
 

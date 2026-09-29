@@ -1,0 +1,16 @@
+# Generated from lib/railroad_diagrams/separated_list.rb with RBS::Inline
+
+module RailroadDiagrams
+  class SeparatedList < DiagramItem
+    include ExpandedNode
+
+    # rubocop:disable-next Metrics/ParameterLists
+    def initialize: (untyped item, untyped separator, ?min: untyped, ?trailing: untyped, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> untyped
+
+    def to_s: () -> untyped
+
+    def child_nodes: () -> untyped
+
+    def to_h: () -> untyped
+  end
+end

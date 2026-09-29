@@ -7,7 +7,7 @@ module RailroadDiagrams
     :internal_alignment, :char_width, :comment_char_width, :ambiguous_width,
     :measurer, :text_charset, :escape_html, :precision, :optimize_paths,
     :href_mode, :link_policy, :link_policy_violation, :link_target, :link_rel, :id_prefix, :debug,
-    :locale, :theme, :inline_styles, :max_width, :show_start, :show_end,
+    :locale, :theme, :inline_styles, :max_width, :show_start, :show_end, :coerce,
     keyword_init: true
   ) do
     def merge(**overrides)
@@ -26,7 +26,7 @@ module RailroadDiagrams
     ambiguous_width: 1, measurer: nil, text_charset: :unicode, escape_html: false,
     precision: nil, optimize_paths: false, href_mode: :xlink, link_policy: :safe, link_policy_violation: :warn,
     link_target: nil, link_rel: nil, id_prefix: nil, debug: false, locale: :en,
-    theme: :default, inline_styles: false, max_width: nil, show_start: true, show_end: true
+    theme: :default, inline_styles: false, max_width: nil, show_start: true, show_end: true, coerce: nil
   ).freeze
 
   class << self

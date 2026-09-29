@@ -1,0 +1,7 @@
+# Generated from lib/railroad_diagrams/complex_diagram.rb with RBS::Inline
+
+module RailroadDiagrams
+  class ComplexDiagram
+    def self.new: (*untyped items, **untyped options) -> untyped
+  end
+end

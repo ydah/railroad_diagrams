@@ -2,11 +2,11 @@
 
 require 'spec_helper'
 
-RSpec.describe 'keyword arguments' do
+RSpec.describe RailroadDiagrams::Terminal do
   let(:rd) { RailroadDiagrams }
 
-  around do |example|
-    previous = ENV['RAILROAD_DIAGRAMS_DEPRECATION']
+  around(:each) do |example|
+    previous = ENV.fetch('RAILROAD_DIAGRAMS_DEPRECATION', nil)
     ENV['RAILROAD_DIAGRAMS_DEPRECATION'] = 'warn'
     example.run
   ensure
@@ -35,7 +35,8 @@ RSpec.describe 'keyword arguments' do
   end
 
   it 'keeps a trailing positional Hash as a legacy href' do
-    node = rd::Terminal.new('a', { 'x' => 1 })
+    node = nil
+    expect { node = rd::Terminal.new('a', { 'x' => 1 }) }.to output(/DEPRECATION/).to_stderr
     expect(node.instance_variable_get(:@href)).to eq('x' => 1)
   end
 end

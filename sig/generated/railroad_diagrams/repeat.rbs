@@ -1,0 +1,24 @@
+# Generated from lib/railroad_diagrams/repeat.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Repeat < DiagramItem
+    include ExpandedNode
+
+    # rubocop:disable-next Metrics/ParameterLists
+    def initialize: (untyped item, ?min: untyped, ?max: untyped, ?separator: untyped, ?label: untyped, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> untyped
+
+    def to_s: () -> untyped
+
+    def child_nodes: () -> untyped
+
+    def to_h: () -> untyped
+
+    private
+
+    def expanded: (?untyped context) -> untyped
+
+    def build_repeat: (untyped locale) -> untyped
+
+    def count_label: (untyped locale) -> untyped
+  end
+end

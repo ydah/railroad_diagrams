@@ -11,3 +11,9 @@
 - Text diagrams use Unicode display widths. CJK and emoji labels may occupy more columns than before.
 
 See [CHANGELOG.md](../CHANGELOG.md) for all fixes and additions.
+
+## From 0.6.0
+
+- `Optional.new` now returns an `Optional` instance, and `ZeroOrMore.new` returns a `ZeroOrMore` instance. Both still satisfy `is_a?(Choice)` and retain their SVG layout. Code that compares `instance_of?(Choice)` must use `is_a?(Choice)`.
+- Pass links and titles as keywords, for example `Terminal.new('name', href: '#name', title: 'Name')`. Pass group labels as `label:` and optional branches as `skip:`. Positional forms still work but warn; set `RAILROAD_DIAGRAMS_DEPRECATION=raise` to find them in tests.
+- `Terminal.new('a', { 'x' => 1 })` remains a positional href hash on Ruby 2.5 and later. It is not a valid SVG link; use a string `href:` value.

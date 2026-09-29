@@ -23,7 +23,7 @@ Gem::Specification.new do |spec|
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
     `git ls-files -z`.split("\x0").select do |file|
-      file.start_with?('lib/', 'sig/', 'exe/', 'examples/') ||
+      file.start_with?('lib/', 'sig/', 'exe/', 'examples/', 'schema/') ||
         %w[README.md LICENSE.txt CHANGELOG.md].include?(file)
     end
   end

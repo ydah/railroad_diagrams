@@ -148,8 +148,8 @@ RSpec.describe RailroadDiagrams::DiagramItem do
   end
 
   describe '#to_str' do
-    around do |example|
-      previous = ENV['RAILROAD_DIAGRAMS_DEPRECATION']
+    around(:each) do |example|
+      previous = ENV.fetch('RAILROAD_DIAGRAMS_DEPRECATION', nil)
       ENV['RAILROAD_DIAGRAMS_DEPRECATION'] = 'warn'
       example.run
     ensure
@@ -170,7 +170,7 @@ RSpec.describe RailroadDiagrams::DiagramItem do
     it 'warns when String concatenation coerces a container' do
       item = RailroadDiagrams::Sequence.new('a', 'b')
       expect { 'x' + item }.to output(/DEPRECATION.*to_str/).to_stderr
-      expect(item.inspect).to start_with('DiagramMultiContainer(')
+      expect(item.inspect).to eq('seq(t("a"), t("b"))')
     end
   end
 end

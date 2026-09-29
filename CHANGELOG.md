@@ -2,6 +2,12 @@
 
 ## Unreleased
 
+### Added
+
+- A builder DSL, coercion for strings, symbols, arrays, and nil, and structural JSON/YAML serialization.
+- Complex diagrams, blocks, counted repeats, separated lists, exclusions, character classes, and special tokens.
+- Tree traversal, structural equality, DSL-style inspection, and width-limited SVG wrapping.
+
 ### Changed
 
 - Preserve `Optional` and `ZeroOrMore` as distinct subclasses while keeping their existing diagram layout.

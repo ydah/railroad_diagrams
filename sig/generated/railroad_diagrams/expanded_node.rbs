@@ -1,0 +1,24 @@
+# Generated from lib/railroad_diagrams/expanded_node.rb with RBS::Inline
+
+module RailroadDiagrams
+  # Nodes with their own meaning but the geometry of existing nodes.
+  module ExpandedNode
+    def format: (untyped x, untyped y, untyped width) -> untyped
+
+    def text_diagram: () -> untyped
+
+    def measure: (untyped context) -> untyped
+
+    def render_svg: (untyped context, untyped x, untyped y, untyped width) -> untyped
+
+    def render_text: (untyped context) -> untyped
+
+    def walk: (untyped callback) -> untyped
+
+    private
+
+    def expanded: (?untyped _context) -> untyped
+
+    def adopt_expansion: (untyped node) -> untyped
+  end
+end

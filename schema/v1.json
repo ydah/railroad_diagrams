@@ -1,0 +1,161 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://github.com/ydah/railroad_diagrams/blob/main/schema/v1.json",
+  "$ref": "#/definitions/node",
+  "definitions": {
+    "node": {
+      "type": "object",
+      "required": ["type"],
+      "properties": {
+        "type": {
+          "enum": ["diagram", "terminal", "non_terminal", "comment", "skip", "start", "end",
+                   "sequence", "stack", "choice", "multiple_choice", "optional", "zero_or_more",
+                   "one_or_more", "group", "horizontal_choice", "optional_sequence",
+                   "alternating_sequence", "block", "repeat", "separated_list", "except",
+                   "char_class", "special"]
+        },
+        "schema_version": {"const": 1},
+        "id": {"type": "string", "pattern": "^[A-Za-z_][A-Za-z0-9_.-]*$"},
+        "cls": {"type": "string"},
+        "attrs": {
+          "type": "object",
+          "propertyNames": {"pattern": "^data-[A-Za-z0-9_-]+$"},
+          "additionalProperties": {"type": "string"}
+        }
+      },
+      "allOf": [
+        {
+          "if": {"properties": {"type": {"const": "diagram"}}},
+          "then": {
+            "required": ["diagram_type", "items"],
+            "properties": {
+              "diagram_type": {"enum": ["simple", "complex"]},
+              "items": {"$ref": "#/definitions/items"},
+              "title": {"type": "string"},
+              "desc": {"type": "string"},
+              "desc_auto": {"const": true}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"type": {"enum": ["terminal", "non_terminal", "comment", "char_class", "special"]}}},
+          "then": {
+            "required": ["text"],
+            "properties": {"text": {"type": "string"}, "href": {"type": "string"}, "title": {"type": "string"}}
+          }
+        },
+        {
+          "if": {"properties": {"type": {"enum": ["start", "end"]}}},
+          "then": {
+            "required": ["diagram_type"],
+            "properties": {"diagram_type": {"enum": ["simple", "complex"]}, "label": {"type": "string"}}
+          }
+        },
+        {
+          "if": {"properties": {"type": {"enum": ["sequence", "stack", "horizontal_choice", "optional_sequence", "alternating_sequence"]}}},
+          "then": {"required": ["items"], "properties": {"items": {"$ref": "#/definitions/items"}}}
+        },
+        {
+          "if": {"properties": {"type": {"enum": ["choice", "multiple_choice"]}}},
+          "then": {
+            "required": ["default", "items"],
+            "properties": {
+              "default": {"type": "integer", "minimum": 0},
+              "items": {"$ref": "#/definitions/items"},
+              "choice_type": {"enum": ["any", "all"]}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "multiple_choice"}}},
+          "then": {"required": ["choice_type"]}
+        },
+        {
+          "if": {"properties": {"type": {"const": "optional"}}},
+          "then": {
+            "required": ["item", "skip"],
+            "properties": {"item": {"$ref": "#/definitions/node"}, "skip": {"type": "boolean"}}
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "zero_or_more"}}},
+          "then": {
+            "required": ["item", "repeat", "skip"],
+            "properties": {
+              "item": {"$ref": "#/definitions/node"},
+              "repeat": {"$ref": "#/definitions/node"},
+              "skip": {"type": "boolean"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "one_or_more"}}},
+          "then": {
+            "required": ["item", "repeat"],
+            "properties": {"item": {"$ref": "#/definitions/node"}, "repeat": {"$ref": "#/definitions/node"}}
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "group"}}},
+          "then": {
+            "required": ["item"],
+            "properties": {"item": {"$ref": "#/definitions/node"}, "label": {"$ref": "#/definitions/node"}}
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "block"}}},
+          "then": {
+            "required": ["width", "up", "height", "down", "needs_space"],
+            "properties": {
+              "width": {"type": "number", "minimum": 0}, "up": {"type": "number", "minimum": 0},
+              "height": {"type": "number", "minimum": 0}, "down": {"type": "number", "minimum": 0},
+              "needs_space": {"type": "boolean"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "repeat"}}},
+          "then": {
+            "required": ["item", "min", "max", "separator", "label"],
+            "properties": {
+              "item": {"$ref": "#/definitions/node"}, "min": {"type": "integer", "minimum": 0},
+              "max": {"type": ["integer", "null"], "minimum": 0},
+              "separator": {"oneOf": [{"$ref": "#/definitions/node"}, {"type": "null"}]},
+              "label": {"$ref": "#/definitions/optional_label"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "separated_list"}}},
+          "then": {
+            "required": ["item", "separator", "min", "trailing"],
+            "properties": {
+              "item": {"$ref": "#/definitions/node"},
+              "separator": {"$ref": "#/definitions/node"},
+              "min": {"type": "integer", "minimum": 0}, "trailing": {"type": "boolean"}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"type": {"const": "except"}}},
+          "then": {
+            "required": ["item", "excluded", "label"],
+            "properties": {
+              "item": {"$ref": "#/definitions/node"},
+              "excluded": {"oneOf": [{"$ref": "#/definitions/node"}, {"type": "string"}]},
+              "label": {"$ref": "#/definitions/optional_label"}
+            }
+          }
+        }
+      ]
+    },
+    "items": {"type": "array", "items": {"$ref": "#/definitions/node"}},
+    "optional_label": {
+      "oneOf": [
+        {"type": "string"},
+        {"type": "null"},
+        {"type": "object", "required": ["auto"], "properties": {"auto": {"const": true}}, "additionalProperties": false}
+      ]
+    }
+  }
+}

@@ -25,6 +25,11 @@ module RailroadDiagrams
         opts.on('-f', '--format FORMAT', FORMATS, "Output format (#{FORMATS.join(', ')})") do |format|
           @format = format
         end
+        opts.on('--max-width WIDTH', Integer, 'Wrap SVG diagrams to this width') do |width|
+          raise OptionParser::InvalidArgument, 'max-width must be positive' unless width.positive?
+
+          @max_width = width
+        end
         opts.on('-h', '--help', 'Print this help') do
           puts opts
           exit
@@ -85,9 +90,9 @@ module RailroadDiagrams
 
       case @format
       when 'svg'
-        diagram.write_svg($stdout.method(:write))
+        @max_width ? $stdout.write(diagram.to_svg(max_width: @max_width)) : diagram.write_svg($stdout.method(:write))
       when 'standalone'
-        diagram.write_standalone($stdout.method(:write))
+        @max_width ? $stdout.write(diagram.to_standalone_svg(max_width: @max_width)) : diagram.write_standalone($stdout.method(:write))
       when 'ascii', 'unicode'
         puts "\n<pre>"
         diagram.write_text($stdout.method(:write))

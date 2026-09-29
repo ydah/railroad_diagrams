@@ -1,0 +1,5 @@
+<svg class="railroad-diagram" height="62" viewBox="0 0 230.5 62" width="230.5">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><path d="M40 31h10" /><g class="non-terminal special">
+<path d="M50 31" /><path d="M180.5 31" /><rect height="22" width="130.5" x="50" y="20"></rect><text x="115.25" y="35">any character</text></g><path d="M180.5 31h10" /><path d="M190.5 31h20m-10 -10v20m10 -20v20"></path></g></svg>

@@ -44,6 +44,8 @@ namespace :docs do
       rrx2Doptional rrx2Doneormore rrx2Dzeroormorex2D1 rrx2Dgroup
       rrx2Dhorizontalchoice rrx2Doptionalsequence rrx2Dalternatingsequence
       rrx2Dmultchoice labeledx2Dstart
+      nodex2Dcomplex nodex2Dblock nodex2Drepeat nodex2Dlist
+      nodex2Dexcept nodex2Dcharx2Dclass nodex2Dspecial
     ]
     FileUtils.mkdir_p('docs/images')
     samples.each do |name|

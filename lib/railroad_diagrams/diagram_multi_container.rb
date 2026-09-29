@@ -27,10 +27,5 @@ module RailroadDiagrams
       callback.call(self)
       @items.each { |item| item.walk(callback) }
     end
-
-    # @rbs return: String
-    def inspect
-      "DiagramMultiContainer(#{@name}, #{@items}, #{@attrs}, #{@children})"
-    end
   end
 end
