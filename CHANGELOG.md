@@ -2,12 +2,18 @@
 
 ## Unreleased
 
+## 1.0.0 - 2026-09-30
+
 ### Added
 
 - Build a gallery of node examples in every bundled theme and publish it with GitHub Pages.
 - Run a browser-only Ruby playground with shareable examples and bundled offline runtime assets.
 - Document the supported 1.x API with examples and a stability guide.
 - Add a Rails view helper and separate Jekyll and Asciidoctor adapter projects with sample sites.
+
+### Changed
+
+- Begin the documented 1.x compatibility guarantee for the stable Ruby API.
 
 ## 0.8.0 - 2026-09-30
 

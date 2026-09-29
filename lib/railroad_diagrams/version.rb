@@ -2,5 +2,5 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
-  VERSION = '0.8.0' #: String
+  VERSION = '1.0.0' #: String
 end
