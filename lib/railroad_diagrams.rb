@@ -58,6 +58,9 @@ module RailroadDiagrams
     Kernel.format('%.6f', rounded).sub(/0+\z/, '')
   end
 
+  # Import grammar files into a {Document}.
+  # @example
+  #   RailroadDiagrams::Importers::W3cEbnf.parse("entry ::= 'a'")
   module Importers
     autoload :W3cEbnf, 'railroad_diagrams/importers/w3c_ebnf'
     autoload :YamlGrammar, 'railroad_diagrams/importers/yaml_grammar'

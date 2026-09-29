@@ -4,6 +4,7 @@
 require_relative '../i18n'
 
 module RailroadDiagrams
+  # @private
   module A11y
     module Describer
       DEFAULT_MAX_LENGTH = 200

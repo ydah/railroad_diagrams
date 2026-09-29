@@ -1,6 +1,7 @@
 # Generated from lib/railroad_diagrams/a11y/describer.rb with RBS::Inline
 
 module RailroadDiagrams
+  # @private
   module A11y
     module Describer
       DEFAULT_MAX_LENGTH: ::Integer

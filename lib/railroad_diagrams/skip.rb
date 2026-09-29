@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # A path with no visible item.
+  # @example
+  #   Skip.new
   class Skip < DiagramItem
     # @rbs return: void
     def initialize(id: nil, cls: nil, attrs: {})

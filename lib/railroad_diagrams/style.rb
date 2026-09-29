@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Custom CSS that can be embedded in a standalone diagram.
+  # @example
+  #   Style.new('svg.railroad-diagram { color: navy; }')
   class Style
     # @rbs css: String
     # @rbs return: void
@@ -11,6 +14,8 @@ module RailroadDiagrams
 
     class << self
       # @rbs return: String
+      # @example
+      #   Style.default_style
       def default_style
         <<~CSS
           * {

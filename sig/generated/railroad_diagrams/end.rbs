@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/end.rb with RBS::Inline
 
 module RailroadDiagrams
+  # The end marker of a diagram.
+  # @example
+  #   End.new('simple')
   class End < DiagramItem
     # @rbs type: String
     # @rbs label: String?

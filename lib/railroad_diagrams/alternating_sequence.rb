@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws two paths that cross between the entry and exit.
+  # @example
+  #   AlternatingSequence.new('true', 'false')
   class AlternatingSequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: AlternatingSequence

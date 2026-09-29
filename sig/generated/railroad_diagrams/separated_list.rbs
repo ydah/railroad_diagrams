@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/separated_list.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws items separated by a delimiter.
+  # @example
+  #   SeparatedList.new(NonTerminal.new('column'), ',')
   class SeparatedList < DiagramItem
     include ExpandedNode
 

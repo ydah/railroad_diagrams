@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/skip.rb with RBS::Inline
 
 module RailroadDiagrams
+  # A path with no visible item.
+  # @example
+  #   Skip.new
   class Skip < DiagramItem
     # @rbs return: void
     def initialize: (?id: untyped, ?cls: untyped, ?attrs: untyped) -> void

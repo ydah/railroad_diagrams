@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # A literal token shown in a rounded box.
+  # @example
+  #   Terminal.new('SELECT')
   class Terminal < DiagramItem
     # @rbs text: String
     # @rbs href: String?

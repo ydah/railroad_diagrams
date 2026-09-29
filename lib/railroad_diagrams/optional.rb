@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws an item with a bypass path.
+  # @example
+  #   Optional.new('DISTINCT')
   class Optional < Choice
     # @rbs item: DiagramItem | String
     # @rbs skip: bool

@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws an item with an exclusion label.
+  # @example
+  #   Except.new(CharClass.new('[a-z]'), 'x')
   class Except < DiagramItem
     include ExpandedNode
 

@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/optional_sequence.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws a sequence whose items may be skipped individually.
+  # @example
+  #   OptionalSequence.new('a', 'b')
   class OptionalSequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (OptionalSequence | Sequence)

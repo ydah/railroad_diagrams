@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/block.rb with RBS::Inline
 
 module RailroadDiagrams
+  # A blank, fixed-size block in a diagram.
+  # @example
+  #   Block.new(width: 40, height: 20)
   class Block < DiagramItem
     # rubocop:disable-next Metrics/ParameterLists
     def initialize: (?width: untyped, ?up: untyped, ?height: untyped, ?down: untyped, ?needs_space: untyped, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> untyped

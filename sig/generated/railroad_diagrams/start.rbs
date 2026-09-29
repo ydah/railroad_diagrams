@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/start.rb with RBS::Inline
 
 module RailroadDiagrams
+  # The start marker of a diagram.
+  # @example
+  #   Start.new('simple')
   class Start < DiagramItem
     # @rbs type: String
     # @rbs label: String?

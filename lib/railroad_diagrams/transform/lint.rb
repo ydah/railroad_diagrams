@@ -2,11 +2,20 @@
 
 module RailroadDiagrams
   module Transform
+    # Finds likely grammar mistakes without changing the rules.
+    # @example
+    #   Transform::Lint.call([['entry', NonTerminal.new('missing')]])
     module Lint
+      # A lint result with kind, rule, name, and message fields.
+      # @example
+      #   Transform::Lint.call([['entry', NonTerminal.new('missing')]]).first.message
       Warning = Struct.new(:kind, :rule, :name, :message)
 
       module_function
 
+      # Returns warnings for the given ordered rule pairs.
+      # @example
+      #   Transform::Lint.call([['entry', Terminal.new('a')]])
       def call(rules)
         definitions = rules.map(&:first)
         references = []
@@ -34,6 +43,7 @@ module RailroadDiagrams
         warnings.uniq { |warning| [warning.kind, warning.rule, warning.name, warning.message] }
       end
 
+      # @private
       def check_choice(node, name, warnings)
         seen = []
         items = node.child_nodes

@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # A terminal showing a character class.
+  # @example
+  #   CharClass.new('[a-z]')
   class CharClass < Terminal
     def initialize(text, href: nil, title: nil, cls: '', **options)
       @semantic_cls = cls

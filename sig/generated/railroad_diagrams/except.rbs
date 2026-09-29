@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/except.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws an item with an exclusion label.
+  # @example
+  #   Except.new(CharClass.new('[a-z]'), 'x')
   class Except < DiagramItem
     include ExpandedNode
 

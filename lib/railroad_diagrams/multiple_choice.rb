@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws a choice where one or several branches may be taken.
+  # @example
+  #   MultipleChoice.new(0, 'any', 'a', 'b')
   class MultipleChoice < DiagramMultiContainer
     # @rbs default: Integer
     # @rbs type: String

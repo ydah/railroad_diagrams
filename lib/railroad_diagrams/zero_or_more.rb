@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws zero or more occurrences of an item.
+  # @example
+  #   ZeroOrMore.new('digit')
   class ZeroOrMore < Optional
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?

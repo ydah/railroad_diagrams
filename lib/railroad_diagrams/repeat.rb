@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws a repetition with minimum and optional maximum counts.
+  # @example
+  #   Repeat.new('digit', min: 2, max: 4)
   class Repeat < DiagramItem
     include ExpandedNode
 

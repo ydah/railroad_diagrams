@@ -4,6 +4,8 @@
 
 Generate railroad syntax diagrams as SVG or fixed-width text with Ruby 2.5 or newer. Inspired by [railroad-diagrams](https://github.com/tabatkins/railroad-diagrams).
 
+Version 1.0 documents the [stable Ruby API](docs/api_stability.md). Read the [release announcement](docs/announcing-1.0.md) and [migration guide](docs/migration.md).
+
 ![A sample railroad diagram](docs/images/simple.svg)
 
 ## Install
@@ -105,6 +107,12 @@ document = RailroadDiagrams::Document.new(title: 'SQL subset')
 document.add_rule('query', RailroadDiagrams::Sequence.new('SELECT', RailroadDiagrams::NonTerminal.new('table')))
 File.write('grammar.html', document.to_html)
 ```
+
+## Framework integrations
+
+In Rails, require `railroad_diagrams/rails` and call `railroad_diagram { seq('SELECT', :table) }` in an ERB view. The helper returns escaped SVG marked safe for the view. [A sample view](examples/integrations/rails/example.html.erb) is included.
+
+The separate [Jekyll](integrations/jekyll-railroad/README.md) and [Asciidoctor](integrations/asciidoctor-railroad/README.md) gem directories include installation instructions and sample sites. Their `railroad` blocks accept the same YAML grammar format as the CLI.
 
 ## Demo CLI
 

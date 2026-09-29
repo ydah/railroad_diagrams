@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # The end marker of a diagram.
+  # @example
+  #   End.new('simple')
   class End < DiagramItem
     # @rbs type: String
     # @rbs label: String?

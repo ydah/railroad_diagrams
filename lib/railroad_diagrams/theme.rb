@@ -4,6 +4,9 @@
 require 'erb'
 
 module RailroadDiagrams
+  # A named color and typography palette for diagram output.
+  # @example
+  #   Theme[:dark].css
   class Theme < Struct.new(:name, :tokens, keyword_init: true)
     DEFAULT_TOKENS = {
       '--rr-bg' => 'white',
@@ -77,6 +80,9 @@ module RailroadDiagrams
       high_contrast: new(name: :high_contrast, tokens: HIGH_CONTRAST_TOKENS).freeze
     }.freeze
 
+    # Resolve one of the built-in themes by name.
+    # @example
+    #   Theme[:print]
     def self.[](name)
       THEMES.fetch(name.to_sym) { raise InvalidArgument, "unknown theme: #{name.inspect}" }
     end

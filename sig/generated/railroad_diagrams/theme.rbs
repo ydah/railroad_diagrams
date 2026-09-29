@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/theme.rb with RBS::Inline
 
 module RailroadDiagrams
+  # A named color and typography palette for diagram output.
+  # @example
+  #   Theme[:dark].css
   class Theme
     DEFAULT_TOKENS: untyped
 
@@ -14,6 +17,9 @@ module RailroadDiagrams
 
     THEMES: untyped
 
+    # Resolve one of the built-in themes by name.
+    # @example
+    #   Theme[:print]
     def self.[]: (untyped name) -> untyped
 
     def css: (?css_variables: untyped) -> untyped

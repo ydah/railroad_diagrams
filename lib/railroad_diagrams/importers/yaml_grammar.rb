@@ -5,11 +5,19 @@ require 'railroad_diagrams'
 
 module RailroadDiagrams
   module Importers
+    # Parses safe YAML shorthand for named grammar rules.
+    # @example
+    #   YamlGrammar.parse("rules:\n  entry: hello\n")
     class YamlGrammar
+      # @private
       OPERATORS = %w[choice optional zero_or_more one_or_more repeat list group comment stack hchoice oseq alt except].freeze
+      # @private
       ARRAYS = { 'stack' => Stack, 'hchoice' => HorizontalChoice,
                  'oseq' => OptionalSequence, 'alt' => AlternatingSequence }.freeze
 
+      # Returns a document containing YAML-defined rules.
+      # @example
+      #   YamlGrammar.parse("rules:\n  entry: hello\n", filename: 'grammar.yml')
       def self.parse(source, filename: '<yaml>')
         new(source, filename).parse
       end
@@ -20,6 +28,7 @@ module RailroadDiagrams
         @lines = source.is_a?(String) ? source.lines : []
       end
 
+      # @private
       def parse
         raise ParseError, 'YAML source must be a string' unless @source.is_a?(String)
 

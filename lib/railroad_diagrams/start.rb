@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # The start marker of a diagram.
+  # @example
+  #   Start.new('simple')
   class Start < DiagramItem
     # @rbs type: String
     # @rbs label: String?

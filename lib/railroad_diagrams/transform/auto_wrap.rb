@@ -1,10 +1,19 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Grammar and layout transformations.
+  # @example
+  #   Transform::Simplifier.call(Choice.new(0, 'a', 'a'))
   module Transform
+    # Splits wide sequences into stacked rows for SVG output.
+    # @example
+    #   Transform::AutoWrap.call(Diagram.new('a', 'b'), Context.new, max_width: 120)
     module AutoWrap
       module_function
 
+      # Returns a wrapped copy when the diagram exceeds max_width.
+      # @example
+      #   Transform::AutoWrap.call(Diagram.new('a', 'b'), Context.new, max_width: 120)
       def call(diagram, context, max_width:)
         unless max_width.is_a?(Numeric) && !max_width.is_a?(Complex) && max_width.finite? && max_width.positive?
           raise InvalidArgument, 'max_width must be a finite positive number'
@@ -30,6 +39,7 @@ module RailroadDiagrams
         copy
       end
 
+      # @private
       def flatten_wide_sequences(items, context, budget)
         items.flat_map do |item|
           if item.is_a?(Sequence) && context.metrics(item).width > budget
@@ -40,6 +50,7 @@ module RailroadDiagrams
         end
       end
 
+      # @private
       def pack(items, context, budget)
         rows = [[]]
         width = 0

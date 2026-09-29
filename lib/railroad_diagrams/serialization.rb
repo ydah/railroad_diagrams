@@ -4,6 +4,9 @@ require 'json'
 require 'psych'
 
 module RailroadDiagrams
+  # Conversion between diagram nodes and their canonical data representation.
+  # @example
+  #   RailroadDiagrams.from_h(Terminal.new('x').to_h)
   module Serialization
     CONTAINERS = {
       'sequence' => Sequence,
@@ -14,14 +17,23 @@ module RailroadDiagrams
     }.freeze
 
     module Node
+      # Return the canonical, string-keyed node representation.
+      # @example
+      #   Terminal.new('x').to_h #=> { "type" => "terminal", "text" => "x" }
       def to_h
         Serialization.dump(self)
       end
 
+      # Return canonical JSON for this node.
+      # @example
+      #   Terminal.new('x').to_json
       def to_json(*args)
         JSON.generate(to_h, *args)
       end
 
+      # Return canonical YAML for this node.
+      # @example
+      #   Terminal.new('x').to_yaml
       def to_yaml
         Psych.dump(to_h)
       end
@@ -280,16 +292,25 @@ module RailroadDiagrams
 
   DiagramItem.include(Serialization::Node)
 
+  # Build a diagram node from canonical string-keyed data.
+  # @example
+  #   RailroadDiagrams.from_h('type' => 'terminal', 'text' => 'x')
   def self.from_h(value)
     Serialization.parse(value)
   end
 
+  # Build a diagram node from canonical JSON.
+  # @example
+  #   RailroadDiagrams.from_json('{"type":"terminal","text":"x"}')
   def self.from_json(source)
     from_h(JSON.parse(source))
   rescue JSON::ParserError => e
     raise ParseError, e.message
   end
 
+  # Build a diagram node from canonical YAML.
+  # @example
+  #   RailroadDiagrams.from_yaml(Terminal.new('x').to_yaml)
   def self.from_yaml(source)
     value = if Psych::VERSION.to_i >= 4
               Psych.safe_load(source, permitted_classes: [], permitted_symbols: [], aliases: false)

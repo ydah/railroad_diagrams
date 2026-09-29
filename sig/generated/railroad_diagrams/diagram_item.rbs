@@ -8,6 +8,9 @@ module RailroadDiagrams
     def format: (*untyped args) -> untyped
   end
 
+  # Base class for diagram nodes and structural traversal.
+  # @example
+  #   Sequence.new('a', 'b').each_node.map(&:class)
   class DiagramItem
     include Enumerable[DiagramItem]
 
@@ -56,16 +59,28 @@ module RailroadDiagrams
     # @rbs return: void
     def walk: (^(DiagramItem) -> void callback) -> void
 
+    # Return the node's direct structural children.
+    # @example
+    #   Sequence.new('a', 'b').child_nodes.size #=> 2
     def child_nodes: () -> untyped
 
+    # Visit this node and descendants in preorder.
+    # @example
+    #   Sequence.new('a', 'b').each_node.map(&:class)
     def each_node: () ?{ (?) -> untyped } -> untyped
 
     alias each each_node
 
+    # Compare node structure and user attributes.
+    # @example
+    #   Terminal.new('x') == Terminal.new('x') #=> true
     def ==: (untyped other) -> untyped
 
     alias eql? ==
 
+    # Hash the same structural state used by equality.
+    # @example
+    #   [Terminal.new('x'), Terminal.new('x')].uniq.size #=> 1
     def hash: () -> untyped
 
     # @rbs write: ^(String) -> void
@@ -77,6 +92,8 @@ module RailroadDiagrams
     def to_str: () -> String
 
     # @rbs return: String
+    # @example
+    #   Sequence.new('a', 'b').inspect
     def inspect: () -> String
 
     private

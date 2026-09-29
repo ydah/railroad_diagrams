@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # A blank, fixed-size block in a diagram.
+  # @example
+  #   Block.new(width: 40, height: 20)
   class Block < DiagramItem
     # rubocop:disable-next Metrics/ParameterLists
     def initialize(width: 50, up: 15, height: 25, down: 15, needs_space: true, id: nil, cls: nil, attrs: {})

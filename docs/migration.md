@@ -17,3 +17,15 @@ See [CHANGELOG.md](../CHANGELOG.md) for all fixes and additions.
 - `Optional.new` now returns an `Optional` instance, and `ZeroOrMore.new` returns a `ZeroOrMore` instance. Both still satisfy `is_a?(Choice)` and retain their SVG layout. Code that compares `instance_of?(Choice)` must use `is_a?(Choice)`.
 - Pass links and titles as keywords, for example `Terminal.new('name', href: '#name', title: 'Name')`. Pass group labels as `label:` and optional branches as `skip:`. Positional forms still work but warn; set `RAILROAD_DIAGRAMS_DEPRECATION=raise` to find them in tests.
 - `Terminal.new('a', { 'x' => 1 })` remains a positional href hash on Ruby 2.5 and later. It is not a valid SVG link; use a string `href:` value.
+
+## From 0.7.0
+
+- Use `railroad_diagrams render grammar.ebnf -o grammar.html` for your own grammar. The old command without a subcommand still renders the bundled demo, but warns. Use `railroad_diagrams demo` to keep that behavior without a warning.
+- Ruby CLI input executes the named `.rb` file. YAML, JSON, and EBNF inputs are parsed as data and do not execute Ruby code.
+- `Document` joins named rules into linked HTML. `Importers::W3cEbnf.parse` and `Importers::YamlGrammar.parse` return documents.
+
+## From 0.8.0 to 1.0.0
+
+- The default SVG number precision remains unrestricted and SVG links still use `xlink:href`. Set `precision:` or `href_mode:` explicitly to change either behavior.
+- Supported API names and compatibility guarantees are listed in [API stability](api_stability.md). Internal rendering classes remain visible as Ruby constants for compatibility, but are not extension points.
+- Rails view helpers load with `require 'railroad_diagrams/rails'`. Jekyll and Asciidoctor integrations live in the separate gem directories under `integrations/`.

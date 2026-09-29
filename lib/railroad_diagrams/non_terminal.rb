@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # A named grammar rule, optionally linked to its definition.
+  # @example
+  #   NonTerminal.new('expression', href: '#rule-expression')
   class NonTerminal < DiagramItem
     # @rbs text: String
     # @rbs href: String?

@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # A special grammar symbol shown as a nonterminal-style box.
+  # @example
+  #   Special.new('EOF')
   class Special < NonTerminal
     def initialize(text, href: nil, title: nil, cls: '', **options)
       @semantic_cls = cls

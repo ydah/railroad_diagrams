@@ -3,6 +3,9 @@
 require 'erb'
 
 module RailroadDiagrams
+  # Renders linked diagrams for named grammar rules in one HTML document.
+  # @example
+  #   Document.new(title: 'Grammar').add_rule('entry', Terminal.new('a')).to_html
   class Document
     attr_reader :title, :theme, :locale, :rules
 
@@ -25,10 +28,16 @@ module RailroadDiagrams
       self
     end
 
+    # Returns warnings about references and redundant branches.
+    # @example
+    #   Document.new.add_rule('entry', NonTerminal.new('missing')).lint
     def lint
       Transform::Lint.call(@rules)
     end
 
+    # Returns rendered rule sections with IDs, references, SVG, and text alternatives.
+    # @example
+    #   Document.new.add_rule('entry', Terminal.new('a')).rule_sections.first[:id]
     def rule_sections(max_width: nil)
       ids = rule_ids
       targets = @rules.each_with_index.with_object({}) { |((name, _), index), found| found[name] ||= ids[index] }

@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/one_or_more.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws one or more occurrences of an item.
+  # @example
+  #   OneOrMore.new('digit', ',')
   class OneOrMore < DiagramItem
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?

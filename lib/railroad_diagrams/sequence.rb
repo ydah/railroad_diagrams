@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws items in reading order along one path.
+  # @example
+  #   Sequence.new('SELECT', NonTerminal.new('column'))
   class Sequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void

@@ -1,0 +1,3 @@
+title: Railroad diagram sample
+plugins:
+  - jekyll-railroad

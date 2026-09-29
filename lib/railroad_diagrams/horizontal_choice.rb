@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws choices side by side.
+  # @example
+  #   HorizontalChoice.new('red', 'blue')
   class HorizontalChoice < DiagramMultiContainer
     TEXT_PARTS = %w[line line_vertical roundcorner_bot_left roundcorner_bot_right
                     roundcorner_top_left roundcorner_top_right].freeze

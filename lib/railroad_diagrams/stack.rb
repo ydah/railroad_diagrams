@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws a long sequence on stacked rows.
+  # @example
+  #   Stack.new('first', 'second')
   class Stack < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void

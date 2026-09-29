@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Encloses a path in a labeled or unlabeled box.
+  # @example
+  #   Group.new('SELECT', label: 'keyword')
   class Group < DiagramItem
     # @rbs item: DiagramItem | String
     # @rbs label: (DiagramItem | String)?

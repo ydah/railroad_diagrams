@@ -3,6 +3,9 @@
 
 module RailroadDiagrams
   # rubocop:disable-next Metrics/ClassLength
+  # Draws alternative paths, with one default path.
+  # @example
+  #   Choice.new(0, 'yes', 'no')
   class Choice < DiagramMultiContainer
     # @rbs default: Integer
     # @rbs *items: (DiagramItem | String)

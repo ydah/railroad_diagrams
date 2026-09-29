@@ -44,6 +44,9 @@ module RailroadDiagrams
   #   RailroadDiagrams.format_number(2.0) #=> "2"
   def self.format_number: (Numeric val) -> String
 
+  # Import grammar files into a {Document}.
+  # @example
+  #   RailroadDiagrams::Importers::W3cEbnf.parse("entry ::= 'a'")
   module Importers
   end
 end

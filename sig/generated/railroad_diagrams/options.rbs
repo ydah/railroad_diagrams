@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/options.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Immutable-by-convention rendering settings used by Diagram output methods.
+  # @example
+  #   RailroadDiagrams.default_options.merge(theme: :dark)
   class Options < Struct[untyped]
     attr_accessor vertical_separation(): untyped
 
@@ -62,7 +65,13 @@ module RailroadDiagrams
 
   DEFAULT_OPTIONS: untyped
 
+  # Return the current default rendering settings.
+  # @example
+  #   RailroadDiagrams.default_options.href_mode #=> :xlink
   def self.default_options: () -> untyped
 
+  # Update the default rendering settings for future diagrams.
+  # @example
+  #   RailroadDiagrams.configure { |options| options[:theme] = :dark }
   def self.configure: () -> untyped
 end

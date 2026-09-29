@@ -8,6 +8,8 @@ const preview = document.getElementById('preview');
 const text = document.getElementById('text');
 let imageUrl;
 let vm;
+let autoRender = !location.hash;
+let renderTimer;
 
 function fromFragment() {
   if (!location.hash) return;
@@ -48,7 +50,16 @@ try {
   run.textContent = 'Render diagram';
   run.disabled = false;
   status.textContent = 'Ready. Review shared source before running it.';
-  run.addEventListener('click', render);
+  run.addEventListener('click', () => {
+    autoRender = true;
+    render();
+  });
+  source.addEventListener('input', () => {
+    if (!autoRender) return;
+    clearTimeout(renderTimer);
+    renderTimer = setTimeout(render, 350);
+  });
+  if (autoRender) render();
 } catch (error) {
   status.textContent = error.message;
 }

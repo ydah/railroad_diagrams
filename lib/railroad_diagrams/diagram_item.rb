@@ -12,6 +12,9 @@ module RailroadDiagrams
     end
   end
 
+  # Base class for diagram nodes and structural traversal.
+  # @example
+  #   Sequence.new('a', 'b').each_node.map(&:class)
   class DiagramItem
     include Enumerable #[DiagramItem]
 
@@ -81,10 +84,16 @@ module RailroadDiagrams
       callback.call(self)
     end
 
+    # Return the node's direct structural children.
+    # @example
+    #   Sequence.new('a', 'b').child_nodes.size #=> 2
     def child_nodes
       []
     end
 
+    # Visit this node and descendants in preorder.
+    # @example
+    #   Sequence.new('a', 'b').each_node.map(&:class)
     def each_node(&block)
       return enum_for(:each_node) unless block
 
@@ -94,11 +103,17 @@ module RailroadDiagrams
     end
     alias each each_node
 
+    # Compare node structure and user attributes.
+    # @example
+    #   Terminal.new('x') == Terminal.new('x') #=> true
     def ==(other)
       other.class == self.class && structural_state == other.send(:structural_state)
     end
     alias eql? ==
 
+    # Hash the same structural state used by equality.
+    # @example
+    #   [Terminal.new('x'), Terminal.new('x')].uniq.size #=> 1
     def hash
       [self.class, structural_state].hash
     end
@@ -117,6 +132,8 @@ module RailroadDiagrams
     end
 
     # @rbs return: String
+    # @example
+    #   Sequence.new('a', 'b').inspect
     def inspect
       Introspection.call(self)
     end

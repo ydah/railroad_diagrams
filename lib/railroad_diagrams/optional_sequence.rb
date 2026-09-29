@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws a sequence whose items may be skipped individually.
+  # @example
+  #   OptionalSequence.new('a', 'b')
   class OptionalSequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (OptionalSequence | Sequence)

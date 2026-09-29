@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/optional.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws an item with a bypass path.
+  # @example
+  #   Optional.new('DISTINCT')
   class Optional < Choice
     # @rbs item: DiagramItem | String
     # @rbs skip: bool

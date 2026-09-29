@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Draws items separated by a delimiter.
+  # @example
+  #   SeparatedList.new(NonTerminal.new('column'), ',')
   class SeparatedList < DiagramItem
     include ExpandedNode
 

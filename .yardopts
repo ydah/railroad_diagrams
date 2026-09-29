@@ -1,0 +1,6 @@
+--tag rbs:RBS
+--hide-tag rbs
+--no-private
+--markup markdown
+--readme README.md
+--exclude ^(lib/railroad_diagrams/|sig/generated/railroad_diagrams/)(a11y/|cli/|importers/w3c_ebnf/|svg/|text/|unicode/|context\.rbs?$|deprecation\.rbs?$|diagram_multi_container\.rbs?$|i18n\.rbs?$|introspection\.rbs?$|link_policy\.rbs?$|measurer\.rbs?$|metrics\.rbs?$|path\.rbs?$|serialization\.rbs?$|text_diagram\.rbs?$|writer\.rbs?$)

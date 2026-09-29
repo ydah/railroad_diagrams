@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/alternating_sequence.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws two paths that cross between the entry and exit.
+  # @example
+  #   AlternatingSequence.new('true', 'false')
   class AlternatingSequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: AlternatingSequence

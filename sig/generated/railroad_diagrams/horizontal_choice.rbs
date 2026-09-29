@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/horizontal_choice.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws choices side by side.
+  # @example
+  #   HorizontalChoice.new('red', 'blue')
   class HorizontalChoice < DiagramMultiContainer
     TEXT_PARTS: untyped
 

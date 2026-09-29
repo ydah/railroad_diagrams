@@ -2,12 +2,20 @@
 
 module RailroadDiagrams
   module Transform
+    # Applies semantics-preserving grammar simplification rules.
+    # @example
+    #   Transform::Simplifier.call(Choice.new(0, 'a', 'a'))
     module Simplifier
+      # @private
       RULES = (1..8).map { |number| :"s#{number}" }.freeze
+      # @private
       ATTRIBUTES = %w[id cls attrs].freeze
 
       module_function
 
+      # Returns a simplified copy of a diagram node.
+      # @example
+      #   Transform::Simplifier.call(Choice.new(0, 'a', 'a'), except: [:s6])
       def call(node, except: [], rule_name: nil)
         raise InvalidArgument, 'node must be a diagram node' unless node.is_a?(DiagramItem)
 
@@ -24,6 +32,7 @@ module RailroadDiagrams
         RailroadDiagrams.from_h(current)
       end
 
+      # @private
       def rewrite(node, excluded, rule_name, root)
         before_children = %i[s5 s6 s7].reduce(node) do |current, rule|
           next current if excluded.include?(rule) || (rule == :s6 && !root)
@@ -50,10 +59,12 @@ module RailroadDiagrams
         (node.keys & ATTRIBUTES).empty?
       end
 
+      # @private
       def attributes(node)
         node.slice(*ATTRIBUTES)
       end
 
+      # @private
       def s1(node, _rule_name = nil)
         return unless node['type'] == 'sequence'
 
@@ -63,6 +74,7 @@ module RailroadDiagrams
         node.merge('items' => items) unless items == node['items']
       end
 
+      # @private
       def s2(node, _rule_name = nil)
         return unless plain?(node)
 
@@ -71,6 +83,7 @@ module RailroadDiagrams
         node['items'].first if node['type'] == 'choice' && node['items'].size == 1
       end
 
+      # @private
       def s3(node, _rule_name = nil)
         return unless node['type'] == 'choice'
 
@@ -80,6 +93,7 @@ module RailroadDiagrams
         node.merge('items' => items, 'default' => items.index(node['items'][node['default']]))
       end
 
+      # @private
       def s4(node, _rule_name = nil)
         return unless node['type'] == 'choice' && node['items'].size == 2
 
@@ -90,6 +104,7 @@ module RailroadDiagrams
           .merge(attributes(node))
       end
 
+      # @private
       def s5(node, _rule_name = nil)
         return unless node['type'] == 'sequence' && node['items'].size == 2
 
@@ -103,6 +118,7 @@ module RailroadDiagrams
         { 'type' => 'one_or_more', 'item' => item, 'repeat' => sequence['items'][0] }.merge(attributes(node))
       end
 
+      # @private
       def s6(node, rule_name = nil)
         return unless rule_name && node['type'] == 'choice' && node['items'].size == 2
 
@@ -124,6 +140,7 @@ module RailroadDiagrams
         }] }.merge(attributes(node))
       end
 
+      # @private
       def s7(node, _rule_name = nil)
         return unless node['type'] == 'choice' && node['items'].size == 2
 
@@ -136,6 +153,7 @@ module RailroadDiagrams
         }] }.merge(attributes(node))
       end
 
+      # @private
       def s8(node, _rule_name = nil)
         return unless node['type'] == 'optional' && node['item']['type'] == 'optional' && plain?(node['item'])
 

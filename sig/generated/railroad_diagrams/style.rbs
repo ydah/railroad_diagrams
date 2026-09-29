@@ -1,12 +1,17 @@
 # Generated from lib/railroad_diagrams/style.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Custom CSS that can be embedded in a standalone diagram.
+  # @example
+  #   Style.new('svg.railroad-diagram { color: navy; }')
   class Style
     # @rbs css: String
     # @rbs return: void
     def initialize: (String css) -> void
 
     # @rbs return: String
+    # @example
+    #   Style.default_style
     def self.default_style: () -> String
 
     # @rbs return: String

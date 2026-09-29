@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/complex_diagram.rb with RBS::Inline
 
 module RailroadDiagrams
+  # A diagram with complex start and end markers.
+  # @example
+  #   ComplexDiagram.new('expression')
   class ComplexDiagram
     def self.new: (*untyped items, **untyped options) -> untyped
   end

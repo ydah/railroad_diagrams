@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Plain explanatory text on a diagram path.
+  # @example
+  #   Comment.new('optional whitespace')
   class Comment < DiagramItem
     # @rbs text: String
     # @rbs href: String?

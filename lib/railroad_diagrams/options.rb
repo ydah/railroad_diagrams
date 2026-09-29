@@ -2,6 +2,9 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
+  # Immutable-by-convention rendering settings used by Diagram output methods.
+  # @example
+  #   RailroadDiagrams.default_options.merge(theme: :dark)
   Options = Struct.new(
     :vertical_separation, :arc_radius, :diagram_class, :stroke_odd_pixel_length,
     :internal_alignment, :char_width, :comment_char_width, :ambiguous_width,
@@ -10,6 +13,9 @@ module RailroadDiagrams
     :locale, :theme, :inline_styles, :max_width, :show_start, :show_end, :coerce,
     keyword_init: true
   ) do
+    # Return a copy with validated overrides.
+    # @example
+    #   RailroadDiagrams.default_options.merge(locale: :ja)
     def merge(**overrides)
       unknown = overrides.keys - members
       raise InvalidArgument, "unknown option(s): #{unknown.join(', ')}" unless unknown.empty?
@@ -30,10 +36,16 @@ module RailroadDiagrams
   ).freeze
 
   class << self
+    # Return the current default rendering settings.
+    # @example
+    #   RailroadDiagrams.default_options.href_mode #=> :xlink
     def default_options
       @default_options || DEFAULT_OPTIONS
     end
 
+    # Update the default rendering settings for future diagrams.
+    # @example
+    #   RailroadDiagrams.configure { |options| options[:theme] = :dark }
     def configure
       values = default_options.to_h
       yield values

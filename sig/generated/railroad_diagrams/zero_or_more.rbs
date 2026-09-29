@@ -1,6 +1,9 @@
 # Generated from lib/railroad_diagrams/zero_or_more.rb with RBS::Inline
 
 module RailroadDiagrams
+  # Draws zero or more occurrences of an item.
+  # @example
+  #   ZeroOrMore.new('digit')
   class ZeroOrMore < Optional
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?
