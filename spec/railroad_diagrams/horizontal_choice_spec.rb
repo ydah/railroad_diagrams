@@ -32,7 +32,7 @@ RSpec.describe RailroadDiagrams::HorizontalChoice do
 
     it 'calculates width from items' do
       hc = described_class.new('a', 'b', 'c')
-      expect(hc.width).to be > 0
+      expect([hc.width, hc.up, hc.height, hc.down]).to eq([205.5, 20, 0, 20])
     end
 
     it 'sets height to 0' do
@@ -43,13 +43,13 @@ RSpec.describe RailroadDiagrams::HorizontalChoice do
     it 'calculates upper_track' do
       hc = described_class.new('a', 'b', 'c')
       upper_track = hc.instance_variable_get(:@upper_track)
-      expect(upper_track).to be >= RailroadDiagrams::AR * 2
+      expect(upper_track).to eq(20)
     end
 
     it 'calculates lower_track' do
       hc = described_class.new('a', 'b', 'c')
       lower_track = hc.instance_variable_get(:@lower_track)
-      expect(lower_track).to be >= RailroadDiagrams::VS
+      expect(lower_track).to eq(20)
     end
   end
 

@@ -20,7 +20,8 @@ RSpec.describe RailroadDiagrams::Stack do
     it 'calculates width from widest item' do
       stack = described_class.new('a', 'longer')
       longer_terminal = RailroadDiagrams::Terminal.new('longer')
-      expect(stack.width).to be >= longer_terminal.width
+      expect(stack.width).to eq(111.0)
+      expect(longer_terminal.width).to eq(71.0)
     end
 
     it 'sets up to first item up' do
@@ -37,13 +38,13 @@ RSpec.describe RailroadDiagrams::Stack do
 
     it 'calculates height from all items' do
       stack = described_class.new('a', 'b', 'c')
-      expect(stack.height).to be > 0
+      expect(stack.height).to eq(80)
     end
 
     it 'adds arc width for multiple items' do
       stack_single = described_class.new('a')
       stack_multiple = described_class.new('a', 'b')
-      expect(stack_multiple.width).to be > stack_single.width
+      expect([stack_single.width, stack_multiple.width]).to eq([48.5, 68.5])
     end
   end
 

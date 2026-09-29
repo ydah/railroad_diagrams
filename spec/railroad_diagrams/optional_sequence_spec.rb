@@ -32,7 +32,7 @@ RSpec.describe RailroadDiagrams::OptionalSequence do
 
     it 'calculates width from items' do
       opt_seq = described_class.new('a', 'b', 'c')
-      expect(opt_seq.width).to be > 0
+      expect([opt_seq.width, opt_seq.up, opt_seq.height, opt_seq.down]).to eq([185.5, 20.0, 0, 20.0])
     end
 
     it 'calculates height from all items' do
@@ -46,12 +46,12 @@ RSpec.describe RailroadDiagrams::OptionalSequence do
       terminal1 = RailroadDiagrams::Terminal.new('first')
       terminal2 = RailroadDiagrams::Terminal.new('second')
       opt_seq = described_class.new(terminal1, terminal2)
-      expect(opt_seq.down).to be >= terminal1.down
+      expect([opt_seq.down, terminal1.down]).to eq([20.0, 11])
     end
 
     it 'calculates up' do
       opt_seq = described_class.new('a', 'b')
-      expect(opt_seq.up).to be >= 0
+      expect(opt_seq.up).to eq(20.0)
     end
   end
 

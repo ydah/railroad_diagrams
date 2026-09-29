@@ -29,12 +29,12 @@ RSpec.describe RailroadDiagrams::Sequence do
 
     it 'calculates up from maximum item up' do
       seq = described_class.new('a', 'b')
-      expect(seq.up).to be >= 0
+      expect(seq.up).to eq(11)
     end
 
     it 'calculates down from maximum item down' do
       seq = described_class.new('a', 'b')
-      expect(seq.down).to be >= 0
+      expect(seq.down).to eq(11)
     end
 
     it 'handles items without space' do

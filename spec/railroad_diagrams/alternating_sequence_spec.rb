@@ -36,17 +36,17 @@ RSpec.describe RailroadDiagrams::AlternatingSequence do
 
     it 'calculates width from items' do
       alt_seq = described_class.new('a', 'b')
-      expect(alt_seq.width).to be > 0
+      expect(alt_seq.width).to eq(88.5)
     end
 
     it 'calculates up including first item' do
       alt_seq = described_class.new('a', 'b')
-      expect(alt_seq.up).to be > 0
+      expect(alt_seq.up).to eq(36)
     end
 
     it 'calculates down including second item' do
       alt_seq = described_class.new('a', 'b')
-      expect(alt_seq.down).to be > 0
+      expect(alt_seq.down).to eq(36)
     end
 
     it 'sets height to 0' do

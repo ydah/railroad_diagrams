@@ -50,7 +50,7 @@ RSpec.describe RailroadDiagrams::MultipleChoice do
 
     it 'calculates width from items' do
       mc = described_class.new(0, 'any', 'a', 'b')
-      expect(mc.width).to be > 0
+      expect([mc.width, mc.up, mc.height, mc.down]).to eq([98.5, 11, 0, 41])
     end
 
     it 'calculates inner_width from widest item' do

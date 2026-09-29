@@ -35,7 +35,7 @@ RSpec.describe RailroadDiagrams::Group do
 
     it 'calculates width including label' do
       group = described_class.new('short', 'very long label')
-      expect(group.width).to be > 0
+      expect([group.width, group.up, group.height, group.down]).to eq([115, 35, 0, 19])
     end
 
     it 'sets height to item height' do
@@ -47,13 +47,13 @@ RSpec.describe RailroadDiagrams::Group do
     it 'calculates up including label when present' do
       group_without_label = described_class.new('test')
       group_with_label = described_class.new('test', 'label')
-      expect(group_with_label.up).to be > group_without_label.up
+      expect([group_without_label.up, group_with_label.up]).to eq([19, 35])
     end
 
     it 'calculates box_up' do
       group = described_class.new('test')
       box_up = group.instance_variable_get(:@box_up)
-      expect(box_up).to be >= RailroadDiagrams::AR
+      expect(box_up).to eq(19)
     end
   end
 

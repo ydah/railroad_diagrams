@@ -27,7 +27,7 @@ RSpec.describe RailroadDiagrams::Choice do
 
     it 'calculates width including arcs' do
       choice = described_class.new(0, 'a', 'b')
-      expect(choice.width).to be > 0
+      expect([choice.width, choice.up, choice.height, choice.down]).to eq([68.5, 11, 0, 41])
     end
 
     it 'calculates separators for items' do
