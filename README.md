@@ -31,21 +31,21 @@ Strings passed as children become `Terminal` nodes. Build larger diagrams by nes
 
 | Node | Example | Preview |
 | --- | --- | --- |
-| `Terminal` | `Terminal.new('word')` | [terminal](spec/golden/simple/standalone.svg) |
-| `NonTerminal` | `NonTerminal.new('expression')` | [nonterminal](spec/golden/Group_example/standalone.svg) |
-| `Comment` | `Comment.new('note')` | [comment](spec/golden/comment/standalone.svg) |
-| `Sequence` | `Sequence.new('a', 'b')` | [sequence](spec/golden/rrx2Dsequence/standalone.svg) |
-| `Stack` | `Stack.new('a', 'b')` | [stack](spec/golden/rrx2Dstack/standalone.svg) |
-| `Choice` | `Choice.new(0, 'a', 'b')` | [choice](spec/golden/rrx2Dchoice/standalone.svg) |
-| `Optional` | `Optional.new('a')` | [optional](spec/golden/rrx2Doptional/standalone.svg) |
-| `OneOrMore` | `OneOrMore.new('a', ',')` | [one or more](spec/golden/rrx2Doneormore/standalone.svg) |
-| `ZeroOrMore` | `ZeroOrMore.new('a', ',')` | [zero or more](spec/golden/rrx2Dzeroormorex2D1/standalone.svg) |
-| `Group` | `Group.new('a', 'label')` | [group](spec/golden/rrx2Dgroup/standalone.svg) |
-| `HorizontalChoice` | `HorizontalChoice.new('a', 'b')` | [horizontal choice](spec/golden/rrx2Dhorizontalchoice/standalone.svg) |
-| `OptionalSequence` | `OptionalSequence.new('a', 'b')` | [optional sequence](spec/golden/rrx2Doptionalsequence/standalone.svg) |
-| `AlternatingSequence` | `AlternatingSequence.new('a', 'b')` | [alternating sequence](spec/golden/rrx2Dalternatingsequence/standalone.svg) |
-| `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | [multiple choice](spec/golden/rrx2Dmultchoice/standalone.svg) |
-| `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | [start and end](spec/golden/labeledx2Dstart/standalone.svg) |
+| `Terminal` | `Terminal.new('word')` | <img src="spec/golden/simple/standalone.svg" alt="Terminal example" width="180"> |
+| `NonTerminal` | `NonTerminal.new('expression')` | <img src="spec/golden/Group_example/standalone.svg" alt="NonTerminal example" width="180"> |
+| `Comment` | `Comment.new('note')` | <img src="spec/golden/comment/standalone.svg" alt="Comment example" width="180"> |
+| `Sequence` | `Sequence.new('a', 'b')` | <img src="spec/golden/rrx2Dsequence/standalone.svg" alt="Sequence example" width="180"> |
+| `Stack` | `Stack.new('a', 'b')` | <img src="spec/golden/rrx2Dstack/standalone.svg" alt="Stack example" width="180"> |
+| `Choice` | `Choice.new(0, 'a', 'b')` | <img src="spec/golden/rrx2Dchoice/standalone.svg" alt="Choice example" width="180"> |
+| `Optional` | `Optional.new('a')` | <img src="spec/golden/rrx2Doptional/standalone.svg" alt="Optional example" width="180"> |
+| `OneOrMore` | `OneOrMore.new('a', ',')` | <img src="spec/golden/rrx2Doneormore/standalone.svg" alt="OneOrMore example" width="180"> |
+| `ZeroOrMore` | `ZeroOrMore.new('a', ',')` | <img src="spec/golden/rrx2Dzeroormorex2D1/standalone.svg" alt="ZeroOrMore example" width="180"> |
+| `Group` | `Group.new('a', 'label')` | <img src="spec/golden/rrx2Dgroup/standalone.svg" alt="Group example" width="180"> |
+| `HorizontalChoice` | `HorizontalChoice.new('a', 'b')` | <img src="spec/golden/rrx2Dhorizontalchoice/standalone.svg" alt="HorizontalChoice example" width="180"> |
+| `OptionalSequence` | `OptionalSequence.new('a', 'b')` | <img src="spec/golden/rrx2Doptionalsequence/standalone.svg" alt="OptionalSequence example" width="180"> |
+| `AlternatingSequence` | `AlternatingSequence.new('a', 'b')` | <img src="spec/golden/rrx2Dalternatingsequence/standalone.svg" alt="AlternatingSequence example" width="180"> |
+| `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | <img src="spec/golden/rrx2Dmultchoice/standalone.svg" alt="MultipleChoice example" width="180"> |
+| `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | <img src="spec/golden/labeledx2Dstart/standalone.svg" alt="Start and End example" width="180"> |
 
 `Optional.new` and `ZeroOrMore.new` return a `Choice`. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child. These factory return types are part of the current API.
 

@@ -15,13 +15,14 @@
 
 ### Added
 
-- Golden output and XML well-formedness checks.
+- Golden output, XML well-formedness, and SVG rectangle bounds checks.
 - String-returning SVG and text APIs, flexible output writers, and a shared error hierarchy.
 - Unicode 16.0 display-width tables and international text examples.
 - CI checks minimum line and branch coverage.
 - RuboCop checks Ruby 2.5 syntax and new style violations.
 - Upstream parity compares 67 examples against a pinned Python renderer.
 - README node guide, migration notes, and contribution templates.
+- Lrama API contract and integration smoke checks.
 
 ### Changed
 
