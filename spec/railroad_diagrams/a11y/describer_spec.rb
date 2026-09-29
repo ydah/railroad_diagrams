@@ -25,7 +25,7 @@ RSpec.describe RailroadDiagrams::A11y::Describer do
   end
 
   it 'describes groups and vertical order' do
-    expect(described_class.call(rd::Group.new('A', 'label'))).to eq('label: “A”')
+    expect(described_class.call(rd::Group.new('A', label: 'label'))).to eq('label: “A”')
     expect(described_class.call(rd::Stack.new('A', 'B'))).to eq('in sequence: “A”, “B”')
     expect(described_class.call(rd::OptionalSequence.new('A', 'B')))
       .to eq('in sequence: optional “A”, optional “B”')

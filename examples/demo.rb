@@ -10,10 +10,10 @@ add('test choice up',
             Skip.new,
             Group.new(
               Stack.new(Skip.new, Skip.new),
-              'inner'
+              label: 'inner'
             )
           ),
-          'top'
+          label: 'top'
         ),
         Group.new(
           Choice.new(
@@ -21,10 +21,10 @@ add('test choice up',
             Skip.new,
             Group.new(
               Stack.new(Skip.new, Skip.new),
-              'inner'
+              label: 'inner'
             )
           ),
-          'top'
+          label: 'top'
         ),
         Skip.new
       )
@@ -40,10 +40,10 @@ add('test choice down',
             Skip.new,
             Group.new(
               Stack.new(Terminal.new('abc'), Skip.new),
-              'inner'
+              label: 'inner'
             )
           ),
-          'top'
+          label: 'top'
         ),
         Terminal.new('xyz')
       )
@@ -74,7 +74,7 @@ add('escape',
         NonTerminal.new('not newline or hex digit'),
         Sequence.new(
           OneOrMore.new(NonTerminal.new('hex digit'), Comment.new('1-6 times')),
-          Optional.new(NonTerminal.new('whitespace'), 'skip')
+          Optional.new(NonTerminal.new('whitespace'), skip: 'skip')
         )
       )
     ))
@@ -339,7 +339,7 @@ add('SQL',
       Stack.new(
         Sequence.new(
           'SELECT',
-          Optional.new('DISTINCT', 'skip'),
+          Optional.new('DISTINCT', skip: 'skip'),
           Choice.new(
             0,
             '*',
@@ -391,7 +391,7 @@ add('Group example',
       ZeroOrMore.new(
         Group.new(
           Stack.new('foo', 'bar'),
-          'label'
+          label: 'label'
         )
       ),
       'bar'
@@ -453,7 +453,7 @@ add('rr-oneormore',
 add('rr-optional',
     Diagram.new(
       Optional.new('foo'),
-      Optional.new('bar', true)
+      Optional.new('bar', skip: true)
     ))
 
 add('rr-optionalsequence',
@@ -492,7 +492,7 @@ add('rr-zeroormore-1',
 add('rr-zeroormore-2',
     Diagram.new(
       ZeroOrMore.new('foo', Comment.new('bar')),
-      ZeroOrMore.new('foo', Comment.new('bar'), true)
+      ZeroOrMore.new('foo', Comment.new('bar'), skip: true)
     ))
 
 add('complicated-horizontalchoice-1',

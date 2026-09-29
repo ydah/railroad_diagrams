@@ -2,6 +2,11 @@
 
 ## Unreleased
 
+### Changed
+
+- Preserve `Optional` and `ZeroOrMore` as distinct subclasses while keeping their existing diagram layout.
+- Accept keyword arguments for links, titles, labels, and skip choices; positional forms now warn.
+
 ## 0.6.0 - 2026-09-30
 
 ### Added

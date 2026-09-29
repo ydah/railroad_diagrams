@@ -200,14 +200,17 @@ RSpec.describe 'Edge Cases' do
   end
 
   describe 'Optional and ZeroOrMore delegation' do
-    it 'Optional delegates to Choice' do
+    it 'Optional keeps Choice behavior and its own type' do
       optional = RailroadDiagrams::Optional.new('item')
       expect(optional).to be_a(RailroadDiagrams::Choice)
+      expect(optional).to be_instance_of(RailroadDiagrams::Optional)
     end
 
-    it 'ZeroOrMore delegates to Optional and OneOrMore' do
+    it 'ZeroOrMore keeps Optional behavior and its own type' do
       zero_or_more = RailroadDiagrams::ZeroOrMore.new('item')
       expect(zero_or_more).to be_a(RailroadDiagrams::Choice)
+      expect(zero_or_more).to be_a(RailroadDiagrams::Optional)
+      expect(zero_or_more).to be_instance_of(RailroadDiagrams::ZeroOrMore)
       items = zero_or_more.instance_variable_get(:@items)
       one_or_more = items.find { |i| i.is_a?(RailroadDiagrams::OneOrMore) }
       expect(one_or_more).not_to be_nil

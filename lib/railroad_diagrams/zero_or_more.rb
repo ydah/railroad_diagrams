@@ -2,13 +2,15 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
-  class ZeroOrMore
+  class ZeroOrMore < Optional
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?
     # @rbs skip: bool
-    # @rbs return: Choice
-    def self.new(item, repeat = nil, skip = false, id: nil, cls: nil, attrs: {})
-      Optional.new(OneOrMore.new(item, repeat), skip, id: id, cls: cls, attrs: attrs)
+    # @rbs return: void
+    def initialize(item, repeat = nil, legacy_skip = Deprecation::UNSET, skip: Deprecation::UNSET,
+                   id: nil, cls: nil, attrs: {})
+      skip = Deprecation.positional_argument('skip', legacy_skip, skip, false)
+      super(OneOrMore.new(item, repeat), skip: skip, id: id, cls: cls, attrs: attrs)
     end
   end
 end

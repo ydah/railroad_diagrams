@@ -20,7 +20,7 @@ RSpec.describe 'Regressions (Phase 0)' do
 
   it 'BUG-01: walk visits every node' do
     visited = []
-    RailroadDiagrams::Diagram.new('a', RailroadDiagrams::Group.new('b', 'label')).walk(->(n) { visited << n.class })
+    RailroadDiagrams::Diagram.new('a', RailroadDiagrams::Group.new('b', label: 'label')).walk(->(n) { visited << n.class })
     expect(visited).to include(RailroadDiagrams::Diagram, RailroadDiagrams::Group, RailroadDiagrams::Terminal)
   end
 
@@ -62,7 +62,7 @@ RSpec.describe 'Regressions (Phase 0)' do
   end
 
   it 'BUG-07: Group label is not stretched to the box width' do
-    g = RailroadDiagrams::Group.new(RailroadDiagrams::Terminal.new('long terminal text'), 'x')
+    g = RailroadDiagrams::Group.new(RailroadDiagrams::Terminal.new('long terminal text'), label: 'x')
     g.format(0, 0, g.width)
     label = g.children.find { |c| c.is_a?(RailroadDiagrams::Comment) }
     expect(label.children.grep(RailroadDiagrams::Path).map { |p| p.attrs['d'] }).to all(end_with('h0'))
@@ -84,7 +84,7 @@ RSpec.describe 'Regressions (Phase 0)' do
   end
 
   it 'BUG-11: attribute values escape < and >' do
-    out = svg(RailroadDiagrams::Diagram.new(RailroadDiagrams::Terminal.new('a', 'http://x/?q=<b>', 'x<y')))
+    out = svg(RailroadDiagrams::Diagram.new(RailroadDiagrams::Terminal.new('a', href: 'http://x/?q=<b>', title: 'x<y')))
     expect(out).to include('http://x/?q=&lt;b&gt;').and exclude('q=<b>')
   end
 

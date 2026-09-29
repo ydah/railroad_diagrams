@@ -2,12 +2,14 @@
 # frozen_string_literal: true
 
 module RailroadDiagrams
-  class Optional < DiagramMultiContainer
+  class Optional < Choice
     # @rbs item: DiagramItem | String
     # @rbs skip: bool
-    # @rbs return: Choice
-    def self.new(item, skip = false, id: nil, cls: nil, attrs: {})
-      Choice.new(skip ? 0 : 1, Skip.new, item, id: id, cls: cls, attrs: attrs)
+    # @rbs return: void
+    def initialize(item, legacy_skip = Deprecation::UNSET, skip: Deprecation::UNSET,
+                   id: nil, cls: nil, attrs: {})
+      skip = Deprecation.positional_argument('skip', legacy_skip, skip, false)
+      super(skip ? 0 : 1, Skip.new, item, id: id, cls: cls, attrs: attrs)
     end
   end
 end

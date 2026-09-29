@@ -25,17 +25,17 @@ RSpec.describe RailroadDiagrams::Comment do
     end
 
     it 'accepts custom class' do
-      comment = described_class.new('test', nil, nil, cls: 'blue')
+      comment = described_class.new('test', cls: 'blue')
       expect(comment.attrs['class']).to eq('comment non-terminal blue')
     end
 
     it 'accepts href' do
-      comment = described_class.new('test', 'http://example.com')
+      comment = described_class.new('test', href: 'http://example.com')
       expect(comment.instance_variable_get(:@href)).to eq('http://example.com')
     end
 
     it 'accepts title' do
-      comment = described_class.new('test', nil, 'Title Text')
+      comment = described_class.new('test', title: 'Title Text')
       expect(comment.instance_variable_get(:@title)).to eq('Title Text')
     end
   end
@@ -64,7 +64,7 @@ RSpec.describe RailroadDiagrams::Comment do
     end
 
     it 'creates link when href is provided' do
-      comment_with_link = described_class.new('test', 'http://example.com')
+      comment_with_link = described_class.new('test', href: 'http://example.com')
       comment_with_link.format(0, 0, comment_with_link.width)
       has_link = comment_with_link.children.any? do |child|
         child.is_a?(RailroadDiagrams::DiagramItem) && child.instance_variable_get(:@name) == 'a'
@@ -73,7 +73,7 @@ RSpec.describe RailroadDiagrams::Comment do
     end
 
     it 'creates title element when title is provided' do
-      comment_with_title = described_class.new('test', nil, 'Title')
+      comment_with_title = described_class.new('test', title: 'Title')
       comment_with_title.format(0, 0, comment_with_title.width)
       has_title = comment_with_title.children.any? do |child|
         child.is_a?(RailroadDiagrams::DiagramItem) && child.instance_variable_get(:@name) == 'title'
@@ -116,7 +116,7 @@ RSpec.describe RailroadDiagrams::Comment do
     end
 
     it 'returns debug string with all parameters' do
-      comment = described_class.new('foo', 'http://example.com', 'Title', cls: 'blue')
+      comment = described_class.new('foo', href: 'http://example.com', title: 'Title', cls: 'blue')
       expect(comment.to_s).to eq('Comment(foo, href=http://example.com, title=Title, cls=blue)')
     end
   end

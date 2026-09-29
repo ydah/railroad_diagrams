@@ -8,13 +8,13 @@
 <g>
 <path d="M105.5 40h0.0" /><path d="M543.5 40h0.0" /><path d="M105.5 40h20" /><g data-type="Sequence" data-updown="20 0 11">
 <g>
-<path d="M125.5 40h0.0" /><path d="M523.5 40h0.0" /><g data-type="Choice" data-updown="20 0 11">
+<path d="M125.5 40h0.0" /><path d="M523.5 40h0.0" /><g data-type="Optional" data-updown="20 0 11">
 <g>
 <path d="M125.5 40h0.0" /><path d="M279.0 40h0.0" /><path d="M125.5 40a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10" /><g data-type="Skip" data-updown="0 0 0">
 <g>
 <path d="M145.5 20h113.5" /></g><rect class="debug-bounds" height="0" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="113.5" x="145.5" y="20" /></g><path d="M259.0 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10" /><path d="M125.5 40h20" /><g data-type="NonTerminal" data-updown="11 0 11">
 <g class="non-terminal ">
-<path d="M145.5 40h0.0" /><path d="M259.0 40h0.0" /><rect height="22" width="113.5" x="145.5" y="29"></rect><text x="202.25" y="44">Declaration</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="113.5" x="145.5" y="29" /></g><path d="M259.0 40h20" /></g><rect class="debug-bounds" height="31" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="153.5" x="125.5" y="20" /></g><g data-type="Choice" data-updown="20 0 11">
+<path d="M145.5 40h0.0" /><path d="M259.0 40h0.0" /><rect height="22" width="113.5" x="145.5" y="29"></rect><text x="202.25" y="44">Declaration</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="113.5" x="145.5" y="29" /></g><path d="M259.0 40h20" /></g><rect class="debug-bounds" height="31" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="153.5" x="125.5" y="20" /></g><g data-type="Optional" data-updown="20 0 11">
 <g>
 <path d="M279.0 40h0.0" /><path d="M523.5 40h0.0" /><path d="M279.0 40a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10" /><g data-type="Skip" data-updown="0 0 0">
 <g>

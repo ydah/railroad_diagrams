@@ -49,7 +49,7 @@ Strings passed as children become `Terminal` nodes. Build larger diagrams by nes
 | `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | <img src="docs/images/rrx2Dmultchoice.svg" alt="MultipleChoice example" width="180"> |
 | `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | <img src="docs/images/labeledx2Dstart.svg" alt="Start and End example" width="180"> |
 
-`Optional.new` and `ZeroOrMore.new` return a `Choice`. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child. These factory return types are part of the current API.
+`Optional` is a `Choice` subclass, and `ZeroOrMore` is an `Optional` subclass. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child.
 
 ## Text output
 

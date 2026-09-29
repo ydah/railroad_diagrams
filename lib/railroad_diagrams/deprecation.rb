@@ -3,10 +3,20 @@
 
 module RailroadDiagrams
   module Deprecation
+    UNSET = Object.new.freeze
     @seen = {}
     @mutex = Mutex.new
 
     class << self
+      def positional_argument(name, legacy, keyword, default = nil)
+        return keyword.equal?(UNSET) ? default : keyword if legacy.equal?(UNSET)
+
+        raise InvalidArgument, "#{name} specified twice" unless keyword.equal?(UNSET)
+
+        warn("positional #{name} is deprecated; use #{name}:", uplevel: 2)
+        legacy
+      end
+
       # @rbs message: String
       # @rbs uplevel: Integer
       # @rbs return: void

@@ -2,7 +2,7 @@
 <g transform="translate(.5 .5)">
 <g data-type="Start" data-updown="10 0 10">
 <g>
-<path d="M20 119v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="119" /></g><g data-type="Choice" data-updown="109 0 49">
+<path d="M20 119v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="119" /></g><g data-type="ZeroOrMore" data-updown="109 0 49">
 <g>
 <path d="M40 129h0.0" /><path d="M313.0 129h0.0" /><path d="M40.0 129a10 10 0 0 0 10 -10v-89a10 10 0 0 1 10 -10" /><g data-type="Skip" data-updown="0 0 0">
 <g>

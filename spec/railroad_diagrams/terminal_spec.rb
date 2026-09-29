@@ -25,17 +25,17 @@ RSpec.describe RailroadDiagrams::Terminal do
     end
 
     it 'accepts custom class' do
-      terminal = described_class.new('test', nil, nil, cls: 'blue')
+      terminal = described_class.new('test', cls: 'blue')
       expect(terminal.attrs['class']).to eq('terminal blue')
     end
 
     it 'accepts href' do
-      terminal = described_class.new('test', 'http://example.com')
+      terminal = described_class.new('test', href: 'http://example.com')
       expect(terminal.instance_variable_get(:@href)).to eq('http://example.com')
     end
 
     it 'accepts title' do
-      terminal = described_class.new('test', nil, 'Title Text')
+      terminal = described_class.new('test', title: 'Title Text')
       expect(terminal.instance_variable_get(:@title)).to eq('Title Text')
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe RailroadDiagrams::Terminal do
     end
 
     it 'creates link when href is provided' do
-      terminal_with_link = described_class.new('test', 'http://example.com')
+      terminal_with_link = described_class.new('test', href: 'http://example.com')
       terminal_with_link.format(0, 0, terminal_with_link.width)
       has_link = terminal_with_link.children.any? do |child|
         child.is_a?(RailroadDiagrams::DiagramItem) && child.instance_variable_get(:@name) == 'a'
@@ -82,7 +82,7 @@ RSpec.describe RailroadDiagrams::Terminal do
     end
 
     it 'creates title element when title is provided' do
-      terminal_with_title = described_class.new('test', nil, 'Title')
+      terminal_with_title = described_class.new('test', title: 'Title')
       terminal_with_title.format(0, 0, terminal_with_title.width)
       has_title = terminal_with_title.children.any? do |child|
         child.is_a?(RailroadDiagrams::DiagramItem) && child.instance_variable_get(:@name) == 'title'
@@ -119,7 +119,7 @@ RSpec.describe RailroadDiagrams::Terminal do
     end
 
     it 'returns debug string with all parameters' do
-      terminal = described_class.new('foo', 'http://example.com', 'Title', cls: 'blue')
+      terminal = described_class.new('foo', href: 'http://example.com', title: 'Title', cls: 'blue')
       expect(terminal.to_s).to eq('Terminal(foo, href=http://example.com, title=Title, cls=blue)')
     end
   end

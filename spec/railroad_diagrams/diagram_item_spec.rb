@@ -148,6 +148,14 @@ RSpec.describe RailroadDiagrams::DiagramItem do
   end
 
   describe '#to_str' do
+    around do |example|
+      previous = ENV['RAILROAD_DIAGRAMS_DEPRECATION']
+      ENV['RAILROAD_DIAGRAMS_DEPRECATION'] = 'warn'
+      example.run
+    ensure
+      ENV['RAILROAD_DIAGRAMS_DEPRECATION'] = previous
+    end
+
     it 'warns and returns the debug string' do
       item = described_class.new('rect', attrs: { 'x' => '10' })
       result = nil

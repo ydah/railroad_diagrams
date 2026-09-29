@@ -8,7 +8,7 @@ RSpec.describe RailroadDiagrams::Group do
     end
 
     it 'accepts item and label' do
-      group = described_class.new('item', 'label')
+      group = described_class.new('item', label: 'label')
       expect(group.instance_variable_get(:@label)).not_to be_nil
     end
 
@@ -18,13 +18,13 @@ RSpec.describe RailroadDiagrams::Group do
     end
 
     it 'wraps string label in Comment' do
-      group = described_class.new('item', 'label')
+      group = described_class.new('item', label: 'label')
       expect(group.instance_variable_get(:@label)).to be_a(RailroadDiagrams::Comment)
     end
 
     it 'accepts DiagramItem as label' do
       comment = RailroadDiagrams::Comment.new('custom')
-      group = described_class.new('item', comment)
+      group = described_class.new('item', label: comment)
       expect(group.instance_variable_get(:@label)).to eq(comment)
     end
 
@@ -34,7 +34,7 @@ RSpec.describe RailroadDiagrams::Group do
     end
 
     it 'calculates width including label' do
-      group = described_class.new('short', 'very long label')
+      group = described_class.new('short', label: 'very long label')
       expect([group.width, group.up, group.height, group.down]).to eq([115, 35, 0, 19])
     end
 
@@ -46,7 +46,7 @@ RSpec.describe RailroadDiagrams::Group do
 
     it 'calculates up including label when present' do
       group_without_label = described_class.new('test')
-      group_with_label = described_class.new('test', 'label')
+      group_with_label = described_class.new('test', label: 'label')
       expect([group_without_label.up, group_with_label.up]).to eq([19, 35])
     end
 
@@ -89,7 +89,7 @@ RSpec.describe RailroadDiagrams::Group do
     end
 
     it 'formats label when present' do
-      group = described_class.new('test', 'label')
+      group = described_class.new('test', label: 'label')
       group.format(0, 0, group.width)
       label = group.instance_variable_get(:@label)
       expect(group.children).to include(label)
@@ -118,13 +118,13 @@ RSpec.describe RailroadDiagrams::Group do
     end
 
     it 'includes the label when present' do
-      group = described_class.new('item', 'LABEL')
+      group = described_class.new('item', label: 'LABEL')
       td = group.text_diagram
       expect(td.lines.join("\n")).to include('LABEL')
     end
 
     it 'positions label above item' do
-      group = described_class.new('A', 'L')
+      group = described_class.new('A', label: 'L')
       td = group.text_diagram
       lines_text = td.lines.join("\n")
       label_pos = lines_text.index('L')
@@ -142,7 +142,7 @@ RSpec.describe RailroadDiagrams::Group do
     end
 
     it 'returns debug string with label' do
-      group = described_class.new('item', 'label')
+      group = described_class.new('item', label: 'label')
       result = group.to_s
       expect(result).to include('Comment')
     end

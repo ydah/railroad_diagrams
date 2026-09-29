@@ -25,17 +25,17 @@ RSpec.describe RailroadDiagrams::NonTerminal do
     end
 
     it 'accepts custom class' do
-      non_terminal = described_class.new('test', nil, nil, cls: 'blue')
+      non_terminal = described_class.new('test', cls: 'blue')
       expect(non_terminal.attrs['class']).to eq('non-terminal blue')
     end
 
     it 'accepts href' do
-      non_terminal = described_class.new('test', 'http://example.com')
+      non_terminal = described_class.new('test', href: 'http://example.com')
       expect(non_terminal.instance_variable_get(:@href)).to eq('http://example.com')
     end
 
     it 'accepts title' do
-      non_terminal = described_class.new('test', nil, 'Title Text')
+      non_terminal = described_class.new('test', title: 'Title Text')
       expect(non_terminal.instance_variable_get(:@title)).to eq('Title Text')
     end
   end
@@ -73,7 +73,7 @@ RSpec.describe RailroadDiagrams::NonTerminal do
     end
 
     it 'creates link when href is provided' do
-      non_terminal_with_link = described_class.new('test', 'http://example.com')
+      non_terminal_with_link = described_class.new('test', href: 'http://example.com')
       non_terminal_with_link.format(0, 0, non_terminal_with_link.width)
       has_link = non_terminal_with_link.children.any? do |child|
         child.is_a?(RailroadDiagrams::DiagramItem) && child.instance_variable_get(:@name) == 'a'
@@ -82,7 +82,7 @@ RSpec.describe RailroadDiagrams::NonTerminal do
     end
 
     it 'creates title element when title is provided' do
-      non_terminal_with_title = described_class.new('test', nil, 'Title')
+      non_terminal_with_title = described_class.new('test', title: 'Title')
       non_terminal_with_title.format(0, 0, non_terminal_with_title.width)
       has_title = non_terminal_with_title.children.any? do |child|
         child.is_a?(RailroadDiagrams::DiagramItem) && child.instance_variable_get(:@name) == 'title'
@@ -119,7 +119,7 @@ RSpec.describe RailroadDiagrams::NonTerminal do
     end
 
     it 'returns debug string with all parameters' do
-      non_terminal = described_class.new('foo', 'http://example.com', 'Title', cls: 'blue')
+      non_terminal = described_class.new('foo', href: 'http://example.com', title: 'Title', cls: 'blue')
       expect(non_terminal.to_s).to eq('NonTerminal(foo, href=http://example.com, title=Title, cls=blue)')
     end
   end

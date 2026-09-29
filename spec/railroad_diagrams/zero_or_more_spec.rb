@@ -30,12 +30,12 @@ RSpec.describe RailroadDiagrams::ZeroOrMore do
     end
 
     it 'accepts skip parameter false' do
-      zero_or_more = described_class.new('item', nil, false)
+      zero_or_more = described_class.new('item', nil, skip: false)
       expect(zero_or_more.instance_variable_get(:@default)).to eq(1)
     end
 
     it 'accepts skip parameter true' do
-      zero_or_more = described_class.new('item', nil, true)
+      zero_or_more = described_class.new('item', nil, skip: true)
       expect(zero_or_more.instance_variable_get(:@default)).to eq(0)
     end
 

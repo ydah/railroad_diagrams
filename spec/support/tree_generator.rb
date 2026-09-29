@@ -14,10 +14,10 @@ module TreeGenerator
     when 0 then RailroadDiagrams::Sequence.new(*children)
     when 1 then RailroadDiagrams::Stack.new(*children)
     when 2 then RailroadDiagrams::Choice.new(random.rand(children.size), *children)
-    when 3 then RailroadDiagrams::Optional.new(children.first, random.rand < 0.5)
+    when 3 then RailroadDiagrams::Optional.new(children.first, skip: random.rand < 0.5)
     when 4 then RailroadDiagrams::OneOrMore.new(children.first, children[1])
     when 5 then RailroadDiagrams::ZeroOrMore.new(children.first)
-    when 6 then RailroadDiagrams::Group.new(children.first, 'g')
+    when 6 then RailroadDiagrams::Group.new(children.first, label: 'g')
     when 7 then RailroadDiagrams::HorizontalChoice.new(*children)
     when 8, (10..(8 + OSEQ_WEIGHT)) then RailroadDiagrams::OptionalSequence.new(*children)
     else

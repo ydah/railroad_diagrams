@@ -103,7 +103,7 @@ RSpec.describe 'Output API' do
   end
 
   it 'removes unsafe links by default and can raise on policy violations' do
-    node = RailroadDiagrams::Terminal.new('click', 'javascript:alert(1)')
+    node = RailroadDiagrams::Terminal.new('click', href: 'javascript:alert(1)')
     diagram = RailroadDiagrams::Diagram.new(node, node)
     svg = nil
     expect { svg = diagram.to_svg }.to output("railroad_diagrams: rejected link URL\n").to_stderr
@@ -113,7 +113,7 @@ RSpec.describe 'Output API' do
   end
 
   it 'supports SVG 2 links and protects new windows' do
-    diagram = RailroadDiagrams::Diagram.new(RailroadDiagrams::Terminal.new('rule', '#rule'))
+    diagram = RailroadDiagrams::Diagram.new(RailroadDiagrams::Terminal.new('rule', href: '#rule'))
     svg = diagram.to_svg(href_mode: :both, link_target: '_blank')
     expect(svg).to include('href="#rule"', 'xlink:href="#rule"')
     expect(svg).to include('target="_blank"', 'rel="noopener noreferrer"')

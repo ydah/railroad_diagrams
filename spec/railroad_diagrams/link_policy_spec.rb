@@ -5,7 +5,7 @@ require 'rexml/document'
 RSpec.describe RailroadDiagrams::LinkPolicy do
   it 'renders one linked label and puts its title first for each label node' do
     [RailroadDiagrams::Terminal, RailroadDiagrams::NonTerminal, RailroadDiagrams::Comment].each do |type|
-      diagram = RailroadDiagrams::Diagram.new(type.new('label', 'https://example.com', 'Hint'))
+      diagram = RailroadDiagrams::Diagram.new(type.new('label', href: 'https://example.com', title: 'Hint'))
       group = REXML::Document.new(diagram.to_svg).get_elements('//g[@class]').last
       expect(group.elements[1].name).to eq('title')
       expect(group.get_elements('a/text').map(&:text)).to eq(['label'])

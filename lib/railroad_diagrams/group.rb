@@ -6,10 +6,11 @@ module RailroadDiagrams
     # @rbs item: DiagramItem | String
     # @rbs label: (DiagramItem | String)?
     # @rbs return: void
-    def initialize(item, label = nil, id: nil, cls: nil, attrs: {})
+    def initialize(item, legacy_label = Deprecation::UNSET, label: Deprecation::UNSET,
+                   id: nil, cls: nil, attrs: {})
       super('g', id: id, cls: cls, data_attrs: attrs)
       @item = wrap_string(item)
-      @label = prepare_label(label)
+      @label = prepare_label(Deprecation.positional_argument('label', legacy_label, label))
       @needs_space = true
 
       calculate_dimensions

@@ -26,7 +26,7 @@ RSpec.describe RailroadDiagrams::DiagramItem do
   end
 
   it 'places the Group border around its label and child' do
-    group = RailroadDiagrams::Group.new('a', 'g')
+    group = RailroadDiagrams::Group.new('a', label: 'g')
     expect([group.width, group.up, group.height, group.down]).to eq([48.5, 35, 0, 19])
     group.format(0, 100, group.width)
     border = group.children.find { |child| child.is_a?(described_class) && child.attrs['class'] == 'group-box' }

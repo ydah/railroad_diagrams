@@ -20,12 +20,12 @@ RSpec.describe RailroadDiagrams::Optional do
     end
 
     it 'sets default to 1 when skip is false' do
-      optional = described_class.new('test', false)
+      optional = described_class.new('test', skip: false)
       expect(optional.instance_variable_get(:@default)).to eq(1)
     end
 
     it 'sets default to 0 when skip is true' do
-      optional = described_class.new('test', true)
+      optional = described_class.new('test', skip: true)
       expect(optional.instance_variable_get(:@default)).to eq(0)
     end
 

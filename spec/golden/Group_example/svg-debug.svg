@@ -4,7 +4,7 @@
 <g>
 <path d="M20 53v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="53" /></g><path d="M40 63h10" /><g data-type="Terminal" data-updown="11 0 11">
 <g class="terminal ">
-<path d="M50 63h0.0" /><path d="M95.5 63h0.0" /><rect height="22" rx="10" ry="10" width="45.5" x="50" y="52"></rect><text x="72.75" y="67">foo</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="45.5" x="50" y="52" /></g><path d="M95.5 63h10" /><g data-type="Choice" data-updown="43 40 27">
+<path d="M50 63h0.0" /><path d="M95.5 63h0.0" /><rect height="22" rx="10" ry="10" width="45.5" x="50" y="52"></rect><text x="72.75" y="67">foo</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="45.5" x="50" y="52" /></g><path d="M95.5 63h10" /><g data-type="ZeroOrMore" data-updown="43 40 27">
 <g>
 <path d="M105.5 63h0.0" /><path d="M271.0 103h0.0" /><path d="M105.5 63a10 10 0 0 0 10 -10v-23a10 10 0 0 1 10 -10" /><g data-type="Skip" data-updown="0 0 0">
 <g>

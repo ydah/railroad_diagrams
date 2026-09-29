@@ -8,11 +8,12 @@ module RailroadDiagrams
     # @rbs title: String?
     # @rbs cls: String
     # @rbs return: void
-    def initialize(text, href = nil, title = nil, cls: '', id: nil, attrs: {})
+    def initialize(text, legacy_href = Deprecation::UNSET, legacy_title = Deprecation::UNSET,
+                   href: Deprecation::UNSET, title: Deprecation::UNSET, cls: '', id: nil, attrs: {})
       super('g', attrs: { 'class' => "non-terminal #{cls}" }, id: id, data_attrs: attrs)
       @text = text.to_s
-      @href = href
-      @title = title
+      @href = Deprecation.positional_argument('href', legacy_href, href)
+      @title = Deprecation.positional_argument('title', legacy_title, title)
       @cls = cls
       @width = (Unicode::DisplayWidth.of(@text) * CHAR_WIDTH) + 20
       @up = 11
