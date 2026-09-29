@@ -1,8 +1,8 @@
-<svg class="railroad-diagram" height="62" viewBox="0 0 306.0 62" width="306.0">
+<svg class="railroad-diagram" height="62" viewBox="0 0 326.0 62" width="326.0">
 <g transform="translate(.5 .5)">
 <g>
-<path d="M20 21v20m10 -20v20m-10 -10h120.5" /><text style="text-anchor:start" x="20" y="16">Labeled Start</text></g><g>
-<path d="M140.5 31h0.0" /><path d="M266.0 31h0.0" /><g class="terminal ">
-<path d="M140.5 31h0.0" /><path d="M169.0 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="140.5" y="20"></rect><text x="154.75" y="35">1</text></g><path d="M169.0 31h10" /><path d="M179.0 31h10" /><g class="terminal ">
-<path d="M189.0 31h0.0" /><path d="M217.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="189" y="20"></rect><text x="203.25" y="35">2</text></g><path d="M217.5 31h10" /><path d="M227.5 31h10" /><g class="terminal ">
-<path d="M237.5 31h0.0" /><path d="M266.0 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="237.5" y="20"></rect><text x="251.75" y="35">3</text></g></g><path d="M 266.0 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
+<path d="M20 21v20m10 -20v20m-10 -10h120.5" /><text style="text-anchor:start" x="20" y="16">Labeled Start</text></g><path d="M140.5 31h10" /><g>
+<path d="M150.5 31h0.0" /><path d="M276.0 31h0.0" /><g class="terminal ">
+<path d="M150.5 31h0.0" /><path d="M179.0 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="150.5" y="20"></rect><text x="164.75" y="35">1</text></g><path d="M179.0 31h10" /><path d="M189.0 31h10" /><g class="terminal ">
+<path d="M199.0 31h0.0" /><path d="M227.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="199" y="20"></rect><text x="213.25" y="35">2</text></g><path d="M227.5 31h10" /><path d="M237.5 31h10" /><g class="terminal ">
+<path d="M247.5 31h0.0" /><path d="M276.0 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="247.5" y="20"></rect><text x="261.75" y="35">3</text></g></g><path d="M276.0 31h10" /><path d="M 286.0 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
