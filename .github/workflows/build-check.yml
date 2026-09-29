@@ -29,8 +29,8 @@ jobs:
           bundler-cache: true
       - name: Build and install gem
         run: |
-          gem build railroad_diagrams.gemspec --output "$RUNNER_TEMP/railroad-diagrams.gem"
-          gem install --local --no-document --install-dir "$RUNNER_TEMP/railroad-gems" "$RUNNER_TEMP/railroad-diagrams.gem"
+          gem build railroad_diagrams.gemspec
+          gem install --local --no-document --install-dir "$RUNNER_TEMP/railroad-gems" railroad_diagrams-*.gem
       - name: Run packaged CLI outside checkout
         run: |
           cd "$RUNNER_TEMP"
