@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.4.0 - 2026-09-30
+
 ### Fixed
 
 - Correct node walking, diagram descriptions, and public output methods.
@@ -15,13 +17,14 @@
 
 ### Added
 
-- Golden output, XML well-formedness, and SVG rectangle bounds checks.
+- Golden output, XML well-formedness, and SVG coordinate bounds checks.
 - String-returning SVG and text APIs, flexible output writers, and a shared error hierarchy.
 - Unicode 16.0 display-width tables and international text examples.
 - CI checks minimum line and branch coverage.
 - RuboCop checks Ruby 2.5 syntax and new style violations.
 - Upstream parity compares 67 examples against a pinned Python renderer.
-- README node guide, migration notes, and contribution templates.
+- README node gallery, reproducible preview images, a runnable quick start, migration notes, and contribution templates.
+- Concrete dimensions and branch paths for composite nodes in the test suite.
 - Lrama API contract and integration smoke checks.
 
 ### Changed

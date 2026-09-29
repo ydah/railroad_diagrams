@@ -33,3 +33,21 @@ namespace :golden do
     sh({ 'GOLDEN_UPDATE' => '1' }, 'bundle exec rspec spec/golden_spec.rb')
   end
 end
+
+namespace :docs do
+  desc 'Copy diagram previews from the reviewed golden outputs'
+  task :images do
+    require 'fileutils'
+
+    samples = %w[
+      simple Group_example comment rrx2Dsequence rrx2Dstack rrx2Dchoice
+      rrx2Doptional rrx2Doneormore rrx2Dzeroormorex2D1 rrx2Dgroup
+      rrx2Dhorizontalchoice rrx2Doptionalsequence rrx2Dalternatingsequence
+      rrx2Dmultchoice labeledx2Dstart
+    ]
+    FileUtils.mkdir_p('docs/images')
+    samples.each do |name|
+      FileUtils.cp("spec/golden/#{name}/standalone.svg", "docs/images/#{name}.svg")
+    end
+  end
+end

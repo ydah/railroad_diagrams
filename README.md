@@ -4,7 +4,7 @@
 
 Generate railroad syntax diagrams as SVG or fixed-width text with Ruby 2.5 or newer. Inspired by [railroad-diagrams](https://github.com/tabatkins/railroad-diagrams).
 
-![A sample railroad diagram](spec/golden/simple/standalone.svg)
+![A sample railroad diagram](docs/images/simple.svg)
 
 ## Install
 
@@ -31,21 +31,21 @@ Strings passed as children become `Terminal` nodes. Build larger diagrams by nes
 
 | Node | Example | Preview |
 | --- | --- | --- |
-| `Terminal` | `Terminal.new('word')` | <img src="spec/golden/simple/standalone.svg" alt="Terminal example" width="180"> |
-| `NonTerminal` | `NonTerminal.new('expression')` | <img src="spec/golden/Group_example/standalone.svg" alt="NonTerminal example" width="180"> |
-| `Comment` | `Comment.new('note')` | <img src="spec/golden/comment/standalone.svg" alt="Comment example" width="180"> |
-| `Sequence` | `Sequence.new('a', 'b')` | <img src="spec/golden/rrx2Dsequence/standalone.svg" alt="Sequence example" width="180"> |
-| `Stack` | `Stack.new('a', 'b')` | <img src="spec/golden/rrx2Dstack/standalone.svg" alt="Stack example" width="180"> |
-| `Choice` | `Choice.new(0, 'a', 'b')` | <img src="spec/golden/rrx2Dchoice/standalone.svg" alt="Choice example" width="180"> |
-| `Optional` | `Optional.new('a')` | <img src="spec/golden/rrx2Doptional/standalone.svg" alt="Optional example" width="180"> |
-| `OneOrMore` | `OneOrMore.new('a', ',')` | <img src="spec/golden/rrx2Doneormore/standalone.svg" alt="OneOrMore example" width="180"> |
-| `ZeroOrMore` | `ZeroOrMore.new('a', ',')` | <img src="spec/golden/rrx2Dzeroormorex2D1/standalone.svg" alt="ZeroOrMore example" width="180"> |
-| `Group` | `Group.new('a', 'label')` | <img src="spec/golden/rrx2Dgroup/standalone.svg" alt="Group example" width="180"> |
-| `HorizontalChoice` | `HorizontalChoice.new('a', 'b')` | <img src="spec/golden/rrx2Dhorizontalchoice/standalone.svg" alt="HorizontalChoice example" width="180"> |
-| `OptionalSequence` | `OptionalSequence.new('a', 'b')` | <img src="spec/golden/rrx2Doptionalsequence/standalone.svg" alt="OptionalSequence example" width="180"> |
-| `AlternatingSequence` | `AlternatingSequence.new('a', 'b')` | <img src="spec/golden/rrx2Dalternatingsequence/standalone.svg" alt="AlternatingSequence example" width="180"> |
-| `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | <img src="spec/golden/rrx2Dmultchoice/standalone.svg" alt="MultipleChoice example" width="180"> |
-| `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | <img src="spec/golden/labeledx2Dstart/standalone.svg" alt="Start and End example" width="180"> |
+| `Terminal` | `Terminal.new('word')` | <img src="docs/images/simple.svg" alt="Terminal example" width="180"> |
+| `NonTerminal` | `NonTerminal.new('expression')` | <img src="docs/images/Group_example.svg" alt="NonTerminal example" width="180"> |
+| `Comment` | `Comment.new('note')` | <img src="docs/images/comment.svg" alt="Comment example" width="180"> |
+| `Sequence` | `Sequence.new('a', 'b')` | <img src="docs/images/rrx2Dsequence.svg" alt="Sequence example" width="180"> |
+| `Stack` | `Stack.new('a', 'b')` | <img src="docs/images/rrx2Dstack.svg" alt="Stack example" width="180"> |
+| `Choice` | `Choice.new(0, 'a', 'b')` | <img src="docs/images/rrx2Dchoice.svg" alt="Choice example" width="180"> |
+| `Optional` | `Optional.new('a')` | <img src="docs/images/rrx2Doptional.svg" alt="Optional example" width="180"> |
+| `OneOrMore` | `OneOrMore.new('a', ',')` | <img src="docs/images/rrx2Doneormore.svg" alt="OneOrMore example" width="180"> |
+| `ZeroOrMore` | `ZeroOrMore.new('a', ',')` | <img src="docs/images/rrx2Dzeroormorex2D1.svg" alt="ZeroOrMore example" width="180"> |
+| `Group` | `Group.new('a', 'label')` | <img src="docs/images/rrx2Dgroup.svg" alt="Group example" width="180"> |
+| `HorizontalChoice` | `HorizontalChoice.new('a', 'b')` | <img src="docs/images/rrx2Dhorizontalchoice.svg" alt="HorizontalChoice example" width="180"> |
+| `OptionalSequence` | `OptionalSequence.new('a', 'b')` | <img src="docs/images/rrx2Doptionalsequence.svg" alt="OptionalSequence example" width="180"> |
+| `AlternatingSequence` | `AlternatingSequence.new('a', 'b')` | <img src="docs/images/rrx2Dalternatingsequence.svg" alt="AlternatingSequence example" width="180"> |
+| `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | <img src="docs/images/rrx2Dmultchoice.svg" alt="MultipleChoice example" width="180"> |
+| `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | <img src="docs/images/labeledx2Dstart.svg" alt="Start and End example" width="180"> |
 
 `Optional.new` and `ZeroOrMore.new` return a `Choice`. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child. These factory return types are part of the current API.
 
@@ -71,7 +71,7 @@ Read the [migration guide](docs/migration.md) for behavior changes and deprecati
 
 ## Development and releases
 
-Run `bin/setup`, then `bundle exec rake` for specs and type checking. `bundle exec rake golden:update` regenerates golden outputs; review those diffs before committing. `bin/console` opens an IRB session.
+Run `bin/setup`, then `bundle exec rake` for specs and type checking. `bundle exec rake golden:update` regenerates golden outputs; review those diffs before committing. `bundle exec rake docs:images` copies the reviewed SVG outputs into the node gallery. `bin/console` opens an IRB session.
 
 To release, update `lib/railroad_diagrams/version.rb` and `CHANGELOG.md`, run the test suite, then push a matching `vX.Y.Z` tag. The [release workflow](.github/workflows/release.yml) publishes the gem through RubyGems Trusted Publishing and creates a GitHub release.
 

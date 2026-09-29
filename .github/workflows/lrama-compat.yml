@@ -9,6 +9,10 @@ concurrency:
 jobs:
   smoke:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        lrama_ref: [master, v0.8.0]
     steps:
       - uses: actions/checkout@v7
         with:
@@ -16,10 +20,14 @@ jobs:
       - uses: actions/checkout@v7
         with:
           repository: ruby/lrama
-          ref: master
+          ref: ${{ matrix.lrama_ref }}
           path: lrama
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: '3.4'
+          bundler-cache: true
+          working-directory: railroad_diagrams
+      - run: bundle exec rspec spec/compat/lrama_api_spec.rb
+        working-directory: railroad_diagrams
       - run: ruby spec/compat/lrama_smoke.rb ../lrama
         working-directory: railroad_diagrams
