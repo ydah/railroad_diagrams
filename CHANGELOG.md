@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.5.0 - 2026-09-30
+
 ### Added
 
 - Per-call SVG rendering options for arc radius, alignment, measurement, number precision, and path optimization.
