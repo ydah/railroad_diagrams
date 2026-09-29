@@ -126,7 +126,7 @@ module RailroadDiagrams
 
       first_td = @items[0].text_diagram
       second_td = @items[1].text_diagram
-      max_width = TextDiagram.max_width(first_td, second_td)
+      max_width = [TextDiagram.max_width(first_td, second_td), 4].max
       left_width, right_width = TextDiagram.gaps(max_width, 0)
 
       left_lines = []

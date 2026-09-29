@@ -10,6 +10,7 @@
 - Run the packaged demo from any directory and reject unsupported CLI formats.
 - Preserve repeated spaces in SVG labels and style MultipleChoice labels.
 - Handle Style items, empty diagrams, non-string labels, and invalid diagram options.
+- Keep text tracks clear around short alternating branches and tall horizontal-choice branches.
 
 ### Added
 

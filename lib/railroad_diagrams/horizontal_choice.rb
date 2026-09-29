@@ -171,7 +171,7 @@ module RailroadDiagrams
       # top_to_soil: distance from top to skip-over-items line.
       top_to_soil = diagram_entry - soil_to_baseline
       # baseline_to_suil: distance from lowest entry or exit after leftmost item to bottom, aka distance from entry to skip-under-items line, aka SUIL height.
-      baseline_to_suil = item_tds[1..-1].map { |td| td.height - [td.entry, td.exit].min }.max - 1
+      baseline_to_suil = item_tds.map { |td| td.height - [td.entry, td.exit].min }.max - 1
 
       # The diagram starts with a line from its entry up to skip-over-items line:
       lines = Array.new(top_to_soil, '  ')
