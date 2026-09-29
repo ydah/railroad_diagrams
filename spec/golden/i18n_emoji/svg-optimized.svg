@@ -1,0 +1,7 @@
+<svg class="railroad-diagram" height="62" viewBox="0 0 251 62" width="251">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><path d="M40 31h10" /><g class="terminal ">
+<path d="M50 31" /><path d="M87 31" /><rect height="22" rx="10" ry="10" width="37" x="50" y="20"></rect><text x="68.5" y="35">🚀</text></g><path d="M87 31h10" /><path d="M97 31h10" /><g class="terminal ">
+<path d="M107 31" /><path d="M144 31" /><rect height="22" rx="10" ry="10" width="37" x="107" y="20"></rect><text x="125.5" y="35">👨‍👩‍👧</text></g><path d="M144 31h10" /><path d="M154 31h10" /><g class="terminal ">
+<path d="M164 31" /><path d="M201 31" /><rect height="22" rx="10" ry="10" width="37" x="164" y="20"></rect><text x="182.5" y="35">🇯🇵</text></g><path d="M201 31h10" /><path d="M211 31h20m-10 -10v20m10 -20v20"></path></g></svg>

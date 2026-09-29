@@ -1,0 +1,30 @@
+<svg class="railroad-diagram" height="203" viewBox="0 0 594.5 203" width="594.5">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><g>
+<path d="M40 31" /><path d="M108.5 31" /><path d="M40 31h20" /><g class="terminal ">
+<path d="M60 31" /><path d="M88.5 31" /><rect height="22" rx="10" ry="10" width="28.5" x="60" y="20"></rect><text x="74.25" y="35">U</text></g><path d="M88.5 31h20" /><path d="M40 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g class="terminal ">
+<path d="M60 61" /><path d="M88.5 61" /><rect height="22" rx="10" ry="10" width="28.5" x="60" y="50"></rect><text x="74.25" y="65">u</text></g><path d="M88.5 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /></g><path d="M108.5 31h10" /><g class="terminal ">
+<path d="M118.5 31" /><path d="M147 31" /><rect height="22" rx="10" ry="10" width="28.5" x="118.5" y="20"></rect><text x="132.75" y="35">+</text></g><path d="M147 31h10" /><g>
+<path d="M157 31" /><path d="M554.5 31" /><path d="M157 31h20" /><g>
+<path d="M177 31h120.5" /><path d="M414 31h120.5" /><g>
+<path d="M297.5 31" /><path d="M414 31" /><path d="M297.5 31h10" /><g class="non-terminal ">
+<path d="M307.5 31" /><path d="M404 31" /><rect height="22" width="96.5" x="307.5" y="20"></rect><text x="355.75" y="35">hex digit</text></g><path d="M404 31h10" /><path d="M307.5 31a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
+<path d="M307.5 58h11.75" /><path d="M392.25 58h11.75" /><text class="comment" x="355.25" y="62">1-6 times</text></g><path d="M404 58a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g></g><path d="M534.5 31h20" /><path d="M157 31a10 10 0 0 1 10 10v43a10 10 0 0 0 10 10" /><g>
+<path d="M177 94" /><path d="M534.5 94" /><g>
+<path d="M177 94" /><path d="M333.5 94" /><path d="M177 94a10 10 0 0 0 10 -10a10 10 0 0 1 10 -10" /><g>
+<path d="M197 74h116.5" /></g><path d="M313.5 74a10 10 0 0 1 10 10a10 10 0 0 0 10 10" /><path d="M177 94h20" /><g>
+<path d="M197 94" /><path d="M313.5 94" /><path d="M197 94h10" /><g class="non-terminal ">
+<path d="M207 94" /><path d="M303.5 94" /><rect height="22" width="96.5" x="207" y="83"></rect><text x="255.25" y="98">hex digit</text></g><path d="M303.5 94h10" /><path d="M207 94a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
+<path d="M207 121h11.75" /><path d="M291.75 121h11.75" /><text class="comment" x="254.75" y="125">1-5 times</text></g><path d="M303.5 121a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g><path d="M313.5 94h20" /></g><path d="M333.5 94h10" /><g>
+<path d="M343.5 94" /><path d="M534.5 94" /><path d="M343.5 94h10" /><g class="terminal ">
+<path d="M353.5 94h71.25" /><path d="M453.25 94h71.25" /><rect height="22" rx="10" ry="10" width="28.5" x="424.75" y="83"></rect><text x="439" y="98">?</text></g><path d="M524.5 94h10" /><path d="M353.5 94a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
+<path d="M353.5 121" /><path d="M524.5 121" /><text class="comment" x="438.5" y="125">1 to (6 - digits) times</text></g><path d="M524.5 121a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g></g><path d="M534.5 94a10 10 0 0 0 10 -10v-43a10 10 0 0 1 10 -10" /><path d="M157 31a10 10 0 0 1 10 10v97a10 10 0 0 0 10 10" /><g>
+<path d="M177 148h28" /><path d="M506.5 148h28" /><g>
+<path d="M205 148" /><path d="M321.5 148" /><path d="M205 148h10" /><g class="non-terminal ">
+<path d="M215 148" /><path d="M311.5 148" /><rect height="22" width="96.5" x="215" y="137"></rect><text x="263.25" y="152">hex digit</text></g><path d="M311.5 148h10" /><path d="M215 148a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
+<path d="M215 175h11.75" /><path d="M299.75 175h11.75" /><text class="comment" x="262.75" y="179">1-6 times</text></g><path d="M311.5 175a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g><path d="M321.5 148h10" /><path d="M331.5 148h10" /><g class="terminal ">
+<path d="M341.5 148" /><path d="M370 148" /><rect height="22" rx="10" ry="10" width="28.5" x="341.5" y="137"></rect><text x="355.75" y="152">-</text></g><path d="M370 148h10" /><path d="M380 148h10" /><g>
+<path d="M390 148" /><path d="M506.5 148" /><path d="M390 148h10" /><g class="non-terminal ">
+<path d="M400 148" /><path d="M496.5 148" /><rect height="22" width="96.5" x="400" y="137"></rect><text x="448.25" y="152">hex digit</text></g><path d="M496.5 148h10" /><path d="M400 148a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
+<path d="M400 175h11.75" /><path d="M484.75 175h11.75" /><text class="comment" x="447.75" y="179">1-6 times</text></g><path d="M496.5 175a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g></g><path d="M534.5 148a10 10 0 0 0 10 -10v-97a10 10 0 0 1 10 -10" /></g><path d="M554.5 31h20m-10 -10v20m10 -20v20"></path></g></svg>

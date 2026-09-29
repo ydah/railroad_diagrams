@@ -41,6 +41,7 @@ module ExamplesLoader
 
   RENDERERS = {
     'svg' => ->(d) { s = +''; d.write_svg(s.method(:<<)); s },
+    'svg-optimized' => ->(d) { d.to_svg(precision: 2, optimize_paths: true) },
     'standalone' => ->(d) { s = +''; d.write_standalone(s.method(:<<)); s },
     'ascii' => lambda { |d|
       RailroadDiagrams::TextDiagram.set_formatting(RailroadDiagrams::TextDiagram::PARTS_ASCII)
@@ -52,7 +53,9 @@ module ExamplesLoader
     }
   }.freeze
 
-  EXTENSIONS = { 'svg' => 'svg', 'standalone' => 'svg', 'ascii' => 'txt', 'unicode' => 'txt' }.freeze
+  EXTENSIONS = {
+    'svg' => 'svg', 'svg-optimized' => 'svg', 'standalone' => 'svg', 'ascii' => 'txt', 'unicode' => 'txt'
+  }.freeze
 
   def render(name, format)
     RENDERERS.fetch(format).call(load.fetch(name))

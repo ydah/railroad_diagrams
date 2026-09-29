@@ -1,0 +1,11 @@
+<svg class="railroad-diagram" height="80" viewBox="0 0 512 80" width="512">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 30v20m10 -20v20m-10 -10h20" /></g><path d="M40 40h10" /><g class="terminal ">
+<path d="M50 40" /><path d="M87 40" /><rect height="22" rx="10" ry="10" width="37" x="50" y="29"></rect><text x="68.5" y="44">/*</text></g><path d="M87 40h10" /><g>
+<path d="M97 40" /><path d="M415 40" /><path d="M97 40a10 10 0 0 0 10 -10a10 10 0 0 1 10 -10" /><g>
+<path d="M117 20h278" /></g><path d="M395 20a10 10 0 0 1 10 10a10 10 0 0 0 10 10" /><path d="M97 40h20" /><g>
+<path d="M117 40" /><path d="M395 40" /><path d="M117 40h10" /><g class="non-terminal ">
+<path d="M127 40" /><path d="M385 40" /><rect height="22" width="258" x="127" y="29"></rect><text x="256" y="44">anything but * followed by /</text></g><path d="M385 40h10" /><path d="M127 40a10 10 0 0 0 -10 10a10 10 0 0 0 10 10" /><g>
+<path d="M127 60h258" /></g><path d="M385 60a10 10 0 0 0 10 -10a10 10 0 0 0 -10 -10" /></g><path d="M395 40h20" /></g><path d="M415 40h10" /><g class="terminal ">
+<path d="M425 40" /><path d="M462 40" /><rect height="22" rx="10" ry="10" width="37" x="425" y="29"></rect><text x="443.5" y="44">*/</text></g><path d="M462 40h10" /><path d="M472 40h20m-10 -10v20m10 -20v20"></path></g></svg>

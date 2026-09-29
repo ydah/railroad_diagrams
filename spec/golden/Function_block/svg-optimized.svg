@@ -1,0 +1,11 @@
+<svg class="railroad-diagram" height="80" viewBox="0 0 512 80" width="512">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 30v20m10 -20v20m-10 -10h20" /></g><path d="M40 40h10" /><g class="non-terminal ">
+<path d="M50 40" /><path d="M206 40" /><rect height="22" width="156" x="50" y="29"></rect><text x="128" y="44">&lt;function-token&gt;</text></g><path d="M206 40h10" /><g>
+<path d="M216 40" /><path d="M423.5 40" /><path d="M216 40a10 10 0 0 0 10 -10a10 10 0 0 1 10 -10" /><g>
+<path d="M236 20h167.5" /></g><path d="M403.5 20a10 10 0 0 1 10 10a10 10 0 0 0 10 10" /><path d="M216 40h20" /><g>
+<path d="M236 40" /><path d="M403.5 40" /><path d="M236 40h10" /><g class="non-terminal ">
+<path d="M246 40" /><path d="M393.5 40" /><rect height="22" width="147.5" x="246" y="29"></rect><text x="319.75" y="44">Component value</text></g><path d="M393.5 40h10" /><path d="M246 40a10 10 0 0 0 -10 10a10 10 0 0 0 10 10" /><g>
+<path d="M246 60h147.5" /></g><path d="M393.5 60a10 10 0 0 0 10 -10a10 10 0 0 0 -10 -10" /></g><path d="M403.5 40h20" /></g><path d="M423.5 40h10" /><g class="terminal ">
+<path d="M433.5 40" /><path d="M462 40" /><rect height="22" rx="10" ry="10" width="28.5" x="433.5" y="29"></rect><text x="447.75" y="44">)</text></g><path d="M462 40h10" /><path d="M472 40h20m-10 -10v20m10 -20v20"></path></g></svg>

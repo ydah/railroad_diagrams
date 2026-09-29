@@ -1,0 +1,10 @@
+<svg class="railroad-diagram" height="126" viewBox="0 0 432.5 126" width="432.5">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><path d="M40 31h10" /><g>
+<path d="M50 31" /><path d="M50 31h10" /><g class="terminal ">
+<path d="M60 31h10" /><path d="M158 31h10" /><rect height="22" rx="10" ry="10" width="88" x="70" y="20"></rect><text x="114" y="35">Generate</text></g><path d="M168 31a10 10 0 0 1 10 10a10 10 0 0 1 -10 10h-108a10 10 0 0 0 -10 10a10 10 0 0 0 10 10" /><g class="terminal ">
+<path d="M60 71h27" /><path d="M141 71h27" /><rect height="22" rx="10" ry="10" width="54" x="87" y="60"></rect><text x="114" y="75">some</text></g><path d="M168 71h10" /><path d="M178 71" /></g><path d="M178 71h10" /><path d="M188 71h10" /><g>
+<path d="M198 71" /><path d="M382.5 71" /><path d="M198 71h10" /><g class="non-terminal ">
+<path d="M208 71" /><path d="M372.5 71" /><rect height="22" width="164.5" x="208" y="60"></rect><text x="290.25" y="75">railroad diagrams</text></g><path d="M372.5 71h10" /><path d="M208 71a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
+<path d="M208 98h49.25" /><path d="M323.25 98h49.25" /><text class="comment" x="290.25" y="102">and more</text></g><path d="M372.5 98a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g><path d="M382.5 71h10" /><path d="M392.5 71h20m-10 -10v20m10 -20v20"></path></g></svg>

@@ -2,10 +2,22 @@
 
 require 'spec_helper'
 require 'fileutils'
+require 'rexml/document'
 require_relative 'support/examples_loader'
 
 RSpec.describe 'Golden outputs' do
   ExamplesLoader.names.each do |name|
+    it "#{name} (Context SVG) matches the existing golden file" do
+      actual = ExamplesLoader.load.fetch(name).to_svg
+      expect(actual).to eq(File.read(ExamplesLoader.golden_path(name, 'svg'), encoding: 'utf-8'))
+    end
+
+    it "#{name} optimized SVG is valid XML with rounded root dimensions" do
+      root = REXML::Document.new(ExamplesLoader.render(name, 'svg-optimized')).root
+      expect(root.name).to eq('svg')
+      expect(%w[width height viewBox].map { |key| root.attributes[key] }.join(' ')).not_to match(/\.\d{3,}/)
+    end
+
     ExamplesLoader::RENDERERS.each_key do |format|
       it "#{name} (#{format}) matches the golden file" do
         actual = ExamplesLoader.render(name, format)
