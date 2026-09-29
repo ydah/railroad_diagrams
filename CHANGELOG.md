@@ -4,10 +4,21 @@
 
 ### Added
 
-- Simplify grammar trees and report undefined references, duplicate definitions, unused rules, and repeated alternatives.
-- Render multi-rule grammar documents with linked references, search, text alternatives, and lint findings.
 - Build a gallery of node examples in every bundled theme and publish it with GitHub Pages.
 - Run a browser-only Ruby playground with shareable examples and bundled offline runtime assets.
+
+## 0.8.0 - 2026-09-30
+
+### Added
+
+- Import W3C EBNF and safe YAML grammar definitions, with useful source locations on parse errors.
+- Render Ruby DSL, JSON, YAML, and EBNF inputs from the CLI, with subcommands, per-rule output, text character sets, and file watching.
+- Simplify grammar trees and report undefined references, duplicate definitions, unused rules, and repeated alternatives.
+- Render multi-rule grammar documents with linked references, search, text alternatives, and lint findings.
+
+### Deprecated
+
+- Warn when the CLI demo is invoked without its `demo` subcommand.
 
 ## 0.7.0 - 2026-09-30
 

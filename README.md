@@ -58,6 +58,8 @@ Strings passed as children become `Terminal` nodes. Build larger diagrams by nes
 
 `Optional` is a `Choice` subclass, and `ZeroOrMore` is an `Optional` subclass. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child.
 
+Browse the [node gallery](https://ydah.github.io/railroad_diagrams/) or edit a diagram in the [browser playground](https://ydah.github.io/railroad_diagrams/playground.html).
+
 ## Builder and structured data
 
 ```ruby
@@ -84,9 +86,29 @@ puts diagram.to_markdown                     # fenced code block
 
 Labels use Unicode display widths, so CJK and emoji fit their boxes. Ambiguous-width characters occupy one column. The older `write_text` method escapes HTML by default for compatibility.
 
+## Grammar documents and CLI
+
+The CLI accepts W3C EBNF, YAML grammar files, JSON diagrams, and trusted Ruby DSL files. It can render a linked HTML document for multiple rules:
+
+```bash
+railroad_diagrams render grammar.ebnf -o grammar.html --format html --simplify --lint
+railroad_diagrams render grammar.yml -o out/ --split --format svg
+railroad_diagrams render grammar.ebnf --format text --charset ascii
+```
+
+Use `--input-format yaml` with `-` to read standard input. A Ruby input file executes code, so only render files you trust. See [the YAML grammar example](spec/fixtures/yaml/sql_select.yml) and [the API stability guide](docs/api_stability.md).
+
+To build a document from Ruby, add named rules and call `to_html`:
+
+```ruby
+document = RailroadDiagrams::Document.new(title: 'SQL subset')
+document.add_rule('query', RailroadDiagrams::Sequence.new('SELECT', RailroadDiagrams::NonTerminal.new('table')))
+File.write('grammar.html', document.to_html)
+```
+
 ## Demo CLI
 
-`railroad_diagrams --format=svg > demo.html` writes an HTML page containing the bundled examples. Formats: `svg`, `standalone`, `ascii`, and `unicode`. Pass example names after the options to select diagrams. `--max-width 600` wraps SVG examples. This command runs the bundled demo; use the Ruby API for your own diagrams.
+`railroad_diagrams demo --format=svg > demo.html` writes an HTML page containing the bundled examples. Formats: `svg`, `standalone`, `ascii`, and `unicode`. Pass example names after the options to select diagrams. `--max-width 600` wraps SVG examples. The old command without `demo` still works with a deprecation warning.
 
 ## Configuration and compatibility
 

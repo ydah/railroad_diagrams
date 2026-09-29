@@ -54,13 +54,14 @@ module RailroadDiagrams
       end
     end
 
-    def to_html(interactive: true, index: :definition, max_width: nil)
+    def to_html(interactive: true, index: :definition, max_width: nil, css: nil)
       raise InvalidArgument, 'index must be :definition or :alphabetical' unless %i[definition alphabetical].include?(index)
+      raise InvalidArgument, 'CSS must be a String without </style>' if css && (!css.is_a?(String) || css.match?(%r{</style}i))
 
       sections = rule_sections(max_width: max_width)
       navigation = index == :alphabetical ? sections.sort_by { |section| section[:name].downcase } : sections
       warnings = lint
-      css = Theme[@theme].css(css_variables: false)
+      stylesheet = [Theme[@theme].css(css_variables: false), css].compact.join("\n")
       labels = if @locale == :ja
                  { rules: '規則', search: '規則を検索', text: 'テキスト図', referenced_by: '参照元', warnings: '文法の警告' }
                else

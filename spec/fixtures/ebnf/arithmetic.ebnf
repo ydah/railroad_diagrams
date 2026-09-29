@@ -1,0 +1,5 @@
+/* A compact arithmetic grammar with rules on adjacent lines. */
+[1] expression ::= term (('+' | '-') term)*
+[2] term ::= factor (('*' | '/') factor)*
+[3] factor ::= number | '(' expression ')'
+[4] number ::= [0-9]+

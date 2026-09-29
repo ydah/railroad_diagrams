@@ -1,0 +1,8 @@
+select ::= 'SELECT' columns 'FROM' table [ wfc: example constraint ] where?
+columns ::= '*' | name (',' name)*
+where ::= 'WHERE' name '=' literal
+table ::= name
+name ::= [A-Za-z_][A-Za-z0-9_]*
+literal ::= string | number
+string ::= "'" [^']* "'"
+number ::= #x30 [0-9]*

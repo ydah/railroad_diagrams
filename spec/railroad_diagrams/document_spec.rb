@@ -58,4 +58,10 @@ RSpec.describe RailroadDiagrams::Document do
     expect(wrapped).not_to eq(document.rule_sections.first[:svg])
     expect(document.to_html(max_width: 120)).to include(wrapped)
   end
+
+  it 'adds custom CSS without allowing it to close the style element' do
+    expect(document.to_html(css: 'body { color: red; }')).to include('body { color: red; }')
+    expect { document.to_html(css: '</STYLE><script>alert(1)</script>') }
+      .to raise_error(RailroadDiagrams::InvalidArgument, /CSS/)
+  end
 end

@@ -87,7 +87,15 @@ module RailroadDiagrams
       # @rbs part_names: Array[String]
       # @rbs return: Array[String]
       def get_parts(part_names)
-        Context.legacy.parts.values_at(*part_names)
+        (Thread.current[:railroad_diagrams_text_parts] || Context.legacy.parts).values_at(*part_names)
+      end
+
+      def with_parts(parts)
+        previous = Thread.current[:railroad_diagrams_text_parts]
+        Thread.current[:railroad_diagrams_text_parts] = parts
+        yield
+      ensure
+        Thread.current[:railroad_diagrams_text_parts] = previous
       end
 
       # @rbs lines: Array[String]

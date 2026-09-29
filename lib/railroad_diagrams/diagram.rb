@@ -4,6 +4,9 @@
 require 'digest/sha1'
 
 module RailroadDiagrams
+  # A complete railroad diagram that can be rendered to SVG, text, or HTML.
+  # @example
+  #   Diagram.new('SELECT', NonTerminal.new('column')).to_svg
   class Diagram < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
@@ -142,6 +145,8 @@ module RailroadDiagrams
 
     # @rbs write: ^(String) -> void
     # @rbs return: void
+    # @example
+    #   Diagram.new('token').write_svg(->(chunk) { print chunk })
     def write_svg(write)
       format unless @formatted
 
@@ -151,6 +156,8 @@ module RailroadDiagrams
     # @rbs write: untyped
     # @rbs escape_html: bool
     # @rbs return: void
+    # @example
+    #   Diagram.new('token').write_text(->(chunk) { print chunk })
     def write_text(write, escape_html: true)
       write = Writer.wrap(write)
       output = text_diagram
@@ -160,6 +167,8 @@ module RailroadDiagrams
     end
 
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_svg(theme: :dark)
     def to_svg(**options)
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
       validate_inline_styles!(context)
@@ -176,6 +185,8 @@ module RailroadDiagrams
     # @rbs css_variables: bool
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_standalone_svg(theme: :print)
     def to_standalone_svg(css: nil, css_variables: false, **options)
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
       validate_inline_styles!(context, css: css)
@@ -194,10 +205,12 @@ module RailroadDiagrams
     # @rbs strip_trailing: bool
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_text(charset: :ascii)
     def to_text(charset: :unicode, escape_html: false, strip_trailing: false, **options)
       options[:text_charset] = charset
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
-      lines = render_text(context).lines
+      lines = TextDiagram.with_parts(context.parts) { render_text(context).lines }
       lines = lines.map(&:rstrip) if strip_trailing
       output = "#{lines.join("\n")}\n"
       escape_html ? output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;') : output
@@ -205,6 +218,8 @@ module RailroadDiagrams
 
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_markdown
     def to_markdown(**options)
       output = to_text(**options)
       fence = '`' * [3, output.scan(/`+/).map(&:length).max.to_i + 1].max
@@ -215,6 +230,8 @@ module RailroadDiagrams
     # @rbs charset: Symbol
     # @rbs **options: untyped
     # @rbs return: String
+    # @example
+    #   Diagram.new('token').to_html(title: 'Grammar')
     def to_html(title: 'Railroad diagram', charset: :unicode, **options)
       raise InvalidArgument, 'title must be a String' unless title.is_a?(String)
 
@@ -238,6 +255,8 @@ module RailroadDiagrams
     # @rbs write: ^(String) -> void
     # @rbs css: String?
     # @rbs return: void
+    # @example
+    #   Diagram.new('token').write_standalone(->(chunk) { print chunk })
     def write_standalone(write, css = nil)
       format unless @formatted
       style = add_style_and_namespaces(css)

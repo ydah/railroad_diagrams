@@ -1,0 +1,5 @@
+value ::= object | array | string | 'true' | 'false' | 'null'
+object ::= '{' (member (',' member)*)? '}'
+member ::= string ':' value
+array ::= '[' (value (',' value)*)? ']'
+string ::= '"' [^"]* '"'

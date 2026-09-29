@@ -1,0 +1,11 @@
+title: SQL SELECT
+rules:
+  select_stmt:
+    - SELECT
+    - optional: DISTINCT
+    - list: { item: <column>, separator: "," }
+    - FROM
+    - <table>
+    - optional: [WHERE, <expr>]
+  column:
+    choice: ["*", <identifier>]

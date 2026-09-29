@@ -1,6 +1,9 @@
 # rbs_inline: enabled
 # frozen_string_literal: true
 
+# Build and render railroad diagrams for grammar rules.
+# @example
+#   RailroadDiagrams::Diagram.new('SELECT').to_svg
 module RailroadDiagrams
   # minimum vertical separation between things. For a 3px stroke, must be at least 4
   VS = 8 #: Integer
@@ -25,6 +28,8 @@ module RailroadDiagrams
 
   # @rbs val: String | Numeric
   # @rbs return: String
+  # @example
+  #   RailroadDiagrams.escape_attr('A&B') #=> "A&amp;B"
   def self.escape_attr(val)
     return val.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub("'", '&apos;').gsub('"', '&quot;') if val.is_a?(String)
 
@@ -33,6 +38,8 @@ module RailroadDiagrams
 
   # @rbs val: String
   # @rbs return: String
+  # @example
+  #   RailroadDiagrams.escape_html('<term>') #=> "&lt;term&gt;"
   def self.escape_html(val)
     escape_attr(val)
   end
@@ -40,6 +47,8 @@ module RailroadDiagrams
   # 指数表記を使わず、Integer はそのまま、Float は小数6桁で丸めて末尾の0を除く
   # @rbs val: Numeric
   # @rbs return: String
+  # @example
+  #   RailroadDiagrams.format_number(2.0) #=> "2"
   def self.format_number(val)
     return val.to_s if val.is_a?(Integer) || !val.finite?
 
@@ -47,6 +56,11 @@ module RailroadDiagrams
     return rounded.to_i.to_s if rounded == rounded.to_i
 
     Kernel.format('%.6f', rounded).sub(/0+\z/, '')
+  end
+
+  module Importers
+    autoload :W3cEbnf, 'railroad_diagrams/importers/w3c_ebnf'
+    autoload :YamlGrammar, 'railroad_diagrams/importers/yaml_grammar'
   end
 end
 
