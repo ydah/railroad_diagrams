@@ -6,8 +6,8 @@ module RailroadDiagrams
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?
     # @rbs return: void
-    def initialize(item, repeat = nil)
-      super('g')
+    def initialize(item, repeat = nil, id: nil, cls: nil, attrs: {})
+      super('g', id: id, cls: cls, data_attrs: attrs)
       @item = wrap_string(item)
       repeat ||= Skip.new
       @rep = wrap_string(repeat)
@@ -92,12 +92,12 @@ module RailroadDiagrams
       group << svg_path(Svg::PathData.new(x + left_gap + metrics.width, y + metrics.height).h(right_gap))
       x += left_gap
       group << svg_path(Svg::PathData.new(x, y).h(arc))
-      group << @item.render_svg(context, x + arc, y, metrics.width - (arc * 2))
+      group << context.render_svg(@item, x + arc, y, metrics.width - (arc * 2))
       group << svg_path(Svg::PathData.new(x + metrics.width - arc, y + metrics.height).h(arc))
 
       distance = [arc * 2, item.height + item.down + separation + repeat.up].max
       group << svg_path(Svg::PathData.new(x + arc, y, arc_radius: arc).arc('nw').v([0, distance - (arc * 2)].max).arc('ws'))
-      group << @rep.render_svg(context, x + arc, y + distance, metrics.width - (arc * 2))
+      group << context.render_svg(@rep, x + arc, y + distance, metrics.width - (arc * 2))
       climb = distance - (arc * 2) + repeat.height - item.height
       group << svg_path(Svg::PathData.new(x + metrics.width - arc, y + distance + repeat.height, arc_radius: arc)
         .arc('se').v(-[0, climb].max).arc('en'))

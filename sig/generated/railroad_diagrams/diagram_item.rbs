@@ -31,7 +31,7 @@ module RailroadDiagrams
     # @rbs attrs: Hash[String, String | Numeric]
     # @rbs text: String?
     # @rbs return: void
-    def initialize: (String name, ?attrs: Hash[String, String | Numeric], ?text: String?) -> void
+    def initialize: (String name, ?attrs: Hash[String, String | Numeric], ?text: String?, ?id: untyped, ?data_attrs: untyped, ?cls: untyped) -> void
 
     # @rbs x: Numeric
     # @rbs y: Numeric
@@ -66,6 +66,8 @@ module RailroadDiagrams
     def inspect: () -> String
 
     private
+
+    def apply_user_attributes: (untyped id, untyped data_attrs, untyped cls) -> untyped
 
     # @rbs write: ^(String) -> void
     # @rbs return: void

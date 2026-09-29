@@ -6,17 +6,23 @@ module RailroadDiagrams
     module Serializer
       module_function
 
-      def call(element, precision: nil, optimize_paths: false)
+      def call(element, precision: nil, optimize_paths: false, inline_styles: false, theme: nil)
         output = +''
-        write(element, output, precision, optimize_paths)
+        theme ||= Theme[:default] if inline_styles
+        write(element, output, precision, optimize_paths, inline_styles, theme, [])
         output
       end
 
-      def write(node, output, precision, optimize_paths)
+      def write(node, output, precision, optimize_paths, inline_styles, theme, classes) # rubocop:disable Metrics/ParameterLists
         case node
         when Element
           output << "<#{node.name}"
-          node.attrs.sort.each do |name, value|
+          attrs = node.attrs.dup
+          if inline_styles
+            inline = theme.inline_style(node, classes)
+            attrs['style'] = [inline, attrs['style']].compact.reject(&:empty?).join(';') unless inline.empty?
+          end
+          attrs.sort.each do |name, value|
             value = value.dup.optimize! if optimize_paths && value.is_a?(PathData)
             rendered = value.is_a?(PathData) ? value.to_s(->(number) { NumberFormat.call(number, precision, kind: :path) }) : value
             rendered = NumberFormat.call(rendered, precision) if rendered.is_a?(Numeric)
@@ -27,7 +33,10 @@ module RailroadDiagrams
           else
             output << '>'
             output << "\n" if %w[g svg].include?(node.name)
-            node.children.each { |child| write(child, output, precision, optimize_paths) }
+            child_classes = classes + attrs.fetch('class', '').split
+            node.children.each do |child|
+              write(child, output, precision, optimize_paths, inline_styles, theme, child_classes)
+            end
             output << "</#{node.name}>"
           end
         when TextNode

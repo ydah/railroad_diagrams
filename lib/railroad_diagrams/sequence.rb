@@ -5,8 +5,8 @@ module RailroadDiagrams
   class Sequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(*items)
-      super('g', items)
+    def initialize(*items, id: nil, cls: nil, attrs: {})
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       @needs_space = true
       calculate_dimensions
     end
@@ -78,7 +78,7 @@ module RailroadDiagrams
           group << svg_path(x, y, 10)
           x += 10
         end
-        group << item.render_svg(context, x, y, child.width)
+        group << context.render_svg(item, x, y, child.width)
         x += child.width
         y += child.height
         if child.needs_space && index < @items.length - 1

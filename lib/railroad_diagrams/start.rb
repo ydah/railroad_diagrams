@@ -6,8 +6,8 @@ module RailroadDiagrams
     # @rbs type: String
     # @rbs label: String?
     # @rbs return: void
-    def initialize(type = 'simple', label: nil)
-      super('g')
+    def initialize(type = 'simple', label: nil, id: nil, cls: nil, attrs: {})
+      super('g', id: id, cls: cls, data_attrs: attrs)
       label = label.to_s if label
       @width =
         if label

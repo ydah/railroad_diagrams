@@ -7,6 +7,7 @@
 - Built-in themes for classic, dark, automatic, print, and high-contrast rendering.
 - Accessible diagram titles and descriptions, Japanese labels, and safe links with configurable SVG link attributes.
 - Standalone HTML, Markdown text output, square-corner text, and optional Start and End markers.
+- Inline SVG styles, custom node IDs and data attributes, and optional debug bounds.
 
 ### Fixed
 

@@ -1,3 +1,4 @@
+# rbs_inline: enabled
 # frozen_string_literal: true
 
 require 'erb'
@@ -90,6 +91,39 @@ module RailroadDiagrams
                    render(DARK_TOKENS, false, :dark).lines.map { |line| "  #{line}" }.join
                  end
       ERB.new(File.read(File.expand_path('themes/auto.css.erb', __dir__))).result(binding)
+    end
+
+    def inline_style(element, classes)
+      palette = tokens
+      own_classes = element.attrs.fetch('class', '').split
+      all_classes = classes + own_classes
+      rules = case element.name
+              when 'svg'
+                ["background-color:#{palette.fetch('--rr-bg')}", "color:#{palette.fetch('--rr-text')}"]
+              when 'path'
+                ["stroke-width:#{palette.fetch('--rr-stroke-width')}", "stroke:#{palette.fetch('--rr-stroke')}",
+                 "fill:#{palette.fetch('--rr-track-fill')}"]
+              when 'rect'
+                ["stroke-width:#{palette.fetch('--rr-stroke-width')}", "stroke:#{palette.fetch('--rr-stroke')}",
+                 "fill:#{palette.fetch('--rr-rect-fill')}"]
+              when 'text'
+                ["font:#{palette.fetch('--rr-font')}", 'text-anchor:middle', 'white-space:pre']
+              else []
+              end
+      if element.name == 'rect'
+        rules << "fill:#{palette.fetch('--rr-terminal-fill')}" if all_classes.include?('terminal')
+        rules << "fill:#{palette.fetch('--rr-nonterminal-fill')}" if all_classes.include?('non-terminal')
+        rules.push("stroke:#{palette.fetch('--rr-group-stroke')}", 'stroke-dasharray:10 5', 'fill:none') if own_classes.include?('group-box')
+      elsif element.name == 'path' && own_classes.include?('diagram-text')
+        rules.push("fill:#{palette.fetch('--rr-diagram-text-fill')}", 'cursor:help')
+      elsif element.name == 'text'
+        rules << "fill:#{palette.fetch('--rr-text')}" unless %i[default auto].include?(name)
+        rules << 'font-size:12px' if own_classes.include?('diagram-text')
+        rules << 'font-size:16px' if own_classes.include?('diagram-arrow')
+        rules << 'text-anchor:start' if own_classes.include?('label')
+        rules << "font:#{palette.fetch('--rr-comment-font')}" if own_classes.include?('comment')
+      end
+      rules.join(';')
     end
 
     private

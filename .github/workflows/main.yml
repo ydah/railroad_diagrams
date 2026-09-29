@@ -63,3 +63,21 @@ jobs:
         run: |
           ruby -Ilib benchmark/render.rb --json > "$RUNNER_TEMP/railroad-current.json"
           ruby benchmark/render.rb --compare benchmark/baseline.json "$RUNNER_TEMP/railroad-current.json"
+  golden-images:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - uses: ruby/setup-ruby@984c0c890880bbf811283d6f09c4607c62d210a4 # v1.323.0
+        with:
+          ruby-version: '3.4'
+      - name: Render standalone goldens
+        run: |
+          command -v rsvg-convert || (sudo apt-get update && sudo apt-get install -y librsvg2-bin)
+          ruby script/render_golden_pngs.rb
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: golden-diagrams
+          path: tmp/golden-png/

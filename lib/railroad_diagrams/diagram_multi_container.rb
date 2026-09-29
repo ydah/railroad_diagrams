@@ -8,8 +8,8 @@ module RailroadDiagrams
     # @rbs attrs: Hash[String, String | Numeric]?
     # @rbs text: String?
     # @rbs return: void
-    def initialize(name, items, attrs = nil, text = nil)
-      super(name, attrs: attrs, text: text)
+    def initialize(name, items, attrs = nil, text = nil, id: nil, data_attrs: {}, cls: nil) # rubocop:disable Metrics/ParameterLists
+      super(name, attrs: attrs, text: text, id: id, data_attrs: data_attrs, cls: cls)
       @items = items.map { |item| wrap_string(item) }
     end
 

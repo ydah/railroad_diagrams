@@ -8,8 +8,8 @@ module RailroadDiagrams
     # @rbs title: String?
     # @rbs cls: String
     # @rbs return: void
-    def initialize(text, href = nil, title = nil, cls: '')
-      super('g', attrs: { 'class' => "comment non-terminal #{cls}" })
+    def initialize(text, href = nil, title = nil, cls: '', id: nil, attrs: {})
+      super('g', attrs: { 'class' => "comment non-terminal #{cls}" }, id: id, data_attrs: attrs)
       @text = text.to_s
       @href = href
       @title = title

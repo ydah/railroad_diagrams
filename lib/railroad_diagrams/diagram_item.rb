@@ -32,14 +32,15 @@ module RailroadDiagrams
     # @rbs attrs: Hash[String, String | Numeric]
     # @rbs text: String?
     # @rbs return: void
-    def initialize(name, attrs: {}, text: nil)
+    def initialize(name, attrs: {}, text: nil, id: nil, data_attrs: {}, cls: nil)
       @name = name
       @up = 0
       @height = 0
       @down = 0
       @width = 0
       @needs_space = false
-      @attrs = attrs || {}
+      @attrs = (attrs || {}).dup
+      apply_user_attributes(id, data_attrs, cls)
       @children = text ? [text] : []
     end
 
@@ -97,6 +98,26 @@ module RailroadDiagrams
     end
 
     private
+
+    def apply_user_attributes(id, data_attrs, cls)
+      if id
+        raise InvalidArgument, 'id must be a valid SVG identifier' unless id.is_a?(String) && /\A[A-Za-z_][\w.-]*\z/.match?(id)
+
+        @attrs['id'] = id
+      end
+      raise InvalidArgument, 'attrs must be a Hash' unless data_attrs.is_a?(Hash)
+
+      data_attrs.each do |name, value|
+        raise InvalidArgument, "unsupported SVG attribute: #{name.inspect}" unless name.is_a?(String) && /\Adata-[A-Za-z0-9_-]+\z/.match?(name)
+
+        @attrs[name] = value.to_s
+      end
+      return if cls.nil?
+      raise InvalidArgument, 'cls must be a String' unless cls.is_a?(String)
+      return if cls.empty?
+
+      @attrs['class'] = [@attrs['class'], cls].compact.join(' ').strip
+    end
 
     # @rbs write: ^(String) -> void
     # @rbs return: void

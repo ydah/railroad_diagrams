@@ -7,8 +7,8 @@ module RailroadDiagrams
     # @rbs default: Integer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(default, *items)
-      super('g', items)
+    def initialize(default, *items, id: nil, cls: nil, attrs: {})
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       unless default.is_a?(Integer) && (0...items.size).cover?(default)
         raise InvalidArgument, "default index out of range: #{default.inspect} (0...#{items.size})"
       end
@@ -201,7 +201,7 @@ module RailroadDiagrams
         distance += lower.up + separators[index] + child.down + child.height
         path = Svg::PathData.new(x, y, arc_radius: arc).arc('se').v(-[0, distance - (arc * 2)].max).arc('wn')
         group << svg_path(path)
-        group << item.render_svg(context, x + (arc * 2), y - distance, inner_width)
+        group << context.render_svg(item, x + (arc * 2), y - distance, inner_width)
         path = Svg::PathData.new(x + (arc * 2) + inner_width, y - distance + child.height,
                                  arc_radius: arc).arc('ne')
         path.v([0, distance - child.height + default.height - (arc * 2)].max).arc('ws')
@@ -209,7 +209,7 @@ module RailroadDiagrams
       end
 
       group << svg_path(Svg::PathData.new(x, y).h([0, arc * 2].max))
-      group << @items[@default].render_svg(context, x + (arc * 2), y, inner_width)
+      group << context.render_svg(@items[@default], x + (arc * 2), y, inner_width)
       group << svg_path(Svg::PathData.new(x + (arc * 2) + inner_width, y + metrics.height).h([0, arc * 2].max))
 
       distance = 0
@@ -220,7 +220,7 @@ module RailroadDiagrams
         distance += upper.height + upper.down + separators[index - 1] + child.up
         path = Svg::PathData.new(x, y, arc_radius: arc).arc('ne').v([0, distance - (arc * 2)].max).arc('ws')
         group << svg_path(path)
-        group << item.render_svg(context, x + (arc * 2), y + distance, inner_width)
+        group << context.render_svg(item, x + (arc * 2), y + distance, inner_width)
         path = Svg::PathData.new(x + (arc * 2) + inner_width, y + distance + child.height,
                                  arc_radius: arc).arc('se')
         path.v(-[0, distance - (arc * 2) + child.height - default.height].max).arc('wn')

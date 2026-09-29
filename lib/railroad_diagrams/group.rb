@@ -6,8 +6,8 @@ module RailroadDiagrams
     # @rbs item: DiagramItem | String
     # @rbs label: (DiagramItem | String)?
     # @rbs return: void
-    def initialize(item, label = nil)
-      super('g')
+    def initialize(item, label = nil, id: nil, cls: nil, attrs: {})
+      super('g', id: id, cls: cls, data_attrs: attrs)
       @item = wrap_string(item)
       @label = prepare_label(label)
       @needs_space = true
@@ -80,10 +80,10 @@ module RailroadDiagrams
               'height' => metrics.height + box_up + metrics.down,
               'rx' => arc, 'ry' => arc, 'class' => 'group-box' }
       group << Svg::Element.new('rect', box)
-      group << @item.render_svg(context, x, y, metrics.width)
+      group << context.render_svg(@item, x, y, metrics.width)
       if @label
         label = context.metrics(@label)
-        group << @label.render_svg(context, x, y - (box_up + label.down + label.height), label.width)
+        group << context.render_svg(@label, x, y - (box_up + label.down + label.height), label.width)
       end
       group
     end

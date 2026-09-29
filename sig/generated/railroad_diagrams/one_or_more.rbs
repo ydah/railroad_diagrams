@@ -5,7 +5,7 @@ module RailroadDiagrams
     # @rbs item: DiagramItem | String
     # @rbs repeat: (DiagramItem | String)?
     # @rbs return: void
-    def initialize: (DiagramItem | String item, ?(DiagramItem | String)? repeat) -> void
+    def initialize: (DiagramItem | String item, ?(DiagramItem | String)? repeat, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> void
 
     # @rbs return: String
     def to_s: () -> String

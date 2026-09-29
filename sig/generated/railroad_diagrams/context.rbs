@@ -24,6 +24,10 @@ module RailroadDiagrams
 
     def metrics: (untyped node) -> untyped
 
+    def render_svg: (untyped node, untyped x, untyped y, untyped width) -> untyped
+
+    def apply_node_attributes: (untyped element, untyped node) -> untyped
+
     def text_width: (untyped text, ?untyped role) -> untyped
 
     def gaps: (untyped outer, untyped inner) -> untyped

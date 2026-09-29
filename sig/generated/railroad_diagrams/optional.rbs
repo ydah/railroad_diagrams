@@ -5,6 +5,6 @@ module RailroadDiagrams
     # @rbs item: DiagramItem | String
     # @rbs skip: bool
     # @rbs return: Choice
-    def self.new: (DiagramItem | String item, ?bool skip) -> Choice
+    def self.new: (DiagramItem | String item, ?bool skip, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> Choice
   end
 end

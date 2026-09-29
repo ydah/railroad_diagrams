@@ -7,7 +7,7 @@ module RailroadDiagrams
     # @rbs title: String?
     # @rbs cls: String
     # @rbs return: void
-    def initialize: (String text, ?String? href, ?String? title, ?cls: String) -> void
+    def initialize: (String text, ?String? href, ?String? title, ?cls: String, ?id: untyped, ?attrs: untyped) -> void
 
     # @rbs return: String
     def to_s: () -> String

@@ -6,11 +6,11 @@ module RailroadDiagrams
 
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (HorizontalChoice | Sequence)
-    def self.new: (*DiagramItem | String items) -> (HorizontalChoice | Sequence)
+    def self.new: (*DiagramItem | String items, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> (HorizontalChoice | Sequence)
 
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize: (*DiagramItem | String items) -> void
+    def initialize: (*DiagramItem | String items, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> void
 
     # @rbs return: String
     def to_s: () -> String

@@ -4,7 +4,7 @@ module RailroadDiagrams
   class Sequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize: (*DiagramItem | String items) -> void
+    def initialize: (*DiagramItem | String items, ?id: untyped, ?cls: untyped, ?attrs: untyped) -> void
 
     # @rbs return: String
     def to_s: () -> String

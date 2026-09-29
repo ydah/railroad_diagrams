@@ -5,7 +5,7 @@ module RailroadDiagrams
   class AlternatingSequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: AlternatingSequence
-    def self.new(*items)
+    def self.new(*items, id: nil, cls: nil, attrs: {})
       raise InvalidArgument, "AlternatingSequence takes exactly two arguments, but got #{items.size} arguments." unless items.size == 2
 
       super
@@ -13,8 +13,8 @@ module RailroadDiagrams
 
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(*items)
-      super('g', items)
+    def initialize(*items, id: nil, cls: nil, attrs: {})
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       @needs_space = false
 
       arc = AR
@@ -217,14 +217,14 @@ module RailroadDiagrams
       first_in = metrics.up - first_metrics.up
       first_out = metrics.up - first_metrics.up - first_metrics.height
       group << svg_path(Svg::PathData.new(x, y, arc_radius: arc).arc('se').v(-[0, first_in - (2 * arc)].max).arc('wn'))
-      group << first.render_svg(context, x + (2 * arc), y - first_in, metrics.width - (4 * arc))
+      group << context.render_svg(first, x + (2 * arc), y - first_in, metrics.width - (4 * arc))
       path = Svg::PathData.new(x + metrics.width - (2 * arc), y - first_out, arc_radius: arc)
       group << svg_path(path.arc('ne').v([0, first_out - (2 * arc)].max).arc('ws'))
 
       second_in = metrics.down - second_metrics.down - second_metrics.height
       second_out = metrics.down - second_metrics.down
       group << svg_path(Svg::PathData.new(x, y, arc_radius: arc).arc('ne').v([0, second_in - (2 * arc)].max).arc('ws'))
-      group << second.render_svg(context, x + (2 * arc), y + second_in, metrics.width - (4 * arc))
+      group << context.render_svg(second, x + (2 * arc), y + second_in, metrics.width - (4 * arc))
       path = Svg::PathData.new(x + metrics.width - (2 * arc), y + second_out, arc_radius: arc)
       group << svg_path(path.arc('se').v(-[0, second_out - (2 * arc)].max).arc('wn'))
 

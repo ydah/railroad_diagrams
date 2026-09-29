@@ -5,7 +5,7 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
     # @rbs return: void
-    def initialize: (*DiagramItem | String items, ?type: String, ?title: untyped, ?desc: untyped, **untyped unknown) -> void
+    def initialize: (*DiagramItem | String items, ?type: String, ?title: untyped, ?desc: untyped, ?id: untyped, ?cls: untyped, ?attrs: untyped, **untyped unknown) -> void
 
     # @rbs return: String
     def to_s: () -> String
@@ -70,6 +70,8 @@ module RailroadDiagrams
     def write_standalone: (^(String) -> void write, ?String? css) -> void
 
     private
+
+    def validate_inline_styles!: (untyped context, ?css: untyped) -> untyped
 
     def visible_nodes: (untyped context) -> untyped
 

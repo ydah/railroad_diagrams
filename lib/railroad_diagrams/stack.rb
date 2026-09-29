@@ -5,10 +5,10 @@ module RailroadDiagrams
   class Stack < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(*items)
+    def initialize(*items, id: nil, cls: nil, attrs: {})
       raise InvalidArgument, 'Stack requires at least one item' if items.empty?
 
-      super('g', items)
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       @needs_space = true
       calculate_dimensions
     end
@@ -113,7 +113,7 @@ module RailroadDiagrams
 
       @items.each_with_index do |item, index|
         item_metrics = context.metrics(item)
-        group << item.render_svg(context, x, y, inner_width)
+        group << context.render_svg(item, x, y, inner_width)
         x += inner_width
         y += item_metrics.height
         next if index == @items.size - 1

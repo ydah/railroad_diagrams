@@ -1,0 +1,12 @@
+<svg class="railroad-diagram" data-type="Diagram" data-updown="25 0 25" height="90" viewBox="0 0 138.2842712474619 90" width="138.2842712474619">
+<g transform="translate(.5 .5)">
+<g data-type="Start" data-updown="10 0 10">
+<g>
+<path d="M20 35v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="35" /></g><g data-type="AlternatingSequence" data-updown="25 0 25">
+<g>
+<path d="M40 45h0" /><path d="M98.2842712474619 45h0" /><path d="M40.0 45a10 10 0 0 0 10 -10v-5a10 10 0 0 1 10 -10" /><g data-type="Skip" data-updown="0 0 0">
+<g>
+<path d="M60.0 20h18.284271247461902" /></g><rect class="debug-bounds" height="0" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="18.284271" x="60" y="20" /></g><path d="M78.2842712474619 20a10 10 0 0 1 10 10v5a10 10 0 0 0 10 10" /><path d="M40.0 45a10 10 0 0 1 10 10v5a10 10 0 0 0 10 10" /><g data-type="Skip" data-updown="0 0 0">
+<g>
+<path d="M60.0 70h18.284271247461902" /></g><rect class="debug-bounds" height="0" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="18.284271" x="60" y="70" /></g><path d="M78.2842712474619 70a10 10 0 0 0 10 -10v-5a10 10 0 0 1 10 -10" /><path d="M50.0 30a10 10 0 0 0 10 10h1.7763568394002505e-15a 10 10 0 0 1 7.071067811865475 2.9289321881345254l4.142135623730949 4.142135623730949a 10 10 0 0 0 7.071067811865475 2.9289321881345254h1.7763568394002505e-15a10 10 0 0 1 10 10" /><path d="M50.0 60a10 10 0 0 1 10 -10h1.7763568394002505e-15a 10 10 0 0 0 7.071067811865475 -2.9289321881345254l4.142135623730949 -4.142135623730949a 10 10 0 0 1 7.071067811865475 -2.9289321881345254h1.7763568394002505e-15a10 10 0 0 0 10 -10" /></g><rect class="debug-bounds" height="50" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="58.284271" x="40" y="20" /></g><g data-type="End" data-updown="10 0 10">
+<path d="M 98.2842712474619 45 h 20 m -10 -10 v 20 m 10 -20 v 20"></path><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="98.284271" y="35" /></g></g></svg>

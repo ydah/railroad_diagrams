@@ -8,16 +8,16 @@ module RailroadDiagrams
 
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (HorizontalChoice | Sequence)
-    def self.new(*items)
-      return Sequence.new(*items) if items.size <= 1
+    def self.new(*items, id: nil, cls: nil, attrs: {})
+      return Sequence.new(*items, id: id, cls: cls, attrs: attrs) if items.size <= 1
 
       super
     end
 
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(*items)
-      super('g', items)
+    def initialize(*items, id: nil, cls: nil, attrs: {})
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       all_but_last = @items[0...-1]
       middles = @items[1...-1]
       first = @items.first
@@ -211,7 +211,7 @@ module RailroadDiagrams
         end
 
         item_width = item_metrics_for_node.width + (item_metrics_for_node.needs_space ? 20 : 0)
-        group << item.render_svg(context, x, y, item_width)
+        group << context.render_svg(item, x, y, item_width)
         x += item_width
 
         output = if index == @items.size - 1

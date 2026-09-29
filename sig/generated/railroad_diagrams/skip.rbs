@@ -3,7 +3,7 @@
 module RailroadDiagrams
   class Skip < DiagramItem
     # @rbs return: void
-    def initialize: () -> void
+    def initialize: (?id: untyped, ?cls: untyped, ?attrs: untyped) -> void
 
     # @rbs return: String
     def to_s: () -> String

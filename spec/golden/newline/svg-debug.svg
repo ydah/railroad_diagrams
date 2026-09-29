@@ -1,0 +1,16 @@
+<svg class="railroad-diagram" data-type="Diagram" data-updown="11 0 101" height="152" viewBox="0 0 174.0 152" width="174.0">
+<g transform="translate(.5 .5)">
+<g data-type="Start" data-updown="10 0 10">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="21" /></g><g data-type="Choice" data-updown="11 0 101">
+<g>
+<path d="M40 31h0.0" /><path d="M134.0 31h0.0" /><path d="M40.0 31h20" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 31h8.5" /><path d="M105.5 31h8.5" /><rect height="22" rx="10" ry="10" width="37" x="68.5" y="20"></rect><text x="87" y="35">\n</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="54" x="60" y="20" /></g><path d="M114.0 31h20" /><path d="M40.0 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 61h0.0" /><path d="M114.0 61h0.0" /><rect height="22" rx="10" ry="10" width="54" x="60" y="50"></rect><text x="87" y="65">\r\n</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="54" x="60" y="50" /></g><path d="M114.0 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /><path d="M40.0 31a10 10 0 0 1 10 10v40a10 10 0 0 0 10 10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 91h8.5" /><path d="M105.5 91h8.5" /><rect height="22" rx="10" ry="10" width="37" x="68.5" y="80"></rect><text x="87" y="95">\r</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="54" x="60" y="80" /></g><path d="M114.0 91a10 10 0 0 0 10 -10v-40a10 10 0 0 1 10 -10" /><path d="M40.0 31a10 10 0 0 1 10 10v70a10 10 0 0 0 10 10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 121h8.5" /><path d="M105.5 121h8.5" /><rect height="22" rx="10" ry="10" width="37" x="68.5" y="110"></rect><text x="87" y="125">\f</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="54" x="60" y="110" /></g><path d="M114.0 121a10 10 0 0 0 10 -10v-70a10 10 0 0 1 10 -10" /></g><rect class="debug-bounds" height="112" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="94" x="40" y="20" /></g><g data-type="End" data-updown="10 0 10">
+<path d="M 134.0 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="134" y="21" /></g></g></svg>

@@ -7,8 +7,8 @@ module RailroadDiagrams
     # @rbs type: String
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(default, type, *items)
-      super('g', items)
+    def initialize(default, type, *items, id: nil, cls: nil, attrs: {})
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       raise InvalidArgument, "default must be between 0 and #{items.length - 1}" unless (0...items.length).cover?(default)
       raise InvalidArgument, "type must be 'any' or 'all'" unless %w[any all].include?(type)
 
@@ -175,7 +175,7 @@ module RailroadDiagrams
 
       render_svg_above(context, group, x, y, inner_width)
       group << svg_path(Svg::PathData.new(x + 30, y).h(arc))
-      group << @items[@default].render_svg(context, x + 30 + arc, y, inner_width)
+      group << context.render_svg(@items[@default], x + 30 + arc, y, inner_width)
       group << svg_path(Svg::PathData.new(x + 30 + arc + inner_width, y + metrics.height).h(arc))
       render_svg_below(context, group, x, y, inner_width)
       group << render_svg_annotation(context, x, y, metrics.width)
@@ -211,7 +211,7 @@ module RailroadDiagrams
       double_enumerate(above).each do |index, negative_index, item|
         child = context.metrics(item)
         group << svg_path(Svg::PathData.new(x + 30, y, arc_radius: arc).v(-[0, distance - arc].max).arc('wn'))
-        group << item.render_svg(context, x + 30 + arc, y - distance, inner_width)
+        group << context.render_svg(item, x + 30 + arc, y - distance, inner_width)
         return_path = Svg::PathData.new(x + 30 + arc + inner_width, y - distance + child.height, arc_radius: arc)
                                    .arc('ne').v([0, distance - child.height + default.height - arc - 10].max)
         group << svg_path(return_path)
@@ -233,7 +233,7 @@ module RailroadDiagrams
       below.each_with_index do |item, index|
         child = context.metrics(item)
         group << svg_path(Svg::PathData.new(x + 30, y, arc_radius: arc).v([0, distance - arc].max).arc('ws'))
-        group << item.render_svg(context, x + 30 + arc, y + distance, inner_width)
+        group << context.render_svg(item, x + 30 + arc, y + distance, inner_width)
         return_path = Svg::PathData.new(x + 30 + arc + inner_width, y + distance + child.height, arc_radius: arc)
                                    .arc('se').v(-[0, distance - arc + child.height - default.height - 10].max)
         group << svg_path(return_path)

@@ -3,9 +3,9 @@
 module RailroadDiagrams
   module Svg
     module Serializer
-      def self?.call: (untyped element, ?precision: untyped, ?optimize_paths: untyped) -> untyped
+      def self?.call: (untyped element, ?precision: untyped, ?optimize_paths: untyped, ?inline_styles: untyped, ?theme: untyped) -> untyped
 
-      def self?.write: (untyped node, untyped output, untyped precision, untyped optimize_paths) -> untyped
+      def self?.write: (untyped node, untyped output, untyped precision, untyped optimize_paths, untyped inline_styles, untyped theme, untyped classes) -> untyped
     end
   end
 end

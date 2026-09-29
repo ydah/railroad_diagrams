@@ -1,0 +1,27 @@
+# Generated from lib/railroad_diagrams/theme.rb with RBS::Inline
+
+module RailroadDiagrams
+  class Theme
+    DEFAULT_TOKENS: untyped
+
+    CLASSIC_TOKENS: untyped
+
+    DARK_TOKENS: untyped
+
+    PRINT_TOKENS: untyped
+
+    HIGH_CONTRAST_TOKENS: untyped
+
+    THEMES: untyped
+
+    def self.[]: (untyped name) -> untyped
+
+    def css: (?css_variables: untyped) -> untyped
+
+    def inline_style: (untyped element, untyped classes) -> untyped
+
+    private
+
+    def render: (untyped palette, untyped css_variables, untyped theme_name) -> untyped
+  end
+end

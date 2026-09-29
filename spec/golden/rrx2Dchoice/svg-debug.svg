@@ -1,0 +1,14 @@
+<svg class="railroad-diagram" data-type="Diagram" data-updown="41 0 41" height="122" viewBox="0 0 148.5 122" width="148.5">
+<g transform="translate(.5 .5)">
+<g data-type="Start" data-updown="10 0 10">
+<g>
+<path d="M20 51v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="51" /></g><g data-type="Choice" data-updown="41 0 41">
+<g>
+<path d="M40 61h0.0" /><path d="M108.5 61h0.0" /><path d="M40.0 61a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 31h0.0" /><path d="M88.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="60" y="20"></rect><text x="74.25" y="35">1</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="28.5" x="60" y="20" /></g><path d="M88.5 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><path d="M40.0 61h20" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 61h0.0" /><path d="M88.5 61h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="60" y="50"></rect><text x="74.25" y="65">2</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="28.5" x="60" y="50" /></g><path d="M88.5 61h20" /><path d="M40.0 61a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 91h0.0" /><path d="M88.5 91h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="60" y="80"></rect><text x="74.25" y="95">3</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="28.5" x="60" y="80" /></g><path d="M88.5 91a10 10 0 0 0 10 -10v-10a10 10 0 0 1 10 -10" /></g><rect class="debug-bounds" height="82" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="68.5" x="40" y="20" /></g><g data-type="End" data-updown="10 0 10">
+<path d="M 108.5 61 h 20 m -10 -10 v 20 m 10 -20 v 20"></path><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="108.5" y="51" /></g></g></svg>

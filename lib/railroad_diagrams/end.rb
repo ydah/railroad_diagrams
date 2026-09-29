@@ -6,9 +6,9 @@ module RailroadDiagrams
     # @rbs type: String
     # @rbs label: String?
     # @rbs return: void
-    def initialize(type = 'simple', label: nil)
+    def initialize(type = 'simple', label: nil, id: nil, cls: nil, attrs: {})
       label = label.to_s if label
-      super(label ? 'g' : 'path')
+      super(label ? 'g' : 'path', id: id, cls: cls, data_attrs: attrs)
       @width = label ? [20, (Unicode::DisplayWidth.of(label) * CHAR_WIDTH) + 10].max : 20
       @up = 10
       @down = 10

@@ -5,16 +5,16 @@ module RailroadDiagrams
   class OptionalSequence < DiagramMultiContainer
     # @rbs *items: (DiagramItem | String)
     # @rbs return: (OptionalSequence | Sequence)
-    def self.new(*items)
-      return Sequence.new(*items) if items.size <= 1
+    def self.new(*items, id: nil, cls: nil, attrs: {})
+      return Sequence.new(*items, id: id, cls: cls, attrs: attrs) if items.size <= 1
 
       super
     end
 
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
-    def initialize(*items)
-      super('g', items)
+    def initialize(*items, id: nil, cls: nil, attrs: {})
+      super('g', items, nil, nil, id: id, cls: cls, data_attrs: attrs)
       @needs_space = false
       @width = 0
       @up = 0
@@ -177,7 +177,7 @@ module RailroadDiagrams
              .v([0, y + child.height - upper_line_y - (arc * 2)].max).arc('ws')
           end
           group << path(x, y) { |p| p.h([0, item_space + arc].max) }
-          group << item.render_svg(context, x + item_space + arc, y, child.width)
+          group << context.render_svg(item, x + item_space + arc, y, child.width)
           x += item_width + arc
           y += child.height
           next
@@ -190,7 +190,7 @@ module RailroadDiagrams
           end
         end
         group << path(x, y) { |p| p.h(arc * 2) }
-        group << item.render_svg(context, x + (arc * 2), y, child.width)
+        group << context.render_svg(item, x + (arc * 2), y, child.width)
         group << path(x + (arc * 2) + child.width, y + child.height) { |p| p.h([0, item_space + arc].max) }
         group << path(x, y, arc) do |p|
           p.arc('ne').v([0, child.height + [child.down + separation, arc * 2].max - (arc * 2)].max)

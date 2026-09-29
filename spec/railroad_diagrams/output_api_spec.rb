@@ -26,6 +26,50 @@ RSpec.describe 'Output API' do
     expect(diagram.to_standalone_svg(css: false)).not_to include('<style>')
   end
 
+  it 'renders the selected theme as inline styles without a style element' do
+    diagram = RailroadDiagrams::Diagram.new(RailroadDiagrams::Terminal.new('a'),
+                                            RailroadDiagrams::NonTerminal.new('b'))
+    svg = diagram.to_standalone_svg(theme: :dark, inline_styles: true)
+    root = REXML::Document.new(svg).root
+
+    expect(svg).not_to include('<style>')
+    expect(root.attributes['style']).to include('background-color:#1e1e1e')
+    expect(root.get_elements('//rect').map { |rect| rect.attributes['style'] })
+      .to include(a_string_including('hsl(190, 60%, 30%)'), a_string_including('hsl(223, 50%, 35%)'))
+    expect { diagram.to_standalone_svg(css: 'rect { fill: red }', inline_styles: true) }
+      .to raise_error(RailroadDiagrams::InvalidArgument, /custom CSS/)
+  end
+
+  it 'adds node dimensions and bounding boxes in debug mode' do
+    svg = RailroadDiagrams::Diagram.new(RailroadDiagrams::Sequence.new('a', 'b')).to_svg(debug: true)
+    document = REXML::Document.new(svg)
+    expect(document.get_elements('//*[@data-type="Terminal"]').length).to eq(2)
+    expect(document.get_elements('//*[@data-type="Sequence"]').length).to eq(1)
+    expect(document.get_elements('//rect[@class="debug-bounds"]')).not_to be_empty
+    expect(svg).to include('data-updown=')
+  end
+
+  it 'escapes node attributes and prefixes ids throughout the diagram' do
+    leaf = RailroadDiagrams::Terminal.new('A', id: 'rule', attrs: { 'data-note' => '<&"' })
+    sequence = RailroadDiagrams::Sequence.new(leaf, RailroadDiagrams::Skip.new(id: 'gap'),
+                                              id: 'branch', cls: 'custom')
+    diagram = RailroadDiagrams::Diagram.new(sequence, id: 'diagram', attrs: { 'data-kind' => 'syntax' })
+    svg = diagram.to_svg(id_prefix: 'sample-')
+    document = REXML::Document.new(svg)
+
+    expect(document.get_elements('//*[@id]').map { |element| element.attributes['id'] })
+      .to eq(%w[sample-diagram sample-branch sample-rule sample-gap])
+    expect(document.get_elements('//*[@id="sample-rule"]').first.attributes['data-note']).to eq('<&"')
+    expect(document.get_elements('//*[@id="sample-branch"]').first.attributes['class']).to include('custom')
+    expect(svg).to include('data-note="&lt;&amp;&quot;"')
+  end
+
+  it 'rejects unsafe node attributes and ids' do
+    expect { RailroadDiagrams::Terminal.new('A', attrs: { 'onclick' => 'run()' }) }
+      .to raise_error(RailroadDiagrams::InvalidArgument)
+    expect { RailroadDiagrams::Skip.new(id: 'bad id') }.to raise_error(RailroadDiagrams::InvalidArgument)
+  end
+
   it 'renders a self-contained HTML page with escaped text alternative' do
     page = RailroadDiagrams::Diagram.new('<A&>').to_html(title: '<Syntax&>', theme: :dark)
     document = REXML::Document.new(page.sub('<!doctype html>', ''))

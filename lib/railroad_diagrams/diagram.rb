@@ -8,14 +8,15 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
     # @rbs return: void
-    def initialize(*items, type: 'simple', title: nil, desc: nil, **unknown)
+    def initialize(*items, type: 'simple', title: nil, desc: nil, id: nil, cls: nil, attrs: {}, **unknown) # rubocop:disable Metrics/ParameterLists
       raise InvalidArgument, "unknown option(s): #{unknown.keys.join(', ')}" unless unknown.empty?
       raise InvalidArgument, "unknown diagram type: #{type.inspect}" unless %w[simple complex].include?(type)
       raise InvalidArgument, 'title must be a String' if title && !title.is_a?(String)
       raise InvalidArgument, 'desc must be a String or :auto' if desc && !desc.is_a?(String) && desc != :auto
 
-      super('svg', items.to_a, { 'class' => DIAGRAM_CLASS })
+      super('svg', items.to_a, { 'class' => DIAGRAM_CLASS }, nil, id: id, cls: cls, data_attrs: attrs)
       @type = type
+      @diagram_cls = cls
       @title = title
       @desc = desc
       @formatted = false
@@ -84,10 +85,12 @@ module RailroadDiagrams
       precision = context.options.precision
       rendered_width = precision ? Svg::NumberFormat.call(svg_width, precision) : svg_width.to_s
       rendered_height = precision ? Svg::NumberFormat.call(svg_height, precision) : svg_height.to_s
-      attrs = @attrs.merge('class' => context.options.diagram_class,
+      attrs = @attrs.merge('class' => [context.options.diagram_class, @diagram_cls].compact.join(' '),
                            'width' => rendered_width, 'height' => rendered_height,
                            'viewBox' => "0 0 #{rendered_width} #{rendered_height}")
       root = Svg::Element.new('svg', attrs)
+      context.apply_node_attributes(root, self)
+      root.attrs['class'] = attrs['class']
       add_accessible_name(root, context) if @title || @desc
       @items.each { |item| root << item.render_svg(context) if item.is_a?(Style) }
       group_attrs = context.options.stroke_odd_pixel_length ? { 'transform' => 'translate(.5 .5)' } : {}
@@ -101,7 +104,7 @@ module RailroadDiagrams
           group << svg_path(x, y, 10)
           x += 10
         end
-        group << item.render_svg(context, x, y, child.width)
+        group << context.render_svg(item, x, y, child.width)
         x += child.width
         y += child.height
         if child.needs_space && index < nodes.length - 1
@@ -110,6 +113,10 @@ module RailroadDiagrams
         end
       end
       root << group
+      if context.options.debug
+        root.attrs['data-type'] = 'Diagram'
+        root.attrs['data-updown'] = "#{metrics.up} #{metrics.height} #{metrics.down}"
+      end
       root.attrs['xmlns:xlink'] = 'http://www.w3.org/1999/xlink' if context.uses_xlink
       root
     end
@@ -155,8 +162,11 @@ module RailroadDiagrams
     # @rbs return: String
     def to_svg(**options)
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
+      validate_inline_styles!(context)
       Svg::Serializer.call(render_svg(context), precision: context.options.precision,
-                                                optimize_paths: context.options.optimize_paths)
+                                                optimize_paths: context.options.optimize_paths,
+                                                inline_styles: context.options.inline_styles,
+                                                theme: Theme[context.options.theme])
     end
 
     # @rbs css: (String | bool)?
@@ -165,12 +175,14 @@ module RailroadDiagrams
     # @rbs return: String
     def to_standalone_svg(css: nil, css_variables: false, **options)
       context = Context.new(RailroadDiagrams.default_options.merge(**options))
+      validate_inline_styles!(context, css: css)
       root = render_svg(context)
       root.attrs['xmlns'] = 'http://www.w3.org/2000/svg'
       root.attrs['xmlns:xlink'] = 'http://www.w3.org/1999/xlink'
       css = Theme[context.options.theme].css(css_variables: css_variables) if css.nil? || css == true
-      root << Svg::StyleText.new(css) if css
-      Svg::Serializer.call(root, precision: context.options.precision, optimize_paths: context.options.optimize_paths)
+      root << Svg::StyleText.new(css) if css && !context.options.inline_styles
+      Svg::Serializer.call(root, precision: context.options.precision, optimize_paths: context.options.optimize_paths,
+                                 inline_styles: context.options.inline_styles, theme: Theme[context.options.theme])
     end
 
     # @rbs charset: Symbol
@@ -233,6 +245,13 @@ module RailroadDiagrams
     end
 
     private
+
+    def validate_inline_styles!(context, css: nil)
+      return unless context.options.inline_styles
+      return unless css.is_a?(String) || @items.any?(Style)
+
+      raise InvalidArgument, 'inline styles cannot include custom CSS'
+    end
 
     def visible_nodes(context)
       @items.reject do |item|

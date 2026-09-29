@@ -18,6 +18,10 @@ module RailroadDiagrams
     attr_reader :options, :measurer, :parts, :ids, :uses_xlink
 
     def initialize(options = RailroadDiagrams.default_options, parts: nil)
+      if options.id_prefix && (!options.id_prefix.is_a?(String) || !/\A[A-Za-z_][\w.-]*\z/.match?(options.id_prefix))
+        raise InvalidArgument, 'id_prefix must be a valid SVG identifier prefix'
+      end
+
       @options = options
       @measurer = options.measurer || Measurer::Monospace.new(options)
       @parts = (parts || Text::Parts.for(options.text_charset)).dup.freeze
@@ -33,6 +37,34 @@ module RailroadDiagrams
 
     def metrics(node)
       @metrics[node] ||= node.measure(self)
+    end
+
+    def render_svg(node, x, y, width)
+      element = node.render_svg(self, x, y, width)
+      apply_node_attributes(element, node)
+      return element unless @options.debug
+
+      size = metrics(node)
+      bounds_attrs = {
+        'class' => 'debug-bounds', 'x' => x, 'y' => y - size.up,
+        'width' => width, 'height' => size.up + size.height + size.down,
+        'style' => 'fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none'
+      }
+      bounds = Svg::Element.new('rect', bounds_attrs, self_closing: true)
+      wrapper_attrs = {
+        'data-type' => node.class.name.split('::').last,
+        'data-updown' => "#{size.up} #{size.height} #{size.down}"
+      }
+      Svg::Element.new('g', wrapper_attrs) << element << bounds
+    end
+
+    def apply_node_attributes(element, node)
+      node.attrs.each do |name, value|
+        next unless name == 'id' || name == 'class' || name.start_with?('data-')
+
+        element.attrs[name] = name == 'id' && @options.id_prefix ? "#{@options.id_prefix}#{value}" : value
+      end
+      element
     end
 
     def text_width(text, role = :label)

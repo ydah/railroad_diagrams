@@ -7,7 +7,7 @@ module RailroadDiagrams
     # @rbs attrs: Hash[String, String | Numeric]?
     # @rbs text: String?
     # @rbs return: void
-    def initialize: (String name, Array[DiagramItem | String] items, ?Hash[String, String | Numeric]? attrs, ?String? text) -> void
+    def initialize: (String name, Array[DiagramItem | String] items, ?Hash[String, String | Numeric]? attrs, ?String? text, ?id: untyped, ?data_attrs: untyped, ?cls: untyped) -> void
 
     # @rbs x: Numeric
     # @rbs y: Numeric

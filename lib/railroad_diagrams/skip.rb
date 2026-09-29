@@ -4,8 +4,8 @@
 module RailroadDiagrams
   class Skip < DiagramItem
     # @rbs return: void
-    def initialize
-      super('g')
+    def initialize(id: nil, cls: nil, attrs: {})
+      super('g', id: id, cls: cls, data_attrs: attrs)
       @width = 0
       @up = 0
       @down = 0

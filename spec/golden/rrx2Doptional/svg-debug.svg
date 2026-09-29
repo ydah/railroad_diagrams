@@ -1,0 +1,18 @@
+<svg class="railroad-diagram" data-type="Diagram" data-updown="20 0 31" height="91" viewBox="0 0 251.0 91" width="251.0">
+<g transform="translate(.5 .5)">
+<g data-type="Start" data-updown="10 0 10">
+<g>
+<path d="M20 30v20m10 -20v20m-10 -10h20" /></g><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="20" y="30" /></g><g data-type="Choice" data-updown="20 0 11">
+<g>
+<path d="M40 40h0.0" /><path d="M125.5 40h0.0" /><path d="M40.0 40a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10" /><g data-type="Skip" data-updown="0 0 0">
+<g>
+<path d="M60.0 20h45.5" /></g><rect class="debug-bounds" height="0" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="45.5" x="60" y="20" /></g><path d="M105.5 20a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10" /><path d="M40.0 40h20" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M60.0 40h0.0" /><path d="M105.5 40h0.0" /><rect height="22" rx="10" ry="10" width="45.5" x="60" y="29"></rect><text x="82.75" y="44">foo</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="45.5" x="60" y="29" /></g><path d="M105.5 40h20" /></g><rect class="debug-bounds" height="31" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="85.5" x="40" y="20" /></g><g data-type="Choice" data-updown="0 0 31">
+<g>
+<path d="M125.5 40h0.0" /><path d="M211.0 40h0.0" /><path d="M125.5 40h20" /><g data-type="Skip" data-updown="0 0 0">
+<g>
+<path d="M145.5 40h45.5" /></g><rect class="debug-bounds" height="0" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="45.5" x="145.5" y="40" /></g><path d="M191.0 40h20" /><path d="M125.5 40a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10" /><g data-type="Terminal" data-updown="11 0 11">
+<g class="terminal ">
+<path d="M145.5 60h0.0" /><path d="M191.0 60h0.0" /><rect height="22" rx="10" ry="10" width="45.5" x="145.5" y="49"></rect><text x="168.25" y="64">bar</text></g><rect class="debug-bounds" height="22" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="45.5" x="145.5" y="49" /></g><path d="M191.0 60a10 10 0 0 0 10 -10v0a10 10 0 0 1 10 -10" /></g><rect class="debug-bounds" height="31" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="85.5" x="125.5" y="40" /></g><g data-type="End" data-updown="10 0 10">
+<path d="M 211.0 40 h 20 m -10 -10 v 20 m 10 -20 v 20"></path><rect class="debug-bounds" height="20" style="fill:none;stroke:red;stroke-width:1;stroke-dasharray:3 2;pointer-events:none" width="20" x="211" y="30" /></g></g></svg>
