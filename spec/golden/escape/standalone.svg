@@ -7,7 +7,7 @@
 <path d="M108.5 31h23.75" /><path d="M356.25 31h23.75" /><rect height="22" width="224" x="132.25" y="20"></rect><text x="244.25" y="35">not newline or hex digit</text></g><path d="M380.0 31h20" /><path d="M88.5 31a10 10 0 0 1 10 10v10a10 10 0 0 0 10 10" /><g>
 <path d="M108.5 61h0.0" /><path d="M380.0 61h0.0" /><g>
 <path d="M108.5 61h0.0" /><path d="M225.0 61h0.0" /><path d="M108.5 61h10" /><g class="non-terminal ">
-<path d="M118.5 61h0.0" /><path d="M215.0 61h0.0" /><rect height="22" width="96.5" x="118.5" y="50"></rect><text x="166.75" y="65">hex digit</text></g><path d="M215.0 61h10" /><path d="M118.5 61a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="non-terminal ">
+<path d="M118.5 61h0.0" /><path d="M215.0 61h0.0" /><rect height="22" width="96.5" x="118.5" y="50"></rect><text x="166.75" y="65">hex digit</text></g><path d="M215.0 61h10" /><path d="M118.5 61a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="comment non-terminal ">
 <path d="M118.5 88h11.75" /><path d="M203.25 88h11.75" /><text class="comment" x="166.25" y="92">1-6 times</text></g><path d="M215.0 88a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g><path d="M225.0 61h10" /><g>
 <path d="M235.0 61h0.0" /><path d="M380.0 61h0.0" /><path d="M235.0 61h20" /><g>
 <path d="M255.0 61h105.0" /></g><path d="M360.0 61h20" /><path d="M235.0 61a10 10 0 0 1 10 10v0a10 10 0 0 0 10 10" /><g class="non-terminal ">
@@ -26,6 +26,22 @@ svg.railroad-diagram path {
 svg.railroad-diagram text {
   font:bold 14px monospace;
   text-anchor:middle;
+  white-space: pre;
+}
+svg.railroad-diagram text.diagram-text {
+  font-size: 12px;
+}
+svg.railroad-diagram text.diagram-arrow {
+  font-size: 16px;
+}
+svg.railroad-diagram path.diagram-text {
+  stroke-width: 3;
+  stroke: #333333;
+  fill: white;
+  cursor: help;
+}
+svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+  fill: #eee;
 }
 svg.railroad-diagram text.label {
   text-anchor:start;

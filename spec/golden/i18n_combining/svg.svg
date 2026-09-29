@@ -1,0 +1,6 @@
+<svg class="railroad-diagram" height="62" viewBox="0 0 177.0 62" width="177.0">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><path d="M40 31h10" /><g class="terminal ">
+<path d="M50 31h0.0" /><path d="M78.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="50" y="20"></rect><text x="64.25" y="35">é</text></g><path d="M78.5 31h10" /><path d="M88.5 31h10" /><g class="terminal ">
+<path d="M98.5 31h0.0" /><path d="M127.0 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="98.5" y="20"></rect><text x="112.75" y="35">○</text></g><path d="M127.0 31h10" /><path d="M 137.0 31 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
