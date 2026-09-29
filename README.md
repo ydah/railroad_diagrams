@@ -25,6 +25,8 @@ File.write('select.svg', diagram.to_standalone_svg)
 
 `to_standalone_svg` includes CSS. Use `to_svg` to embed the diagram in a page with your own CSS. Both methods return strings; `write_svg` and `write_standalone` write to an IO, a String, or a callable.
 
+Select a built-in theme with `to_standalone_svg(theme: :dark)` or use `theme: :auto` to follow the viewer's color scheme. Pass `inline_styles: true` when the destination strips SVG style elements. `to_html(title: 'Syntax')` returns a complete HTML page. For screen readers, pass `title:` and `desc: :auto` to `Diagram.new`; `to_svg(locale: :ja)` produces a Japanese description. Links in `to_svg` allow HTTP, HTTPS, email, and relative URLs by default.
+
 ## Nodes
 
 Strings passed as children become `Terminal` nodes. Build larger diagrams by nesting the constructors below. See [examples/demo.rb](examples/demo.rb) for complete diagrams.
@@ -54,7 +56,9 @@ Strings passed as children become `Terminal` nodes. Build larger diagrams by nes
 ```ruby
 puts diagram.to_text                       # Unicode box characters
 puts diagram.to_text(charset: :ascii)       # ASCII only
+puts diagram.to_text(charset: :unicode_square, strip_trailing: true)
 puts diagram.to_text(escape_html: true)     # safe to embed in HTML
+puts diagram.to_markdown                     # fenced code block
 ```
 
 Labels use Unicode display widths, so CJK and emoji fit their boxes. Ambiguous-width characters occupy one column. The older `write_text` method escapes HTML by default for compatibility.
@@ -65,7 +69,7 @@ Labels use Unicode display widths, so CJK and emoji fit their boxes. Ambiguous-w
 
 ## Configuration and compatibility
 
-The constants in [lib/railroad_diagrams.rb](lib/railroad_diagrams.rb), including `VS`, `AR`, `CHAR_WIDTH`, and `INTERNAL_ALIGNMENT`, control drawing defaults. `Style.default_style` returns the default CSS. The text character set is global for the older `write_text` API; `to_text(charset:)` selects it for a single call but is not thread safe yet.
+The constants in [lib/railroad_diagrams.rb](lib/railroad_diagrams.rb), including `VS`, `AR`, `CHAR_WIDTH`, and `INTERNAL_ALIGNMENT`, remain available for compatibility. Pass options such as `arc_radius:`, `char_width:`, and `theme:` to individual output calls. `Style.default_style` returns the default CSS. `to_text(charset:)` uses per-call state and is safe to call from multiple threads.
 
 Read the [migration guide](docs/migration.md) for behavior changes and deprecations. Before 1.0, breaking changes receive at least one minor release of deprecation notice; removal is deferred to 2.0.
 
