@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 0.6.0 - 2026-09-30
+
 ### Added
 
 - Built-in themes for classic, dark, automatic, print, and high-contrast rendering.
