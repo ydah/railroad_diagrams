@@ -53,3 +53,11 @@ namespace :docs do
     end
   end
 end
+
+namespace :site do
+  desc 'Build the static node and theme gallery'
+  task :build do
+    require_relative 'script/build_site'
+    SiteBuild.build
+  end
+end

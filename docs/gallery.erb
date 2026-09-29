@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Railroad diagrams · <%= theme.tr('_', ' ') %> theme</title>
+<style>
+<%= css %>
+:root { color-scheme: light; --ink: #183047; --muted: #516779; --line: #bfd0d9; --paper: #f3f7f9; --white: #fff; --accent: #176b91; }
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.55 system-ui, sans-serif; }
+a { color: var(--accent); }
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+.layout { display: grid; grid-template-columns: minmax(12rem, 17rem) minmax(0, 1fr); min-height: 100vh; }
+aside { border-right: 1px solid var(--line); padding: 2rem 1.4rem; background: var(--white); }
+aside nav { position: sticky; top: 1.5rem; max-height: calc(100vh - 3rem); overflow: auto; }
+aside a { display: block; padding: .18rem 0; text-decoration: none; }
+aside a:hover { text-decoration: underline; }
+aside h2 { font-size: .9rem; margin: 1.8rem 0 .4rem; }
+main { width: min(100%, 70rem); padding: 2rem clamp(1rem, 4vw, 4rem) 5rem; }
+header { border-bottom: 3px solid var(--ink); padding-bottom: 1.8rem; margin-bottom: 2.5rem; }
+h1 { font-size: clamp(2.4rem, 5vw, 4.6rem); line-height: 1.05; letter-spacing: -.045em; margin: .4rem 0 1rem; }
+header p { max-width: 42rem; color: var(--muted); margin: 0; }
+article { border-bottom: 1px solid var(--line); padding: 1.1rem 0 2rem; }
+article h2 { font: 600 1.25rem/1.3 ui-monospace, monospace; margin: 0 0 1rem; }
+figure { margin: 0; overflow-x: auto; }
+figure svg { display: block; max-width: 100%; height: auto; }
+details { margin-top: .65rem; color: var(--muted); }
+pre { overflow-x: auto; color: var(--ink); }
+[aria-current="page"] { color: var(--ink); font-weight: 700; }
+@media (max-width: 46rem) { .layout { display: block; } aside { border-right: 0; border-bottom: 1px solid var(--line); padding: 1rem; } aside nav { position: static; max-height: none; } aside .nodes { display: none; } main { padding-top: 1.5rem; } }
+</style>
+</head>
+<body>
+<div class="layout">
+<aside><nav aria-label="Gallery navigation">
+<a href="<%= prefix %>index.html">Overview</a>
+<h2>Themes</h2>
+<% ExamplesLoader::THEMES.each do |name| %>
+<a href="<%= prefix %>themes/<%= name %>.html"<%= ' aria-current="page"' if name == theme %>><%= name.tr('_', ' ') %></a>
+<% end %>
+<div class="nodes"><h2>Nodes</h2>
+<% samples.each do |label, _svg, _text| %>
+<a href="#<%= label.downcase %>"><%= label %></a>
+<% end %>
+</div></nav></aside>
+<main>
+<header><h1>Railroad diagrams</h1><p>Every diagram node, shown in the <%= theme.tr('_', ' ') %> theme. Choose a theme to compare the same examples.</p></header>
+<% samples.each do |label, svg, text| %>
+<article id="<%= label.downcase %>">
+<h2><%= label %></h2>
+<figure role="img" aria-label="<%= label %> diagram"><%= svg %></figure>
+<details><summary>Text version</summary><pre><%= RailroadDiagrams.escape_html(text) %></pre></details>
+</article>
+<% end %>
+</main></div>
+</body>
+</html>
