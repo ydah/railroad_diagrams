@@ -50,6 +50,10 @@ module RailroadDiagrams
   end
 end
 
+require_relative 'railroad_diagrams/errors'
+require_relative 'railroad_diagrams/deprecation'
+require_relative 'railroad_diagrams/writer'
+require_relative 'railroad_diagrams/unicode/display_width'
 require_relative 'railroad_diagrams/diagram_item'
 require_relative 'railroad_diagrams/diagram_multi_container'
 

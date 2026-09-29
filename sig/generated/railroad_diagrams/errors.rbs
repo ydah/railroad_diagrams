@@ -1,0 +1,26 @@
+# Generated from lib/railroad_diagrams/errors.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Error
+  end
+
+  class InvalidArgument < ArgumentError
+    include Error
+  end
+
+  class ParseError < StandardError
+    include Error
+
+    attr_reader line: untyped
+
+    attr_reader column: untyped
+
+    attr_reader source_line: untyped
+
+    def initialize: (untyped message, ?line: untyped, ?column: untyped, ?source_line: untyped) -> untyped
+  end
+
+  class RenderError < StandardError
+    include Error
+  end
+end

@@ -9,12 +9,12 @@ module RailroadDiagrams
     # @rbs cls: String
     # @rbs return: void
     def initialize(text, href = nil, title = nil, cls: '')
-      super('g', attrs: { 'class' => "non-terminal #{cls}" })
-      @text = text
+      super('g', attrs: { 'class' => "comment non-terminal #{cls}" })
+      @text = text.to_s
       @href = href
       @title = title
       @cls = cls
-      @width = (text.length * COMMENT_CHAR_WIDTH) + 10
+      @width = (Unicode::DisplayWidth.of(@text) * COMMENT_CHAR_WIDTH) + 10
       @up = 8
       @down = 8
       @needs_space = true

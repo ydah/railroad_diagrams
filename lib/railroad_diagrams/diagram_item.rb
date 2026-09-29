@@ -63,9 +63,10 @@ module RailroadDiagrams
       self
     end
 
-    # @rbs write: ^(String) -> void
+    # @rbs write: untyped
     # @rbs return: void
     def write_svg(write)
+      write = Writer.wrap(write)
       write_opening_tag(write)
       write_children(write)
       write.call("</#{@name}>")

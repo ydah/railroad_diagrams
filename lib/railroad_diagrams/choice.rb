@@ -9,7 +9,7 @@ module RailroadDiagrams
     def initialize(default, *items)
       super('g', items)
       unless default.is_a?(Integer) && (0...items.size).cover?(default)
-        raise ArgumentError, "default index out of range: #{default.inspect} (0...#{items.size})"
+        raise InvalidArgument, "default index out of range: #{default.inspect} (0...#{items.size})"
       end
 
       @default = default

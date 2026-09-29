@@ -11,7 +11,7 @@ end
 # rbs-inline task - Generate RBS files from inline annotations
 desc 'Generate RBS files from inline annotations'
 task :rbs_inline do
-  sh 'bundle exec rbs-inline --output lib'
+  sh 'bundle exec rbs-inline --output=sig/generated lib'
 end
 
 # Steep task - Run type checking

@@ -1,0 +1,13 @@
+# Generated from lib/railroad_diagrams/unicode/display_width.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Unicode
+    module DisplayWidth
+      def self?.of: (untyped string, ?ambiguous: untyped) -> untyped
+
+      def self?.lookup: (untyped ranges, untyped codepoint) -> untyped
+
+      def self?.emoji_cluster?: (untyped codepoints) -> untyped
+    end
+  end
+end

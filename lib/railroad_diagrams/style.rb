@@ -27,6 +27,22 @@ module RailroadDiagrams
           svg.railroad-diagram text {
             font:bold 14px monospace;
             text-anchor:middle;
+            white-space: pre;
+          }
+          svg.railroad-diagram text.diagram-text {
+            font-size: 12px;
+          }
+          svg.railroad-diagram text.diagram-arrow {
+            font-size: 16px;
+          }
+          svg.railroad-diagram path.diagram-text {
+            stroke-width: 3;
+            stroke: #333333;
+            fill: white;
+            cursor: help;
+          }
+          svg.railroad-diagram g.diagram-text:hover path.diagram-text {
+            fill: #eee;
           }
           svg.railroad-diagram text.label {
             text-anchor:start;

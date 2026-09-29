@@ -5,7 +5,7 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
     # @rbs return: void
-    def initialize: (*DiagramItem | String items, **untyped kwargs) -> void
+    def initialize: (*DiagramItem | String items, ?type: String, **untyped unknown) -> void
 
     # @rbs return: String
     def to_s: () -> String
@@ -24,9 +24,22 @@ module RailroadDiagrams
     # @rbs return: void
     def write_svg: (^(String) -> void write) -> void
 
-    # @rbs write: ^(String) -> void
+    # @rbs write: untyped
+    # @rbs escape_html: bool
     # @rbs return: void
-    def write_text: (^(String) -> void write) -> void
+    def write_text: (untyped write, ?escape_html: bool) -> void
+
+    # @rbs return: String
+    def to_svg: () -> String
+
+    # @rbs css: (String | bool)?
+    # @rbs return: String
+    def to_standalone_svg: (?css: (String | bool)?) -> String
+
+    # @rbs charset: Symbol
+    # @rbs escape_html: bool
+    # @rbs return: String
+    def to_text: (?charset: Symbol, ?escape_html: bool) -> String
 
     # @rbs write: ^(String) -> void
     # @rbs css: String?
@@ -79,5 +92,9 @@ module RailroadDiagrams
     # @rbs style: Style?
     # @rbs return: void
     def cleanup_standalone_artifacts: (Style? style) -> void
+
+    # @rbs value: DiagramItem | Style | String
+    # @rbs return: DiagramItem | Style
+    def wrap_string: (DiagramItem | Style | String value) -> (DiagramItem | Style)
   end
 end

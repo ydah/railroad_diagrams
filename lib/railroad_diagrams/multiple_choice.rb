@@ -9,8 +9,8 @@ module RailroadDiagrams
     # @rbs return: void
     def initialize(default, type, *items)
       super('g', items)
-      raise ArgumentError, "default must be between 0 and #{items.length - 1}" unless (0...items.length).cover?(default)
-      raise ArgumentError, "type must be 'any' or 'all'" unless %w[any all].include?(type)
+      raise InvalidArgument, "default must be between 0 and #{items.length - 1}" unless (0...items.length).cover?(default)
+      raise InvalidArgument, "type must be 'any' or 'all'" unless %w[any all].include?(type)
 
       @default = default
       @type = type

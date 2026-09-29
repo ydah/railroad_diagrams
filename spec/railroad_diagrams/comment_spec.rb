@@ -21,12 +21,12 @@ RSpec.describe RailroadDiagrams::Comment do
 
     it 'sets default class' do
       comment = described_class.new('test')
-      expect(comment.attrs['class']).to eq('non-terminal ')
+      expect(comment.attrs['class']).to eq('comment non-terminal ')
     end
 
     it 'accepts custom class' do
       comment = described_class.new('test', nil, nil, cls: 'blue')
-      expect(comment.attrs['class']).to eq('non-terminal blue')
+      expect(comment.attrs['class']).to eq('comment non-terminal blue')
     end
 
     it 'accepts href' do

@@ -117,7 +117,7 @@ module RailroadDiagrams
         @parts = defaults ? defaults.dup : {}
         @parts.merge!(characters)
         @parts.each do |name, value|
-          raise ArgumentError, "Text part #{name} is more than 1 character: #{value}" if value.size != 1
+          raise InvalidArgument, "Text part #{name} is more than 1 character: #{value}" if value.size != 1
         end
       end
 
@@ -145,11 +145,11 @@ module RailroadDiagrams
             when TextDiagram
               arg.width
             when Array
-              arg.map(&:length).max
+              arg.map { |line| Unicode::DisplayWidth.of(line) }.max
             when Numeric
-              arg.to_s.length
+              Unicode::DisplayWidth.of(arg.to_s)
             else
-              arg.length
+              Unicode::DisplayWidth.of(arg)
             end
           max_width = width if width > max_width
         end
@@ -161,10 +161,11 @@ module RailroadDiagrams
       # @rbs pad: String
       # @rbs return: String
       def pad_l(string, width, pad)
-        gap = width - string.length
-        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad.length).zero?
+        gap = width - Unicode::DisplayWidth.of(string)
+        pad_width = Unicode::DisplayWidth.of(pad)
+        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad_width).zero?
 
-        (pad * (gap / pad.length)) + string
+        (pad * (gap / pad_width)) + string
       end
 
       # @rbs string: String
@@ -172,10 +173,11 @@ module RailroadDiagrams
       # @rbs pad: String
       # @rbs return: String
       def pad_r(string, width, pad)
-        gap = width - string.length
-        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad.length).zero?
+        gap = width - Unicode::DisplayWidth.of(string)
+        pad_width = Unicode::DisplayWidth.of(pad)
+        raise "Gap #{gap} must be a multiple of pad string '#{pad}'" unless (gap % pad_width).zero?
 
-        string + (pad * (gap / pad.length))
+        string + (pad * (gap / pad_width))
       end
 
       # @rbs part_names: Array[String]
@@ -290,13 +292,13 @@ module RailroadDiagrams
       @exit = exit
       @lines = lines.dup
       @height = lines.size
-      @width = lines.any? ? lines[0].length : 0
+      @width = lines.any? ? Unicode::DisplayWidth.of(lines[0]) : 0
 
       raise "Entry is not within diagram vertically:\n#{dump(false)}" unless entry <= lines.length
       raise "Exit is not within diagram vertically:\n#{dump(false)}" unless exit <= lines.length
 
       lines.each do |line|
-        raise "Diagram data is not rectangular:\n#{dump(false)}" unless lines[0].length == line.length
+        raise "Diagram data is not rectangular:\n#{dump(false)}" unless @width == Unicode::DisplayWidth.of(line)
       end
     end
 
@@ -340,7 +342,7 @@ module RailroadDiagrams
       right = item.expand(0, 0, join_line - item.entry, new_height - item.height - (join_line - item.entry))
 
       new_lines = (0...new_height).map do |i|
-        sep = i == join_line ? chars_between : ' ' * chars_between.size
+        sep = i == join_line ? chars_between : ' ' * Unicode::DisplayWidth.of(chars_between)
         left_line = i < left.lines.size ? left.lines[i] : ' ' * left.width
         right_line = i < right.lines.size ? right.lines[i] : ' ' * right.width
         "#{left_line}#{sep}#{right_line}"
@@ -357,7 +359,7 @@ module RailroadDiagrams
     # @rbs pad: String
     # @rbs return: TextDiagram
     def center(new_width, pad = ' ')
-      raise ArgumentError, "Cannot center into smaller width (#{new_width} < #{@width})" if new_width < @width
+      raise InvalidArgument, "Cannot center into smaller width (#{new_width} < #{@width})" if new_width < @width
       return copy if new_width == @width
 
       total_padding = new_width - @width

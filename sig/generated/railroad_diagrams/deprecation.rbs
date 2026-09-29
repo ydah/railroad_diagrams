@@ -1,0 +1,10 @@
+# Generated from lib/railroad_diagrams/deprecation.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Deprecation
+    # @rbs message: String
+    # @rbs uplevel: Integer
+    # @rbs return: void
+    def self.warn: (String message, ?uplevel: Integer) -> void
+  end
+end

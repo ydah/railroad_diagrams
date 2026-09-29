@@ -10,11 +10,11 @@ module RailroadDiagrams
     # @rbs return: void
     def initialize(text, href = nil, title = nil, cls: '')
       super('g', attrs: { 'class' => "non-terminal #{cls}" })
-      @text = text
+      @text = text.to_s
       @href = href
       @title = title
       @cls = cls
-      @width = (text.length * CHAR_WIDTH) + 20
+      @width = (Unicode::DisplayWidth.of(@text) * CHAR_WIDTH) + 20
       @up = 11
       @down = 11
       @needs_space = true

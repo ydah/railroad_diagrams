@@ -6,9 +6,12 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs type: String
     # @rbs return: void
-    def initialize(*items, **kwargs)
+    def initialize(*items, type: 'simple', **unknown)
+      raise InvalidArgument, "unknown option(s): #{unknown.keys.join(', ')}" unless unknown.empty?
+      raise InvalidArgument, "unknown diagram type: #{type.inspect}" unless %w[simple complex].include?(type)
+
       super('svg', items.to_a, { 'class' => DIAGRAM_CLASS })
-      @type = kwargs.fetch(:type, 'simple')
+      @type = type
       @formatted = false
 
       ensure_start_and_end_items
@@ -43,9 +46,12 @@ module RailroadDiagrams
 
     # @rbs return: TextDiagram
     def text_diagram
+      return TextDiagram.new(0, 0, []) if @items.empty?
+
       separator, = TextDiagram.get_parts(['separator'])
-      diagram_td = @items[0].text_diagram
-      @items[1..-1].each do |item|
+      render_items = @items.reject { |item| item.is_a?(Style) }
+      diagram_td = render_items[0].text_diagram
+      render_items[1..-1].each do |item|
         item_td = item.text_diagram
         item_td = item_td.expand(1, 1, 0, 0) if item.needs_space
         diagram_td = diagram_td.append_right(item_td, separator)
@@ -61,13 +67,45 @@ module RailroadDiagrams
       super
     end
 
-    # @rbs write: ^(String) -> void
+    # @rbs write: untyped
+    # @rbs escape_html: bool
     # @rbs return: void
-    def write_text(write)
+    def write_text(write, escape_html: true)
+      write = Writer.wrap(write)
       output = text_diagram
       output = "#{output.lines.join("\n")}\n"
-      output = output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;')
+      output = output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;') if escape_html
       write.call(output)
+    end
+
+    # @rbs return: String
+    def to_svg
+      out = +''
+      write_svg(out)
+      out
+    end
+
+    # @rbs css: (String | bool)?
+    # @rbs return: String
+    def to_standalone_svg(css: nil)
+      out = +''
+      write_standalone(out, css)
+      out
+    end
+
+    # @rbs charset: Symbol
+    # @rbs escape_html: bool
+    # @rbs return: String
+    def to_text(charset: :unicode, escape_html: false)
+      parts = { unicode: TextDiagram::PARTS_UNICODE, ascii: TextDiagram::PARTS_ASCII }.fetch(charset) do
+        raise InvalidArgument, "unknown charset: #{charset.inspect}"
+      end
+      previous = TextDiagram.parts
+      TextDiagram.set_formatting(parts)
+      output = "#{text_diagram.lines.join("\n")}\n"
+      escape_html ? output.gsub('&', '&amp;').gsub('<', '&lt;').gsub('>', '&gt;').gsub('"', '&quot;') : output
+    ensure
+      TextDiagram.parts = previous if defined?(previous)
     end
 
     # @rbs write: ^(String) -> void
@@ -129,6 +167,11 @@ module RailroadDiagrams
       y = padding_top + @up
 
       @items.each do |item|
+        if item.is_a?(Style)
+          item.add(self)
+          next
+        end
+
         x = add_leading_spacing(x, y, item, g)
         item.format(x, y, item.width).add(g)
         x += item.width
@@ -189,6 +232,12 @@ module RailroadDiagrams
       @children.delete_at(@children.rindex { |c| c.equal?(style) }) if style
       @attrs.delete('xmlns')
       @attrs.delete('xmlns:xlink')
+    end
+
+    # @rbs value: DiagramItem | Style | String
+    # @rbs return: DiagramItem | Style
+    def wrap_string(value)
+      value.is_a?(Style) ? value : super
     end
   end
 end

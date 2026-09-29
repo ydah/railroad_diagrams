@@ -8,9 +8,10 @@ module RailroadDiagrams
     # @rbs return: void
     def initialize(type = 'simple', label: nil)
       super('g')
+      label = label.to_s if label
       @width =
         if label
-          [20, (label.length * CHAR_WIDTH) + 10].max
+          [20, (Unicode::DisplayWidth.of(label) * CHAR_WIDTH) + 10].max
         else
           20
         end
@@ -63,7 +64,7 @@ module RailroadDiagrams
       label_td = TextDiagram.new(0, 0, [])
       if @label
         label_td = TextDiagram.new(0, 0, [@label])
-        start = TextDiagram.pad_r(start, label_td.width, line)
+        start = TextDiagram.pad_r(start, [label_td.width, Unicode::DisplayWidth.of(start)].max, line)
       end
       start_td = TextDiagram.new(0, 0, [start])
       label_td.append_below(start_td, [], move_entry: true, move_exit: true)

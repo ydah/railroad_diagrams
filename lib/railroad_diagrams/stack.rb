@@ -6,6 +6,8 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs return: void
     def initialize(*items)
+      raise InvalidArgument, 'Stack requires at least one item' if items.empty?
+
       super('g', items)
       @needs_space = false
       calculate_dimensions

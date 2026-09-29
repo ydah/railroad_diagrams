@@ -46,9 +46,9 @@ module RailroadDiagrams
     # @rbs return: DiagramItem
     def add: (DiagramItem parent) -> DiagramItem
 
-    # @rbs write: ^(String) -> void
+    # @rbs write: untyped
     # @rbs return: void
-    def write_svg: (^(String) -> void write) -> void
+    def write_svg: (untyped write) -> void
 
     # @rbs callback: ^(DiagramItem) -> void
     # @rbs return: void

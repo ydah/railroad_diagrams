@@ -5,13 +5,13 @@ RSpec.describe 'Edge Cases' do
     it 'requires exactly two arguments' do
       expect {
         RailroadDiagrams::AlternatingSequence.new('a')
-      }.to raise_error(RuntimeError, /exactly two arguments/)
+      }.to raise_error(ArgumentError, /exactly two arguments/)
     end
 
     it 'raises error with three arguments' do
       expect {
         RailroadDiagrams::AlternatingSequence.new('a', 'b', 'c')
-      }.to raise_error(RuntimeError, /exactly two arguments/)
+      }.to raise_error(ArgumentError, /exactly two arguments/)
     end
   end
 

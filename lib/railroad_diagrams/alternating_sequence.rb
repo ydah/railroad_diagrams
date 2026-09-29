@@ -6,7 +6,7 @@ module RailroadDiagrams
     # @rbs *items: (DiagramItem | String)
     # @rbs return: AlternatingSequence
     def self.new(*items)
-      raise "AlternatingSequence takes exactly two arguments, but got #{items.size} arguments." unless items.size == 2
+      raise InvalidArgument, "AlternatingSequence takes exactly two arguments, but got #{items.size} arguments." unless items.size == 2
 
       super
     end

@@ -5,13 +5,13 @@ RSpec.describe RailroadDiagrams::AlternatingSequence do
     it 'requires exactly two arguments' do
       expect {
         described_class.new('a')
-      }.to raise_error(RuntimeError, /exactly two arguments/)
+      }.to raise_error(ArgumentError, /exactly two arguments/)
     end
 
     it 'raises error with three arguments' do
       expect {
         described_class.new('a', 'b', 'c')
-      }.to raise_error(RuntimeError, /exactly two arguments/)
+      }.to raise_error(ArgumentError, /exactly two arguments/)
     end
 
     it 'accepts exactly two arguments' do

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module ExamplesLoader
-  DEMO_FILE = File.expand_path('../../examples/demo.rb', __dir__)
+  EXAMPLE_FILES = Dir[File.expand_path('../../examples/*.rb', __dir__)].sort.freeze
 
   class Collector
     include RailroadDiagrams
@@ -24,7 +24,9 @@ module ExamplesLoader
   # 呼ぶたびに新しいノードを組み立てる（描画による状態汚染を避けるため）
   def load
     collector = Collector.new
-    collector.instance_eval(File.read(DEMO_FILE, encoding: 'utf-8'), DEMO_FILE)
+    EXAMPLE_FILES.each do |file|
+      collector.instance_eval(File.read(file, encoding: 'utf-8'), file)
+    end
     collector.diagrams
   end
 

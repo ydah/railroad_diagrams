@@ -1,0 +1,9 @@
+# Generated from lib/railroad_diagrams/writer.rb with RBS::Inline
+
+module RailroadDiagrams
+  module Writer
+    # @rbs target: untyped
+    # @rbs return: ^(String) -> void
+    def self?.wrap: (untyped target) -> ^(String) -> void
+  end
+end
