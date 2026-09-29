@@ -9,6 +9,7 @@ module ParityExport
 
   def node(item)
     name = item.class.name.split('::').last
+    name = 'Choice' if item.is_a?(RailroadDiagrams::Optional)
     args = case name
            when 'Terminal', 'NonTerminal', 'Comment'
              %i[@text @href @title @cls].map { |field| item.instance_variable_get(field) }
@@ -34,8 +35,12 @@ module ParityExport
     { 'class' => name, 'args' => args }
   end
 
+  def diagrams
+    ExamplesLoader.load.reject { |name, _| name.start_with?('node-') }
+  end
+
   def examples
-    ExamplesLoader.load.transform_values { |diagram| node(diagram) }
+    diagrams.transform_values { |diagram| node(diagram) }
   end
 end
 

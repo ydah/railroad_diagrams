@@ -35,7 +35,7 @@ allowlist_path = File.expand_path('../../spec/parity/allowlist.yml', __dir__)
 allowed = YAML.safe_load(File.read(allowlist_path)).to_h { |row| [row.fetch('example'), row.fetch('reason')] }
 failures = []
 used = []
-ExamplesLoader.load.each do |name, diagram|
+ParityExport.diagrams.each do |name, diagram|
   expected = upstream.fetch(name)
   upstream_error = expected['error']
   metrics = [diagram.width, diagram.up, diagram.height, diagram.down]

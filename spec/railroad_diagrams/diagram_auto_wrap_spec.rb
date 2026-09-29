@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 require 'spec_helper'
-require 'open3'
-require 'rbconfig'
 require 'rexml/document'
+require 'stringio'
 
 RSpec.describe RailroadDiagrams::Diagram do
   def width(svg)
@@ -30,11 +29,14 @@ RSpec.describe RailroadDiagrams::Diagram do
     expect { diagram.to_svg(max_width: 0) }.to raise_error(RailroadDiagrams::InvalidArgument)
   end
 
+  # The SVG width must be parsed from the captured HTML.
+  # rubocop:disable-next RSpec/ExpectOutput
   it 'passes the width option through the demo command' do
-    command = File.expand_path('../../exe/railroad_diagrams', __dir__)
-    output, error, status = Open3.capture3(RbConfig.ruby, command, '--max-width', '250', 'rr-sequence')
-    expect(status).to be_success
-    expect(error).to eq('')
-    expect(width(output[%r{<svg.*?</svg>}m])).to be <= 250
+    original = $stdout
+    $stdout = StringIO.new
+    RailroadDiagrams::Command.new.run(['--max-width', '250', 'rr-sequence'])
+    expect(width($stdout.string[%r{<svg.*?</svg>}m])).to be <= 250
+  ensure
+    $stdout = original
   end
 end
