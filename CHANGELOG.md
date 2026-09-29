@@ -11,6 +11,7 @@
 - Preserve repeated spaces in SVG labels and style MultipleChoice labels.
 - Handle Style items, empty diagrams, non-string labels, and invalid diagram options.
 - Keep text tracks clear around short alternating branches and tall horizontal-choice branches.
+- Restore spacing around nested Sequence and Stack nodes to match upstream.
 
 ### Added
 
@@ -19,6 +20,7 @@
 - Unicode 16.0 display-width tables and international text examples.
 - CI checks minimum line and branch coverage.
 - RuboCop checks Ruby 2.5 syntax and new style violations.
+- Upstream parity compares 67 examples against a pinned Python renderer.
 - README node guide, migration notes, and contribution templates.
 
 ### Changed

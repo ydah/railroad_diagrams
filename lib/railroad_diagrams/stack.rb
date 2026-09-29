@@ -9,7 +9,7 @@ module RailroadDiagrams
       raise InvalidArgument, 'Stack requires at least one item' if items.empty?
 
       super('g', items)
-      @needs_space = false
+      @needs_space = true
       calculate_dimensions
     end
 

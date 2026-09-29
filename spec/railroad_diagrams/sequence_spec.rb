@@ -13,9 +13,9 @@ RSpec.describe RailroadDiagrams::Sequence do
       expect(items.first).to be_a(RailroadDiagrams::Terminal)
     end
 
-    it 'does not require space' do
+    it 'requires space when nested, like the upstream renderer' do
       seq = described_class.new('a', 'b')
-      expect(seq.needs_space).to be false
+      expect(seq.needs_space).to be true
     end
 
     it 'calculates width from items' do

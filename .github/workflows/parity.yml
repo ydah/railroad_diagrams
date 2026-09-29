@@ -1,0 +1,33 @@
+name: Upstream parity
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 3 * * 1'
+permissions:
+  contents: read
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: railroad_diagrams
+      - uses: actions/checkout@v7
+        with:
+          repository: tabatkins/railroad-diagrams
+          ref: 736dec7cc847530ab7d498b1a3331e61b1752ada
+          path: upstream
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.4'
+          bundler-cache: true
+          working-directory: railroad_diagrams
+      - name: Compare sample diagrams
+        working-directory: railroad_diagrams
+        run: bundle exec ruby -Ilib script/parity/compare.rb ../upstream

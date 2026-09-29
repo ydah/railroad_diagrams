@@ -7,7 +7,7 @@ module RailroadDiagrams
     # @rbs return: void
     def initialize(*items)
       super('g', items)
-      @needs_space = false
+      @needs_space = true
       calculate_dimensions
     end
 

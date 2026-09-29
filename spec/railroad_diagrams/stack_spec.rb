@@ -13,6 +13,10 @@ RSpec.describe RailroadDiagrams::Stack do
       expect(items.first).to be_a(RailroadDiagrams::Terminal)
     end
 
+    it 'requires space when nested, like the upstream renderer' do
+      expect(described_class.new('a', 'b').needs_space).to be true
+    end
+
     it 'calculates width from widest item' do
       stack = described_class.new('a', 'longer')
       longer_terminal = RailroadDiagrams::Terminal.new('longer')

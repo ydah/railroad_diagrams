@@ -1,0 +1,28 @@
+- example: test choice up
+  reason: Comment CSS class and label placement differ after BUG-07 and BUG-33.
+- example: test choice down
+  reason: Comment CSS class and connection differ after BUG-06 and BUG-33.
+- example: escape
+  reason: Comment CSS class and connection differ after BUG-06 and BUG-33.
+- example: <unicode-range-token>
+  reason: Comment CSS class and connection differ after BUG-06 and BUG-33.
+- example: Group example
+  reason: Comment CSS class and label placement differ after BUG-07 and BUG-33.
+- example: Class example
+  reason: Comment CSS class differs after BUG-33.
+- example: rr-title
+  reason: Comment CSS class and label placement differ after BUG-07 and BUG-33.
+- example: rr-zeroormore-1
+  reason: Comment CSS class differs after BUG-33.
+- example: rr-zeroormore-2
+  reason: Comment CSS class differs after BUG-33.
+- example: i18n Japanese
+  reason: Unicode display widths differ from upstream String length (RND-01).
+- example: i18n Chinese
+  reason: Unicode display widths differ from upstream String length (RND-01).
+- example: i18n Korean
+  reason: Unicode display widths differ from upstream String length (RND-01).
+- example: i18n emoji
+  reason: Emoji display widths differ from upstream String length (RND-01).
+- example: i18n combining
+  reason: Combining marks have zero display width (RND-01).
