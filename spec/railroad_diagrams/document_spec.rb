@@ -52,4 +52,10 @@ RSpec.describe RailroadDiagrams::Document do
     expect(html).not_to include('<missing>')
     expect(document.lint.map(&:kind)).to include(:undefined_reference)
   end
+
+  it 'passes width limits to each rendered rule' do
+    wrapped = document.rule_sections(max_width: 120).first[:svg]
+    expect(wrapped).not_to eq(document.rule_sections.first[:svg])
+    expect(document.to_html(max_width: 120)).to include(wrapped)
+  end
 end

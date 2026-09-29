@@ -29,7 +29,7 @@ module RailroadDiagrams
       Transform::Lint.call(@rules)
     end
 
-    def rule_sections
+    def rule_sections(max_width: nil)
       ids = rule_ids
       targets = @rules.each_with_index.with_object({}) { |((name, _), index), found| found[name] ||= ids[index] }
       references = @rules.map do |_, node|
@@ -47,17 +47,17 @@ module RailroadDiagrams
         diagram = Diagram.new(diagram) unless diagram.is_a?(Diagram)
         {
           name: name, id: ids[index],
-          svg: diagram.to_svg(theme: @theme, locale: @locale, href_mode: :href, id_prefix: "r#{index}-"),
+          svg: diagram.to_svg(theme: @theme, locale: @locale, href_mode: :href, id_prefix: "r#{index}-", max_width: max_width),
           text: diagram.to_text(charset: :unicode),
           referenced_by: @rules.each_index.select { |source| references[source].include?(name) }.map { |source| @rules[source].first }.uniq
         }
       end
     end
 
-    def to_html(interactive: true, index: :definition)
+    def to_html(interactive: true, index: :definition, max_width: nil)
       raise InvalidArgument, 'index must be :definition or :alphabetical' unless %i[definition alphabetical].include?(index)
 
-      sections = rule_sections
+      sections = rule_sections(max_width: max_width)
       navigation = index == :alphabetical ? sections.sort_by { |section| section[:name].downcase } : sections
       warnings = lint
       css = Theme[@theme].css(css_variables: false)
@@ -66,7 +66,7 @@ module RailroadDiagrams
                else
                  { rules: 'Rules', search: 'Search rules', text: 'Text diagram', referenced_by: 'Referenced by', warnings: 'Lint warnings' }
                end
-      ERB.new(File.read(File.expand_path('templates/document.erb', __dir__)), trim_mode: '-').result(binding)
+      ERB.new(File.read(File.expand_path('templates/document.erb', __dir__))).result(binding)
     end
 
     private
