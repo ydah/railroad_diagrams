@@ -1,0 +1,9 @@
+<svg class="railroad-diagram" height="122" viewBox="0 0 198.5 122" width="198.5">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 51v20m10 -20v20m-10 -10h20" /></g><path d="M40 61h10" /><g>
+<path d="M50 61h0.0" /><path d="M148.5 61h0.0" /><path d="M80.0 61v-20a10 10 0 0 1 10 -10" /><g class="terminal ">
+<path d="M90.0 31h0.0" /><path d="M118.5 31h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="90" y="20"></rect><text x="104.25" y="35">1</text></g><path d="M118.5 31a10 10 0 0 1 10 10v10" /><path d="M80.0 61h10" /><g class="terminal ">
+<path d="M90.0 61h0.0" /><path d="M118.5 61h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="90" y="50"></rect><text x="104.25" y="65">2</text></g><path d="M118.5 61h10" /><path d="M80.0 61v20a10 10 0 0 0 10 10" /><g class="terminal ">
+<path d="M90.0 91h0.0" /><path d="M118.5 91h0.0" /><rect height="22" rx="10" ry="10" width="28.5" x="90" y="80"></rect><text x="104.25" y="95">3</text></g><path d="M118.5 91a10 10 0 0 0 10 -10v-10" /><g class="diagram-text">
+<title>take all branches, once each, in any order</title><path class="diagram-text" d="M 80.0 51 h -26 a 4 4 0 0 0 -4 4 v 12 a 4 4 0 0 0 4 4 h 26 z"></path><text class="diagram-text" x="65" y="65">all</text><path class="diagram-text" d="M 128.5 51 h 16 a 4 4 0 0 1 4 4 v 12 a 4 4 0 0 1 -4 4 h -16 z"></path><text class="diagram-arrow" x="138.5" y="65">↺</text></g></g><path d="M148.5 61h10" /><path d="M 158.5 61 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>

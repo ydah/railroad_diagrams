@@ -1,0 +1,10 @@
+<svg class="railroad-diagram" height="126" viewBox="0 0 412.5 126" width="412.5">
+<g transform="translate(.5 .5)">
+<g>
+<path d="M20 21v20m10 -20v20m-10 -10h20" /></g><g>
+<path d="M40 31h0.0" /><path d="M40.0 31h10" /><g class="terminal ">
+<path d="M50.0 31h10.0" /><path d="M148.0 31h10.0" /><rect height="22" rx="10" ry="10" width="88" x="60" y="20"></rect><text x="104" y="35">Generate</text></g><path d="M158.0 31a10 10 0 0 1 10 10v0a10 10 0 0 1 -10 10h-108.0a10 10 0 0 0 -10 10v0a10 10 0 0 0 10 10" /><g class="terminal ">
+<path d="M50.0 71h27.0" /><path d="M131.0 71h27.0" /><rect height="22" rx="10" ry="10" width="54" x="77" y="60"></rect><text x="104" y="75">some</text></g><path d="M158.0 71h10" /><path d="M168.0 71h0.0" /></g><path d="M168.0 71h10" /><g>
+<path d="M178.0 71h0.0" /><path d="M362.5 71h0.0" /><path d="M178.0 71h10" /><g class="non-terminal ">
+<path d="M188.0 71h0.0" /><path d="M352.5 71h0.0" /><rect height="22" width="164.5" x="188" y="60"></rect><text x="270.25" y="75">railroad diagrams</text></g><path d="M352.5 71h10" /><path d="M188.0 71a10 10 0 0 0 -10 10v7a10 10 0 0 0 10 10" /><g class="non-terminal ">
+<path d="M188.0 98h49.25" /><path d="M303.25 98h49.25" /><text class="comment" x="270.25" y="102">and more</text></g><path d="M352.5 98a10 10 0 0 0 10 -10v-7a10 10 0 0 0 -10 -10" /></g><path d="M362.5 71h10" /><path d="M 372.5 71 h 20 m -10 -10 v 20 m 10 -20 v 20"></path></g></svg>
