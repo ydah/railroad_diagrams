@@ -8,6 +8,7 @@ gem "rake"
 gem 'rspec'
 gem 'simplecov', require: false
 gem 'rexml', require: false
+gem 'yard', require: false
 
 if RUBY_VERSION >= '2.7'
   gem 'rubocop', require: false
