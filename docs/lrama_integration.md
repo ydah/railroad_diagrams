@@ -24,10 +24,6 @@ Lrama 側の変更点は、規則のまとめ方を再利用する次のメソ�
 ```ruby
 # Lrama::Diagram の追加メソッド
 def linked_sections
-  unless defined?(RailroadDiagrams::Document)
-    raise LoadError, 'linked diagrams require railroad_diagrams >= 0.8.0 with Document support'
-  end
-
   document = RailroadDiagrams::Document.new(title: 'Lrama syntax diagrams', theme: :default)
   @grammar.unique_rule_s_values.each do |name|
     alternatives = @grammar.select_rules_by_s_value(name).map(&:to_diagrams)
@@ -37,7 +33,7 @@ def linked_sections
 end
 ```
 
-利用時は `railroad_diagrams` 0.8.0 以降をインストールし、準備・検証済みの文法を渡します。
+利用時は `railroad_diagrams` 1.0.0 以降をインストールし、準備・検証済みの文法を渡します。
 
 ```ruby
 Lrama::Diagram.render(out: out, grammar: grammar, template_name: 'diagram/linked.html')
@@ -57,7 +53,7 @@ Lrama::Diagram.render(out: out, grammar: grammar, template_name: 'diagram/linked
 ## 互換性
 
 - `Lrama::Diagram.render(out:, grammar:)` と既存の `--diagram` は現行テンプレートを使い、HTML と JavaScript の挙動を変えません。
-- `template_name: 'diagram/linked.html'` の指定時だけ `Document` を要求します。古い `railroad_diagrams` で選択された場合は、機能不足を示すエラーを返します。
+- 構文図の生成には `railroad_diagrams` 1.0.0 以降を使います。
 - 同名規則を `Choice(0, ...)` にまとめる既存の順序を保ちます。規則名は `Rule#rhs_to_diagram` と左辺の `s_value` をそのまま使うため、定義済み参照との照合は現在の表示名に従います。
 - `Document#rule_sections` は Lrama のテンプレートを置き換えません。Lrama 固有の CSS、見出し、ページ構成は追加テンプレートで維持できます。
 
@@ -67,7 +63,7 @@ Lrama::Diagram.render(out: out, grammar: grammar, template_name: 'diagram/linked
 2. 同じ文法で追加テンプレートを指定し、`linked_sections` の規則数と定義順が `unique_rule_s_values` と一致することを確認します。
 3. 全 `id` が一意で、SVG と参照元一覧の `href="#..."` が実在する `id` を指すこと、`unused` のような参照元がない規則と未定義参照に不正なリンクが付かないことを確認します。
 4. `program` など参照される規則の `referenced_by` と `<pre>` 内のテキスト図を値で検証します。SVG 断片は REXML で読み、HTML 全体は Lrama で既に使う検証手段で確認します。
-5. Lrama 側の CI で `railroad_diagrams` 0.3.0 と 1.0.0 を使って `diagram_spec.rb` を実行します。0.3.0 では既定出力と追加テンプレートの機能不足エラー、1.0.0 では追加テンプレートの出力も検証します。
+5. Lrama 側の通常の CI で `diagram_spec.rb` を実行し、既定出力と追加テンプレートの出力を検証します。
 
-ローカルでは公開済みの両バージョンでテストが通り、既定の HTML が変更前とバイト単位で一致することを確認しました。
+ローカルでは `railroad_diagrams` 1.0.0 でテストが通り、既定の HTML が変更前とバイト単位で一致することを確認しました。
 `common/basic.y` の13規則について、規則間リンク、参照元、テキスト図を検証しています。
