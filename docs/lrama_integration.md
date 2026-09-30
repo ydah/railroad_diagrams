@@ -15,7 +15,7 @@
 ## 提案
 
 既定の `diagram/diagram.html` を規則間リンク付きのテンプレートに変更します。
-`RailroadDiagrams::Document#rule_sections` を使い、通常の `--diagram` と Ruby API の既定出力でリンク、参照元、テキスト図を表示します。
+`RailroadDiagrams::Document#rule_sections` を使い、通常の `--diagram` と Ruby API の既定出力で規則間リンクと参照元のある SVG を表示します。
 
 Lrama 側の変更点は、規則のまとめ方を再利用する次のメソッドと標準テンプレートです。
 
@@ -52,15 +52,15 @@ CLI でも通常の `--diagram` を指定します。
 lrama --diagram=diagram.html -o calc.c sample/calc.y
 ```
 
-`rule_sections` は定義順の `{ name:, id:, svg:, text:, referenced_by: }` を返します。
+`rule_sections` は規則ごとのセクションを定義順に返します。
 `svg` 内の定義済み非終端記号には `href="#rule-..."` が付き、`id` は同じ文書の規則アンカーです。
-`referenced_by` はその規則を参照する規則名の配列、`text` は Unicode のテキスト図です。
+`referenced_by` はその規則を参照する規則名の配列です。
 未定義の非終端記号にはリンクを付けません。
 
 標準テンプレートでは `linked_sections` を一度だけ呼び、各規則を `<section id="...">` に入れます。
-見出し、参照元、`<details><summary>Text diagram</summary><pre>...</pre></details>` を表示します。
+見出し、SVG、参照元を表示します。
 参照元の名前をリンクにする場合は、同じ `sections` から `name → id` の対応を作ります。
-名前・ID・テキスト図は HTML の文脈に合わせてエスケープし、生成済みの SVG 断片だけをそのまま挿入します。
+名前・ID は HTML の文脈に合わせてエスケープし、生成済みの SVG 断片だけをそのまま挿入します。
 文字列照合による既存のクリック処理を削除し、SVG のリンクによる標準のアンカー移動を使います。
 
 ## 互換性
@@ -68,14 +68,14 @@ lrama --diagram=diagram.html -o calc.c sample/calc.y
 - `Lrama::Diagram.render(out:, grammar:)` と `--diagram` の出力を規則間リンク付きの HTML に変更します。
 - 構文図の生成には `railroad_diagrams` 1.0.0 以降を使います。
 - 補助規則を除いた規則の定義順と、同名規則を `Choice(0, ...)` にまとめる選択肢の順序を保ちます。規則名は `Rule#rhs_to_diagram` と左辺の `s_value` をそのまま使うため、定義済み参照との照合は現在の表示名に従います。
-- ページ全体は Lrama の標準テンプレートで描画し、`Document#rule_sections` から各規則の SVG とテキスト図を受け取ります。
+- ページ全体は Lrama の標準テンプレートで描画し、`Document#rule_sections` から各規則の SVG と参照元を受け取ります。
 
 ## 確認方法
 
-1. Lrama の `spec/fixtures/common/basic.y` で `Lrama::Diagram.render(out:, grammar:)` を実行し、既定出力に見出し、SVG、規則間リンク、参照元、テキスト図が含まれることを確認します。
+1. Lrama の `spec/fixtures/common/basic.y` で `Lrama::Diagram.render(out:, grammar:)` を実行し、既定出力に見出し、SVG、規則間リンク、参照元が含まれ、テキスト図が含まれないことを確認します。
 2. 同じ文法で `linked_sections` の規則名が、補助規則を除いた元の定義順と一致することを確認します。
 3. 全 `id` が一意で、SVG と参照元一覧の `href="#..."` が実在する `id` を指すこと、`unused` のような参照元がない規則と未定義参照に不正なリンクが付かないことを確認します。
-4. `program` など参照される規則の `referenced_by` と `<pre>` 内のテキスト図を値で検証します。SVG 断片は REXML で読み、HTML 全体は Lrama で既に使う検証手段で確認します。
-5. `--diagram` を使うコマンドのテストでも、規則間リンク、参照元、テキスト図を検証します。
-6. 値を参照するアクションと参照しないアクションを含む文法で、補助規則の見出し・SVG・テキスト・リンクが出力されず、ユーザー定義の空規則は残ることを確認します。図の生成前後で元の規則の内容が変わらないことも確認します。
+4. `program` など参照される規則の `referenced_by` を値で検証します。SVG 断片は REXML で読み、HTML 全体は Lrama で既に使う検証手段で確認します。
+5. `--diagram` を使うコマンドのテストでも、規則間リンクと参照元が含まれ、テキスト図が含まれないことを確認します。
+6. 値を参照するアクションと参照しないアクションを含む文法で、補助規則の見出し・SVG・リンクが出力されず、ユーザー定義の空規則は残ることを確認します。図の生成前後で元の規則の内容が変わらないことも確認します。
 7. Lrama 側の通常の CI で `diagram_spec.rb` と `command_spec.rb` を実行します。
