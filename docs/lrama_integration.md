@@ -1,7 +1,7 @@
 # Lrama の構文図に規則間リンクを追加する提案
 
 対象は [ruby/lrama の `master`、`c8317b5`](https://github.com/ruby/lrama/tree/c8317b55850bc6cd9033ddfbf816377b73f6c7bc) です。
-この文書は Lrama に投稿する Issue の本文案です。外部リポジトリには変更を加えていません。
+この文書は Lrama に投稿する Issue の本文案です。
 
 ## 現状
 
@@ -22,19 +22,25 @@
 Lrama 側の変更点は、規則のまとめ方を再利用する次のメソッドと追加テンプレートです。
 
 ```ruby
-# Lrama::Diagram の追加メソッド案
+# Lrama::Diagram の追加メソッド
 def linked_sections
   unless defined?(RailroadDiagrams::Document)
-    raise LoadError, 'linked diagrams require a railroad_diagrams version with Document support'
+    raise LoadError, 'linked diagrams require railroad_diagrams >= 0.8.0 with Document support'
   end
 
-  document = RailroadDiagrams::Document.new(title: 'Lrama syntax diagrams')
+  document = RailroadDiagrams::Document.new(title: 'Lrama syntax diagrams', theme: :default)
   @grammar.unique_rule_s_values.each do |name|
     alternatives = @grammar.select_rules_by_s_value(name).map(&:to_diagrams)
     document.add_rule(name, RailroadDiagrams::Choice.new(0, *alternatives))
   end
   document.rule_sections
 end
+```
+
+利用時は `railroad_diagrams` 0.8.0 以降をインストールし、準備・検証済みの文法を渡します。
+
+```ruby
+Lrama::Diagram.render(out: out, grammar: grammar, template_name: 'diagram/linked.html')
 ```
 
 `rule_sections` は定義順の `{ name:, id:, svg:, text:, referenced_by: }` を返します。
@@ -61,8 +67,7 @@ end
 2. 同じ文法で追加テンプレートを指定し、`linked_sections` の規則数と定義順が `unique_rule_s_values` と一致することを確認します。
 3. 全 `id` が一意で、SVG と参照元一覧の `href="#..."` が実在する `id` を指すこと、`unused` のような参照元がない規則と未定義参照に不正なリンクが付かないことを確認します。
 4. `program` など参照される規則の `referenced_by` と `<pre>` 内のテキスト図を値で検証します。SVG 断片は REXML で読み、HTML 全体は Lrama で既に使う検証手段で確認します。
-5. Lrama の `master` と固定タグを使う互換ジョブで、既定出力と任意導入の両方を実行します。必要な `railroad_diagrams` のバージョンは `Document` が含まれる公開版を確認してから指定します。
+5. Lrama 側の CI で `railroad_diagrams` 0.3.0 と 1.0.0 を使って `diagram_spec.rb` を実行します。0.3.0 では既定出力と追加テンプレートの機能不足エラー、1.0.0 では追加テンプレートの出力も検証します。
 
-採用いただける場合は、上記の範囲に絞った Lrama 側の変更とテストを別途用意します。
-
-ローカルでは、現在の `common/basic.y` をこの組み立て方で処理し、13規則の生成、規則間リンク、参照元、テキスト図を確認しました。
+ローカルでは公開済みの両バージョンでテストが通り、既定の HTML が変更前とバイト単位で一致することを確認しました。
+`common/basic.y` の13規則について、規則間リンク、参照元、テキスト図を検証しています。
