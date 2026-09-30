@@ -62,6 +62,7 @@
 - Per-call SVG rendering options for arc radius, alignment, measurement, number precision, and path optimization.
 - Immutable text character sets, including square Unicode corners.
 - A rendering benchmark and warning-only CI comparison.
+- Concrete dimensions and branch paths for composite nodes in the test suite.
 
 ### Fixed
 
@@ -91,7 +92,6 @@
 - RuboCop checks Ruby 2.5 syntax and new style violations.
 - Upstream parity compares 67 examples against a pinned Python renderer.
 - README node gallery, reproducible preview images, a runnable quick start, migration notes, and contribution templates.
-- Concrete dimensions and branch paths for composite nodes in the test suite.
 - Lrama API contract and integration smoke checks.
 
 ### Changed

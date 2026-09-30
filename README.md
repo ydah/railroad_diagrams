@@ -4,7 +4,7 @@
 
 Generate railroad syntax diagrams as SVG or fixed-width text with Ruby 2.5 or newer. Inspired by [railroad-diagrams](https://github.com/tabatkins/railroad-diagrams).
 
-Version 1.0 documents the [stable Ruby API](docs/api_stability.md). Read the [release announcement](docs/announcing-1.0.md) and [migration guide](docs/migration.md).
+Version 1.0 documents the [stable Ruby API](docs/api_stability.md) and its [API reference](https://ydah.github.io/railroad_diagrams/api/). Read the [release announcement](docs/announcing-1.0.md) and [migration guide](docs/migration.md).
 
 ![A sample railroad diagram](docs/images/simple.svg)
 
