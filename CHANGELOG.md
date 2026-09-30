@@ -2,6 +2,8 @@
 
 ## Unreleased
 
+## 1.1.0 - 2026-09-30
+
 ### Fixed
 
 - Keep Unicode text diagrams aligned in generated HTML when the browser's default monospace font uses wide box-drawing characters.
