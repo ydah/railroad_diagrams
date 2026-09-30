@@ -2,13 +2,6 @@
 
 ## Unreleased
 
-## 1.0.1 - 2026-09-30
-
-### Changed
-
-- Publish the API reference with the gallery and link to it from the gem metadata.
-- Correct the 0.4.0 and 0.5.0 release notes to reflect when geometry assertions were added.
-
 ## 1.0.0 - 2026-09-30
 
 ### Added
@@ -68,8 +61,6 @@
 
 - Per-call SVG rendering options for arc radius, alignment, measurement, number precision, and path optimization.
 - Immutable text character sets, including square Unicode corners.
-- A rendering benchmark and warning-only CI comparison.
-- Concrete dimensions and branch paths for composite nodes in the test suite.
 
 ### Fixed
 
@@ -81,7 +72,7 @@
 
 ### Fixed
 
-- Correct node walking, diagram descriptions, and public output methods.
+- Correct diagram descriptions and public output methods.
 - Make repeated SVG formatting stable and fix standalone CSS, comment connections, group labels, escaping, numeric output, centering, and choice validation.
 - Render MultipleChoice contents and correct text layout and default formatting.
 - Run the packaged demo from any directory and reject unsupported CLI formats.
@@ -92,14 +83,9 @@
 
 ### Added
 
-- Golden output, XML well-formedness, and SVG coordinate bounds checks.
 - String-returning SVG and text APIs, flexible output writers, and a shared error hierarchy.
-- Unicode 16.0 display-width tables and international text examples.
-- CI checks minimum line and branch coverage.
-- RuboCop checks Ruby 2.5 syntax and new style violations.
-- Upstream parity compares 67 examples against a pinned Python renderer.
-- README node gallery, reproducible preview images, a runnable quick start, migration notes, and contribution templates.
-- Lrama API contract and integration smoke checks.
+- Correct CJK and emoji label widths in SVG and text output.
+- Add a quick-start guide, node examples, and migration notes.
 
 ### Changed
 
