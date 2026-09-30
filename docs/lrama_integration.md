@@ -23,13 +23,22 @@ Lrama 側の変更点は、規則のまとめ方を再利用する次のメソ�
 # Lrama::Diagram の追加メソッド
 def linked_sections
   document = RailroadDiagrams::Document.new(title: 'Lrama syntax diagrams', theme: :default)
-  @grammar.unique_rule_s_values.each do |name|
-    alternatives = @grammar.select_rules_by_s_value(name).map(&:to_diagrams)
+  action_symbols = @grammar.rules.select(&:original_rule).map(&:lhs)
+  @grammar.rules.reject(&:original_rule).group_by { |rule| rule.lhs.id.s_value }.each do |name, rules|
+    alternatives = rules.map do |rule|
+      diagram_rule = rule.dup
+      diagram_rule.rhs = rule.rhs - action_symbols
+      diagram_rule.to_diagrams
+    end
     document.add_rule(name, RailroadDiagrams::Choice.new(0, *alternatives))
   end
   document.rule_sections
 end
 ```
+
+規則途中のアクション用に生成される補助規則（`$@n`、`@n`）と、その規則への参照を図から除外します。
+補助規則は `Rule#original_rule` で判定し、図に使う規則を複製して右辺から補助記号を取り除きます。
+ユーザー定義の空規則は残し、パーサー生成に使う元の文法は変更しません。
 
 利用時は `railroad_diagrams` 1.0.0 以降をインストールし、準備・検証済みの文法を渡します。
 
@@ -58,14 +67,15 @@ lrama --diagram=diagram.html -o calc.c sample/calc.y
 
 - `Lrama::Diagram.render(out:, grammar:)` と `--diagram` の出力を規則間リンク付きの HTML に変更します。
 - 構文図の生成には `railroad_diagrams` 1.0.0 以降を使います。
-- 同名規則を `Choice(0, ...)` にまとめる既存の順序を保ちます。規則名は `Rule#rhs_to_diagram` と左辺の `s_value` をそのまま使うため、定義済み参照との照合は現在の表示名に従います。
+- 補助規則を除いた規則の定義順と、同名規則を `Choice(0, ...)` にまとめる選択肢の順序を保ちます。規則名は `Rule#rhs_to_diagram` と左辺の `s_value` をそのまま使うため、定義済み参照との照合は現在の表示名に従います。
 - ページ全体は Lrama の標準テンプレートで描画し、`Document#rule_sections` から各規則の SVG とテキスト図を受け取ります。
 
 ## 確認方法
 
 1. Lrama の `spec/fixtures/common/basic.y` で `Lrama::Diagram.render(out:, grammar:)` を実行し、既定出力に見出し、SVG、規則間リンク、参照元、テキスト図が含まれることを確認します。
-2. 同じ文法で `linked_sections` の規則数と定義順が `unique_rule_s_values` と一致することを確認します。
+2. 同じ文法で `linked_sections` の規則名が、補助規則を除いた元の定義順と一致することを確認します。
 3. 全 `id` が一意で、SVG と参照元一覧の `href="#..."` が実在する `id` を指すこと、`unused` のような参照元がない規則と未定義参照に不正なリンクが付かないことを確認します。
 4. `program` など参照される規則の `referenced_by` と `<pre>` 内のテキスト図を値で検証します。SVG 断片は REXML で読み、HTML 全体は Lrama で既に使う検証手段で確認します。
 5. `--diagram` を使うコマンドのテストでも、規則間リンク、参照元、テキスト図を検証します。
-6. Lrama 側の通常の CI で `diagram_spec.rb` と `command_spec.rb` を実行します。
+6. 値を参照するアクションと参照しないアクションを含む文法で、補助規則の見出し・SVG・テキスト・リンクが出力されず、ユーザー定義の空規則は残ることを確認します。図の生成前後で元の規則の内容が変わらないことも確認します。
+7. Lrama 側の通常の CI で `diagram_spec.rb` と `command_spec.rb` を実行します。
