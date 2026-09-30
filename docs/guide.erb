@@ -1,0 +1,327 @@
+<% topics = {
+  'getting-started' => 'Getting started', 'building-diagrams' => 'Building diagrams',
+  'nodes' => 'Node reference', 'output' => 'Output formats',
+  'themes-and-layout' => 'Themes and layout', 'grammar-documents' => 'Linked grammars',
+  'cli' => 'Command line', 'structured-data' => 'JSON and YAML',
+  'integrations' => 'Integrations', 'compatibility' => 'Configuration and compatibility'
+} %>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Learn to build railroad syntax diagrams with Ruby, export SVG and text, and render linked grammar documents." />
+  <link rel="canonical" href="https://ydah.github.io/railroad_diagrams/guide/" />
+  <title>User Guide · RailroadDiagrams</title>
+  <style>
+    :root { color-scheme: light; --ink: #183047; --muted: #516779; --line: #bfd0d9; --paper: #f3f7f9; --white: #fff; --accent: #176b91; }
+    * { box-sizing: border-box; }
+    body { margin: 0; background: var(--paper); color: var(--ink); font: 1rem/1.65 "Avenir Next", "Segoe UI", sans-serif; }
+    a { color: var(--accent); text-underline-offset: .2em; }
+    a:hover { text-decoration-thickness: 2px; }
+    a:focus-visible, summary:focus-visible { outline: 3px solid var(--accent); outline-offset: 4px; }
+    .skip-link { position: absolute; top: .75rem; left: 1rem; padding: .5rem 1rem; background: var(--white); transform: translateY(-200%); z-index: 2; }
+    .skip-link:focus { transform: none; }
+    .site-header { background: var(--white); border-bottom: 1px solid var(--line); }
+    .header-inner { max-width: 78rem; margin: auto; padding: 1.1rem 2rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: .75rem 2rem; }
+    .brand { font-size: 1.2rem; font-weight: 700; color: var(--ink); text-decoration: none; }
+    .site-header nav { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; font-size: .9rem; }
+    .site-header nav a { text-decoration: none; }
+    [aria-current="page"] { color: var(--ink); font-weight: 700; }
+    .layout { display: grid; grid-template-columns: 15rem minmax(0, 1fr); max-width: 78rem; margin: auto; }
+    .contents { padding: 2.5rem 2rem; border-right: 1px solid var(--line); }
+    .contents nav { position: sticky; top: 2rem; }
+    .contents h2 { font-size: .95rem; margin: 0 0 .8rem; }
+    .contents a, .mobile-contents a { display: block; padding: .35rem 0; font-size: .9rem; text-decoration: none; }
+    .contents a:hover, .mobile-contents a:hover { text-decoration: underline; }
+    .mobile-contents { display: none; }
+    main { min-width: 0; width: 100%; max-width: 56rem; padding: 2.5rem clamp(1.25rem, 4vw, 3.5rem) 4rem; }
+    h1, h2, h3 { line-height: 1.2; letter-spacing: -.025em; }
+    h1 { font-size: clamp(2.5rem, 5vw, 3.8rem); margin: 0 0 1rem; }
+    h2 { font-size: 1.7rem; margin: 0 0 1.2rem; }
+    h3 { font-size: 1.15rem; margin: 1.75rem 0 .75rem; }
+    p, ul { max-width: 70ch; margin: 0 0 1.15rem; }
+    .intro { border-bottom: 3px solid var(--ink); padding-bottom: 2rem; }
+    .intro p { max-width: 60ch; color: var(--muted); font-size: 1.1rem; }
+    .intro a { display: inline-block; margin-right: 1.5rem; font-size: .95rem; }
+    section { padding-top: 2.75rem; scroll-margin-top: 1.5rem; }
+    code, pre { font-family: Menlo, Consolas, "DejaVu Sans Mono", monospace; }
+    code { font-size: .85em; }
+    :not(pre) > code { background: #e7eef3; padding: .1em .3em; border-radius: .2rem; overflow-wrap: anywhere; }
+    pre { margin: 1rem 0 1.5rem; padding: 1.2rem 1.35rem; overflow-x: auto; background: var(--white); border: 1px solid var(--line); border-radius: .4rem; font-size: .85rem; line-height: 1.65; }
+    pre code { font: inherit; }
+    figure { margin: 1.5rem 0; padding: 1.25rem; background: var(--white); border: 1px solid var(--line); border-radius: .4rem; }
+    figure img { display: block; max-width: 100%; height: auto; margin: auto; }
+    figcaption { margin-top: 1rem; color: var(--muted); font-size: .85rem; }
+    .table-scroll { overflow-x: auto; margin: 1.25rem 0; }
+    table { border-collapse: collapse; width: 100%; font-size: .9rem; }
+    th, td { text-align: left; vertical-align: top; padding: .7rem .8rem; border-bottom: 1px solid var(--line); }
+    th { font-weight: 650; background: #e7eef3; }
+    td code { white-space: nowrap; }
+    .note { border-left: 3px solid var(--accent); padding-left: 1rem; color: var(--muted); }
+    footer { border-top: 1px solid var(--line); margin-top: 3rem; padding-top: 1.5rem; font-size: .85rem; color: var(--muted); }
+    footer a { margin-right: 1.25rem; }
+    @media (max-width: 52rem) {
+      .header-inner { padding: 1rem 1.25rem; }
+      .site-header nav { gap: .5rem 1rem; }
+      .layout { display: block; }
+      .contents { display: none; }
+      .mobile-contents { display: block; margin-bottom: 1.75rem; padding-bottom: 1rem; border-bottom: 1px solid var(--line); }
+      .mobile-contents summary { cursor: pointer; font-weight: 600; }
+      main { padding-top: 1.5rem; margin: auto; }
+      th, td { padding: .6rem; }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#content">Skip to content</a>
+  <header class="site-header"><div class="header-inner">
+    <a class="brand" href="../index.html">RailroadDiagrams</a>
+    <nav aria-label="Site navigation">
+      <a href="index.html" aria-current="page">User Guide</a>
+      <a href="../index.html">Gallery</a>
+      <a href="../playground.html">Playground</a>
+      <a href="../api/index.html">API reference</a>
+      <a href="https://github.com/ydah/railroad_diagrams">GitHub</a>
+    </nav>
+  </div></header>
+  <div class="layout">
+    <aside class="contents"><nav aria-label="Guide contents">
+      <h2>In this guide</h2>
+      <% topics.each do |id, label| %>
+      <a href="#<%= id %>"><%= label %></a>
+      <% end %>
+    </nav></aside>
+    <main id="content" tabindex="-1">
+      <details class="mobile-contents"><summary>In this guide</summary><nav aria-label="Mobile guide contents">
+        <% topics.each do |id, label| %>
+        <a href="#<%= id %>"><%= label %></a>
+        <% end %>
+      </nav></details>
+      <header class="intro">
+        <h1>User Guide</h1>
+        <p>Turn a grammar into a diagram you can follow. Build with Ruby, export SVG or text, and connect named rules in a browsable document.</p>
+        <a href="../playground.html">Try the playground</a><a href="../index.html">Browse the node gallery</a>
+      </header>
+
+      <section id="getting-started">
+        <h2>Getting started</h2>
+        <p>RailroadDiagrams runs on Ruby 2.5 or later and has no runtime gem dependencies.</p>
+        <pre><code class="language-sh">gem install railroad_diagrams</code></pre>
+        <p>For a Bundler project, add <code>gem "railroad_diagrams"</code> to your Gemfile and run <code>bundle install</code>.</p>
+        <h3>Your first diagram</h3>
+        <p>Save this as <code>select.rb</code>. Strings are literal tokens; <code>nt</code> names another grammar rule; <code>opt</code> adds an optional branch.</p>
+        <pre><code class="language-ruby">require "railroad_diagrams"
+
+diagram = RailroadDiagrams.diagram do
+  seq("SELECT", opt("DISTINCT"), nt("column"), "FROM", nt("table"))
+end
+
+File.write("select.svg", diagram.to_standalone_svg)</code></pre>
+        <p>Run <code>ruby select.rb</code>, or <code>bundle exec ruby select.rb</code> in a Bundler project, then open <code>select.svg</code> in your browser.</p>
+        <figure><img src="select.svg" alt="SELECT, optional DISTINCT, column, FROM, and table railroad diagram" /><figcaption>Read from left to right. The bypass above DISTINCT makes it optional. Square boxes refer to other grammar rules.</figcaption></figure>
+      </section>
+
+      <section id="building-diagrams">
+        <h2>Building diagrams</h2>
+        <p>The builder DSL keeps nested grammar expressions short. Use <code>RailroadDiagrams.diagram</code> for a complete diagram or <code>RailroadDiagrams.build</code> for a node you will reuse.</p>
+        <pre><code class="language-ruby">columns = RailroadDiagrams.build do
+  list(choice("*", nt("column")), sep: ",")
+end
+
+diagram = RailroadDiagrams::Diagram.new("SELECT", columns)</code></pre>
+        <p>The builder accepts these Ruby values directly:</p>
+        <div class="table-scroll"><table>
+          <thead><tr><th scope="col">Value</th><th scope="col">Result</th><th scope="col">Example</th></tr></thead>
+          <tbody>
+            <tr><td>String</td><td>Terminal</td><td><code>"SELECT"</code></td></tr>
+            <tr><td>Symbol</td><td>Nonterminal</td><td><code>:column</code></td></tr>
+            <tr><td>Array</td><td>Sequence</td><td><code>["FROM", :table]</code></td></tr>
+            <tr><td><code>nil</code></td><td>Empty path</td><td><code>choice(nil, "DISTINCT")</code></td></tr>
+            <tr><td>Diagram node</td><td>The same node</td><td><code>seq(columns, "FROM", :table)</code></td></tr>
+          </tbody>
+        </table></div>
+        <p>Direct constructors are also available. Pass strings as children to turn them into terminals, and construct nonterminals explicitly:</p>
+        <pre><code class="language-ruby">diagram = RailroadDiagrams::Diagram.new(
+  "SELECT",
+  RailroadDiagrams::Optional.new("DISTINCT"),
+  RailroadDiagrams::NonTerminal.new("column")
+)</code></pre>
+        <p>A builder block with one argument receives the builder: <code>RailroadDiagrams.build { |b| b.seq("SELECT", :column) }</code>.</p>
+      </section>
+
+      <section id="nodes">
+        <h2>Node reference</h2>
+        <p>Choose a node by the shape of your grammar. Follow a name to its rendered example in the gallery. Constructor names below are under the <code>RailroadDiagrams</code> namespace.</p>
+        <div class="table-scroll"><table>
+          <thead><tr><th scope="col">Node</th><th scope="col">Use</th><th scope="col">Constructor example</th></tr></thead>
+          <tbody>
+            <tr><td><a href="../index.html#diagram">Diagram</a></td><td>Complete diagram</td><td><code>Diagram.new("item")</code></td></tr>
+            <tr><td><a href="../index.html#terminal">Terminal</a></td><td>Literal token</td><td><code>Terminal.new("word")</code></td></tr>
+            <tr><td><a href="../index.html#nonterminal">NonTerminal</a></td><td>Reference to a rule</td><td><code>NonTerminal.new("expression")</code></td></tr>
+            <tr><td><a href="../index.html#sequence">Sequence</a></td><td>Items in order</td><td><code>Sequence.new("a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#stack">Stack</a></td><td>Items across rows</td><td><code>Stack.new("a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#choice">Choice</a></td><td>One alternative</td><td><code>Choice.new(0, "a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#optional">Optional</a></td><td>Zero or one item</td><td><code>Optional.new("a")</code></td></tr>
+            <tr><td><a href="../index.html#oneormore">OneOrMore</a></td><td>One or more items</td><td><code>OneOrMore.new("a", ",")</code></td></tr>
+            <tr><td><a href="../index.html#zeroormore">ZeroOrMore</a></td><td>Zero or more items</td><td><code>ZeroOrMore.new("a", ",")</code></td></tr>
+            <tr><td><a href="../index.html#group">Group</a></td><td>Label a group</td><td><code>Group.new("a", label: "group")</code></td></tr>
+            <tr><td><a href="../index.html#horizontalchoice">HorizontalChoice</a></td><td>Alternatives side by side</td><td><code>HorizontalChoice.new("a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#optionalsequence">OptionalSequence</a></td><td>Optional items in order</td><td><code>OptionalSequence.new("a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#alternatingsequence">AlternatingSequence</a></td><td>Alternating paths</td><td><code>AlternatingSequence.new("a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#multiplechoice">MultipleChoice</a></td><td>One or more alternatives</td><td><code>MultipleChoice.new(0, "any", "a", "b")</code></td></tr>
+            <tr><td><a href="../index.html#complexdiagram">ComplexDiagram</a></td><td>Complex endpoint markers</td><td><code>ComplexDiagram.new("item")</code></td></tr>
+            <tr><td><a href="../index.html#repeat">Repeat</a></td><td>Counted repetition</td><td><code>Repeat.new("item", min: 2, max: 4)</code></td></tr>
+            <tr><td><a href="../index.html#separatedlist">SeparatedList</a></td><td>Items with a separator</td><td><code>SeparatedList.new("item", ",")</code></td></tr>
+            <tr><td><a href="../index.html#except">Except</a></td><td>Exclude a pattern</td><td><code>Except.new("letter", "x")</code></td></tr>
+            <tr><td><a href="../index.html#charclass">CharClass</a></td><td>Character class</td><td><code>CharClass.new("[a-z]")</code></td></tr>
+            <tr><td><a href="../index.html#special">Special</a></td><td>Special token</td><td><code>Special.new("EOF")</code></td></tr>
+            <tr><td><a href="../index.html#comment">Comment</a></td><td>Annotation</td><td><code>Comment.new("note")</code></td></tr>
+            <tr><td><a href="../index.html#skip">Skip</a></td><td>Empty path</td><td><code>Skip.new</code></td></tr>
+            <tr><td><a href="../index.html#start">Start</a></td><td>Start marker</td><td><code>Start.new</code></td></tr>
+            <tr><td><a href="../index.html#end">End</a></td><td>End marker</td><td><code>End.new</code></td></tr>
+            <tr><td><a href="../index.html#block">Block</a></td><td>Custom dimensions</td><td><code>Block.new(width: 50)</code></td></tr>
+          </tbody>
+        </table></div>
+        <p><code>Choice</code>'s first argument selects the default branch by its zero-based index. In the DSL, write <code>choice("a", "b", default: 0)</code>.</p>
+        <p><code>Optional</code> is a <code>Choice</code> subclass, and <code>ZeroOrMore</code> is an <code>Optional</code> subclass. <code>HorizontalChoice.new</code> and <code>OptionalSequence.new</code> return a <code>Sequence</code> for zero or one child.</p>
+        <p>See the <a href="../api/index.html">API reference</a> for constructor options and attributes.</p>
+      </section>
+
+      <section id="output">
+        <h2>Output formats</h2>
+        <p>Each output method returns a string. Pick the format for the place you will display the diagram.</p>
+        <div class="table-scroll"><table>
+          <thead><tr><th scope="col">Method</th><th scope="col">Output</th></tr></thead>
+          <tbody>
+            <tr><td><code>to_standalone_svg</code></td><td>SVG with CSS, ready to save as a file</td></tr>
+            <tr><td><code>to_svg</code></td><td>SVG for a page that supplies its own CSS</td></tr>
+            <tr><td><code>to_html</code></td><td>A complete HTML page with SVG and a text alternative</td></tr>
+            <tr><td><code>to_text</code></td><td>Unicode or ASCII text</td></tr>
+            <tr><td><code>to_markdown</code></td><td>A fenced text diagram for Markdown</td></tr>
+          </tbody>
+        </table></div>
+        <pre><code class="language-ruby">File.write("select.html", diagram.to_html(title: "SELECT syntax"))
+puts diagram.to_text
+puts diagram.to_text(charset: :ascii)
+puts diagram.to_text(charset: :unicode_square, strip_trailing: true)
+puts diagram.to_markdown</code></pre>
+        <p>Text layout accounts for CJK and emoji display widths. Ambiguous-width characters use one column. To embed raw text in HTML, pass <code>escape_html: true</code>.</p>
+        <p class="note">When displaying Unicode diagrams in a custom page, use a font that gives box characters and spaces the same width, such as Menlo, Consolas, or DejaVu Sans Mono. Use a line height of 1 to keep vertical tracks connected. Generated HTML supplies this styling.</p>
+        <p>The existing <code>write_svg</code>, <code>write_standalone</code>, and <code>write_text</code> methods accept an IO, a mutable string, or a callable:</p>
+        <pre><code class="language-ruby">File.open("select.svg", "w") { |file| diagram.write_standalone(file) }</code></pre>
+        <p><code>write_text</code> escapes HTML by default for compatibility; <code>to_text</code> returns unescaped text by default.</p>
+      </section>
+
+      <section id="themes-and-layout">
+        <h2>Themes and layout</h2>
+        <p>Built-in themes are <code>default</code>, <code>classic</code>, <code>dark</code>, <code>auto</code>, <code>print</code>, and <code>high_contrast</code>. Compare them in the <a href="../themes/dark.html">theme gallery</a>.</p>
+        <pre><code class="language-ruby">File.write("select-dark.svg", diagram.to_standalone_svg(theme: :dark))
+File.write("select-wrapped.svg", diagram.to_standalone_svg(max_width: 600))
+File.write("select-inline.svg", diagram.to_svg(inline_styles: true))</code></pre>
+        <p><code>auto</code> follows the viewer's color scheme. <code>max_width</code> wraps long sequences across rows. <code>inline_styles: true</code> embeds presentation attributes for destinations that strip SVG style elements.</p>
+        <h3>Links and accessible descriptions</h3>
+        <pre><code class="language-ruby">diagram = RailroadDiagrams::Diagram.new(
+  RailroadDiagrams::NonTerminal.new("expression", href: "#expression"),
+  title: "Expression syntax",
+  desc: :auto
+)
+svg = diagram.to_svg(href_mode: :href, locale: :en)</code></pre>
+        <p><code>title</code> and <code>desc</code> describe the diagram to screen readers. <code>locale: :ja</code> produces a Japanese automatic description. Use HTTP, HTTPS, email, or relative URLs for links.</p>
+        <p><code>precision</code>, <code>arc_radius</code>, <code>char_width</code>, and <code>id_prefix</code> are per-call rendering options. See <a href="../api/RailroadDiagrams/Options.html">Options</a> for the available fields.</p>
+      </section>
+
+      <section id="grammar-documents">
+        <h2>Linked grammars</h2>
+        <p>A <code>Document</code> combines named rules into one HTML page with links between nonterminals, lists of referring rules, text alternatives, and lint findings.</p>
+        <pre><code class="language-ruby">document = RailroadDiagrams::Document.new(title: "SQL subset")
+document.add_rule("query", RailroadDiagrams.build { seq("SELECT", :table) })
+document.add_rule("table", RailroadDiagrams.build { choice("users", "accounts") })
+
+File.write("grammar.html", document.to_html)</code></pre>
+        <p>The <code>table</code> reference links to its rule. References to names that are not defined remain unlinked. Rules and alternatives retain their definition order.</p>
+        <p>Use <code>index: :alphabetical</code> to sort the navigation or <code>interactive: false</code> to omit the search script:</p>
+        <pre><code class="language-ruby">html = document.to_html(index: :alphabetical, interactive: false)
+warnings = document.lint
+sections = document.rule_sections</code></pre>
+        <p>Each section contains <code>name</code>, <code>id</code>, <code>svg</code>, <code>text</code>, and <code>referenced_by</code>, so another tool can place linked rules in its own template.</p>
+        <p>Import W3C EBNF directly:</p>
+        <pre><code class="language-ruby">grammar = &lt;&lt;~EBNF
+  query ::= "SELECT" "DISTINCT"? table
+  table ::= "users" | "accounts"
+EBNF
+
+document = RailroadDiagrams::Importers::W3cEbnf.parse(grammar)
+File.write("grammar.html", document.to_html)</code></pre>
+      </section>
+
+      <section id="cli">
+        <h2>Command line</h2>
+        <p><code>render</code> reads Ruby DSL files, structural JSON, YAML grammars, or W3C EBNF. It writes linked HTML by default.</p>
+        <pre><code class="language-sh">railroad_diagrams render grammar.ebnf -o grammar.html --simplify --lint
+railroad_diagrams render grammar.yml -o out/ --split --format standalone
+railroad_diagrams render grammar.ebnf --format text --charset ascii
+railroad_diagrams render grammar.ebnf --rule query --theme dark -o query.html
+railroad_diagrams render grammar.ebnf -o grammar.html --watch
+railroad_diagrams themes
+railroad_diagrams render --help</code></pre>
+        <p>Use <code>--split</code> to write one file per rule and <code>--rule</code> to choose rules. <code>--simplify</code> removes redundant structure; <code>--lint</code> reports grammar warnings. <code>--watch</code> regenerates output when a file changes.</p>
+        <p>For standard input, pass <code>-</code> and an explicit <code>--input-format</code>:</p>
+        <pre><code class="language-sh">cat grammar.yml | railroad_diagrams render - --input-format yaml -o grammar.html</code></pre>
+        <p class="note">Ruby input executes the named file. Only render Ruby files you trust. YAML, JSON, and EBNF inputs are parsed as data.</p>
+        <p>To render the bundled examples, use <code>railroad_diagrams demo --format=svg</code>. Demo formats are <code>svg</code>, <code>standalone</code>, <code>ascii</code>, and <code>unicode</code>. The old command without a subcommand still works but emits a deprecation warning.</p>
+      </section>
+
+      <section id="structured-data">
+        <h2>JSON and YAML</h2>
+        <p>Serialize a node tree to save it or exchange it with another tool. The serialized structure follows the <a href="https://github.com/ydah/railroad_diagrams/blob/main/schema/v1.json">version 1 schema</a>.</p>
+        <pre><code class="language-ruby">json = diagram.to_json
+restored = RailroadDiagrams.from_json(json)
+puts restored == diagram
+
+yaml = diagram.to_yaml
+restored = RailroadDiagrams.from_yaml(yaml)
+hash = diagram.to_h
+restored = RailroadDiagrams.from_h(hash)</code></pre>
+        <p>YAML grammar files provide a shorter form for named rules. Arrays are sequences, strings are terminals, and <code>&lt;name&gt;</code> refers to another rule:</p>
+        <pre><code class="language-yaml">title: SQL subset
+rules:
+  query: [SELECT, "&lt;table&gt;"]
+  table:
+    choice: [users, accounts]</code></pre>
+        <p>Render this with <code>railroad_diagrams render grammar.yml -o grammar.html</code>, or pass the YAML string to <code>RailroadDiagrams::Importers::YamlGrammar.parse</code>.</p>
+        <p><code>each_node</code> walks the tree in depth-first order. Structural equality compares nodes and their children, making a serialized round trip comparable to the original.</p>
+      </section>
+
+      <section id="integrations">
+        <h2>Integrations</h2>
+        <h3>Rails</h3>
+        <p>Require <code>railroad_diagrams/rails</code> to register the view helper, then use it in an ERB view:</p>
+        <pre><code class="language-erb">&lt;%= railroad_diagram { seq("SELECT", :table) } %&gt;</code></pre>
+        <p>The helper returns an SVG marked safe for the view. See the <a href="https://github.com/ydah/railroad_diagrams/blob/main/examples/integrations/rails/example.html.erb">sample view</a>.</p>
+        <h3>Jekyll and Asciidoctor</h3>
+        <p>The separate <a href="https://github.com/ydah/railroad_diagrams/tree/main/integrations/jekyll-railroad">Jekyll</a> and <a href="https://github.com/ydah/railroad_diagrams/tree/main/integrations/asciidoctor-railroad">Asciidoctor</a> adapter projects render <code>railroad</code> blocks from YAML grammar definitions. Their READMEs explain installation and include sample sites.</p>
+      </section>
+
+      <section id="compatibility">
+        <h2>Configuration and compatibility</h2>
+        <p>Prefer options on individual output calls when different diagrams need different settings. Use global configuration for application-wide defaults:</p>
+        <pre><code class="language-ruby">RailroadDiagrams.configure do |options|
+  options[:theme] = :dark
+  options[:precision] = 3
+end</code></pre>
+        <p>The <a href="https://github.com/ydah/railroad_diagrams/blob/main/docs/api_stability.md">API stability guide</a> lists stable, experimental, and internal APIs. Stable APIs retain source compatibility throughout 1.x; removal requires 2.0.</p>
+        <p>By default, SVG number precision remains unrestricted and links use <code>xlink:href</code>. Set <code>precision:</code> or <code>href_mode:</code> explicitly to change these choices. Legacy constants such as <code>AR</code>, <code>VS</code>, and <code>CHAR_WIDTH</code> remain available.</p>
+        <p>For upgrades from 0.x, read the <a href="https://github.com/ydah/railroad_diagrams/blob/main/docs/migration.md">migration guide</a>. Pass links and labels as keyword arguments. Use <code>inspect</code> for debugging instead of the deprecated <code>to_str</code>.</p>
+      </section>
+
+      <footer>
+        <p>RailroadDiagrams <%= RailroadDiagrams::VERSION %>. Released under the MIT License.</p>
+        <a href="../api/index.html">API reference</a>
+        <a href="https://github.com/ydah/railroad_diagrams">Source on GitHub</a>
+        <a href="https://github.com/ydah/railroad_diagrams/issues">Report an issue</a>
+      </footer>
+    </main>
+  </div>
+</body>
+</html>

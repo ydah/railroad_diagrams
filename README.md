@@ -1,133 +1,138 @@
-# RailroadDiagrams
+<h1 align="center">RailroadDiagrams</h1>
 
-[![Gem Version](https://badge.fury.io/rb/railroad_diagrams.svg)](https://rubygems.org/gems/railroad_diagrams)
+<p align="center">
+  <strong>Railroad syntax diagrams in SVG and text, built with Ruby.</strong>
+</p>
 
-Generate railroad syntax diagrams as SVG or fixed-width text with Ruby 2.5 or newer. Inspired by [railroad-diagrams](https://github.com/tabatkins/railroad-diagrams).
+<p align="center">
+  <a href="https://rubygems.org/gems/railroad_diagrams"><img src="https://img.shields.io/gem/v/railroad_diagrams.svg?color=176b91" alt="Gem version"></a>
+  <a href="https://github.com/ydah/railroad_diagrams/actions/workflows/main.yml"><img src="https://github.com/ydah/railroad_diagrams/actions/workflows/main.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/Ruby-%3E%3D%202.5-CC342D.svg" alt="Ruby 2.5 or later">
+  <a href="LICENSE.txt"><img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="MIT License"></a>
+</p>
 
-Version 1.0 documents the [stable Ruby API](docs/api_stability.md) and its [API reference](https://ydah.github.io/railroad_diagrams/api/). Read the [release announcement](docs/announcing-1.0.md) and [migration guide](docs/migration.md).
+<p align="center">
+  <a href="#features">Features</a> ·
+  <a href="#installation">Installation</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="https://ydah.github.io/railroad_diagrams/guide/">User Guide</a> ·
+  <a href="https://ydah.github.io/railroad_diagrams/playground.html">Playground</a>
+</p>
 
-![A sample railroad diagram](docs/images/simple.svg)
+---
 
-## Install
+Build syntax diagrams for parsers, language documentation, and grammar tools.
+Compose nodes with Ruby constructors or a builder DSL, then export SVG, HTML,
+or fixed-width text. Runs on Ruby 2.5 or later with no runtime gem dependencies.
+Inspired by [railroad-diagrams](https://github.com/tabatkins/railroad-diagrams).
 
-```bash
+![SELECT syntax with an optional DISTINCT keyword and references to column and table rules](docs/images/select.svg)
+
+## Features
+
+- Sequences, alternatives, optional branches, repetitions, separated lists, and character classes
+- SVG, standalone HTML, and Unicode or ASCII text with CJK and emoji display widths
+- Six built-in themes, width-limited wrapping, links, and accessible descriptions
+- Linked grammar documents with rule navigation, reverse references, search, and lint findings
+- W3C EBNF, YAML, JSON, and Ruby DSL input through the CLI
+- Structural JSON/YAML serialization, a documented stable 1.x API, and RBS declarations
+- A Rails view helper and separate [Jekyll](integrations/jekyll-railroad/) and [Asciidoctor](integrations/asciidoctor-railroad/) adapter projects
+
+## Installation
+
+```sh
 gem install railroad_diagrams
 ```
 
-Or add `gem 'railroad_diagrams'` to your Gemfile and run `bundle install`.
+Or add it to your Gemfile and run `bundle install`:
+
+```ruby
+gem "railroad_diagrams"
+```
 
 ## Quick start
 
-```ruby
-require 'railroad_diagrams'
-
-diagram = RailroadDiagrams::Diagram.new('SELECT', RailroadDiagrams::Optional.new('DISTINCT'))
-File.write('select.svg', diagram.to_standalone_svg)
-```
-
-`to_standalone_svg` includes CSS. Use `to_svg` to embed the diagram in a page with your own CSS. Both methods return strings; `write_svg` and `write_standalone` write to an IO, a String, or a callable. Pass `max_width: 600` to wrap a long sequence across rows.
-
-Select a built-in theme with `to_standalone_svg(theme: :dark)` or use `theme: :auto` to follow the viewer's color scheme. Pass `inline_styles: true` when the destination strips SVG style elements. `to_html(title: 'Syntax')` returns a complete HTML page. For screen readers, pass `title:` and `desc: :auto` to `Diagram.new`; `to_svg(locale: :ja)` produces a Japanese description. Links in `to_svg` allow HTTP, HTTPS, email, and relative URLs by default.
-
-## Nodes
-
-Strings passed as children become `Terminal` nodes. Build larger diagrams by nesting the constructors below. See [examples/demo.rb](examples/demo.rb) for complete diagrams.
-
-| Node | Example | Preview |
-| --- | --- | --- |
-| `Terminal` | `Terminal.new('word')` | <img src="docs/images/simple.svg" alt="Terminal example" width="180"> |
-| `NonTerminal` | `NonTerminal.new('expression')` | <img src="docs/images/Group_example.svg" alt="NonTerminal example" width="180"> |
-| `Comment` | `Comment.new('note')` | <img src="docs/images/comment.svg" alt="Comment example" width="180"> |
-| `Sequence` | `Sequence.new('a', 'b')` | <img src="docs/images/rrx2Dsequence.svg" alt="Sequence example" width="180"> |
-| `Stack` | `Stack.new('a', 'b')` | <img src="docs/images/rrx2Dstack.svg" alt="Stack example" width="180"> |
-| `Choice` | `Choice.new(0, 'a', 'b')` | <img src="docs/images/rrx2Dchoice.svg" alt="Choice example" width="180"> |
-| `Optional` | `Optional.new('a')` | <img src="docs/images/rrx2Doptional.svg" alt="Optional example" width="180"> |
-| `OneOrMore` | `OneOrMore.new('a', ',')` | <img src="docs/images/rrx2Doneormore.svg" alt="OneOrMore example" width="180"> |
-| `ZeroOrMore` | `ZeroOrMore.new('a', ',')` | <img src="docs/images/rrx2Dzeroormorex2D1.svg" alt="ZeroOrMore example" width="180"> |
-| `Group` | `Group.new('a', label: 'label')` | <img src="docs/images/rrx2Dgroup.svg" alt="Group example" width="180"> |
-| `HorizontalChoice` | `HorizontalChoice.new('a', 'b')` | <img src="docs/images/rrx2Dhorizontalchoice.svg" alt="HorizontalChoice example" width="180"> |
-| `OptionalSequence` | `OptionalSequence.new('a', 'b')` | <img src="docs/images/rrx2Doptionalsequence.svg" alt="OptionalSequence example" width="180"> |
-| `AlternatingSequence` | `AlternatingSequence.new('a', 'b')` | <img src="docs/images/rrx2Dalternatingsequence.svg" alt="AlternatingSequence example" width="180"> |
-| `MultipleChoice` | `MultipleChoice.new(0, 'any', 'a', 'b')` | <img src="docs/images/rrx2Dmultchoice.svg" alt="MultipleChoice example" width="180"> |
-| `Skip`, `Start`, `End` | `Skip.new`, `Start.new`, `End.new` | <img src="docs/images/labeledx2Dstart.svg" alt="Start and End example" width="180"> |
-| `ComplexDiagram` | `ComplexDiagram.new('item')` | <img src="docs/images/nodex2Dcomplex.svg" alt="Complex diagram example" width="180"> |
-| `Block` | `Block.new(width: 50)` | <img src="docs/images/nodex2Dblock.svg" alt="Block example" width="180"> |
-| `Repeat` | `Repeat.new('item', min: 2, max: 4)` | <img src="docs/images/nodex2Drepeat.svg" alt="Counted repeat example" width="180"> |
-| `SeparatedList` | `SeparatedList.new('item', ',')` | <img src="docs/images/nodex2Dlist.svg" alt="Separated list example" width="180"> |
-| `Except` | `Except.new('letter', '[0-9]')` | <img src="docs/images/nodex2Dexcept.svg" alt="Exclusion example" width="180"> |
-| `CharClass` | `CharClass.new('[a-z]')` | <img src="docs/images/nodex2Dcharx2Dclass.svg" alt="Character class example" width="180"> |
-| `Special` | `Special.new('any character')` | <img src="docs/images/nodex2Dspecial.svg" alt="Special token example" width="180"> |
-
-`Optional` is a `Choice` subclass, and `ZeroOrMore` is an `Optional` subclass. `HorizontalChoice.new` and `OptionalSequence.new` return a `Sequence` when passed zero or one child.
-
-Browse the [node gallery](https://ydah.github.io/railroad_diagrams/) or edit a diagram in the [browser playground](https://ydah.github.io/railroad_diagrams/playground.html).
-
-## Builder and structured data
+Save this as `select.rb`:
 
 ```ruby
+require "railroad_diagrams"
+
 diagram = RailroadDiagrams.diagram do
-  seq('SELECT', opt('DISTINCT'), nt(:table))
+  seq("SELECT", opt("DISTINCT"), nt("column"), "FROM", nt("table"))
 end
 
-json = diagram.to_json
-same_diagram = RailroadDiagrams.from_json(json)
-puts same_diagram == diagram
+File.write("select.svg", diagram.to_standalone_svg)
 ```
 
-The builder converts strings to terminals, symbols to nonterminals, nil to `Skip`, and arrays to `Sequence`. Direct constructors keep their existing conversion rules. `RailroadDiagrams.build` returns a node; a block with one argument receives the builder. The [DSL demo](examples/demo_dsl.rb) matches all bundled diagrams. `to_h`, `from_h`, `to_yaml`, and `from_yaml` use the [version 1 schema](schema/v1.json). `each_node` walks the tree in depth-first order.
+Run `ruby select.rb` and open `select.svg` in your browser. In a Bundler project,
+use `bundle exec ruby select.rb`.
 
-## Text output
+Strings become literal tokens, `nt` names a nonterminal, and `opt` makes a branch
+optional. Browse the [node gallery](https://ydah.github.io/railroad_diagrams/)
+or edit the example in the [playground](https://ydah.github.io/railroad_diagrams/playground.html).
+
+### Export a diagram
 
 ```ruby
+File.write("select-dark.svg", diagram.to_standalone_svg(theme: :dark))
+File.write("select.html", diagram.to_html(title: "SELECT syntax"))
 puts diagram.to_text                       # Unicode box characters
 puts diagram.to_text(charset: :ascii)       # ASCII only
-puts diagram.to_text(charset: :unicode_square, strip_trailing: true)
-puts diagram.to_text(escape_html: true)     # safe to embed in HTML
-puts diagram.to_markdown                     # fenced code block
+puts diagram.to_markdown                    # Markdown code block
 ```
 
-Labels use Unicode display widths, so CJK and emoji fit their boxes. Ambiguous-width characters occupy one column. The older `write_text` method escapes HTML by default for compatibility.
+Use `to_svg` to embed SVG in a page with its own CSS. Pass `max_width: 600` to
+wrap long sequences. The [User Guide](https://ydah.github.io/railroad_diagrams/guide/#output)
+covers output formats, constructor options, and linked grammar documents.
 
-## Grammar documents and CLI
+### Render a grammar from the CLI
 
-The CLI accepts W3C EBNF, YAML grammar files, JSON diagrams, and trusted Ruby DSL files. It can render a linked HTML document for multiple rules:
+Save a W3C EBNF grammar as `grammar.ebnf`:
 
-```bash
-railroad_diagrams render grammar.ebnf -o grammar.html --format html --simplify --lint
-railroad_diagrams render grammar.yml -o out/ --split --format svg
-railroad_diagrams render grammar.ebnf --format text --charset ascii
+```ebnf
+query ::= "SELECT" "DISTINCT"? table
+table ::= "users" | "accounts"
 ```
 
-Use `--input-format yaml` with `-` to read standard input. A Ruby input file executes code, so only render files you trust. See [the YAML grammar example](spec/fixtures/yaml/sql_select.yml) and [the API stability guide](docs/api_stability.md).
+Then render a linked HTML document:
 
-To build a document from Ruby, add named rules and call `to_html`:
-
-```ruby
-document = RailroadDiagrams::Document.new(title: 'SQL subset')
-document.add_rule('query', RailroadDiagrams::Sequence.new('SELECT', RailroadDiagrams::NonTerminal.new('table')))
-File.write('grammar.html', document.to_html)
+```sh
+railroad_diagrams render grammar.ebnf -o grammar.html --simplify --lint
 ```
 
-## Framework integrations
+The CLI also accepts YAML grammars, structural JSON, and trusted Ruby DSL files.
+See [Command line](https://ydah.github.io/railroad_diagrams/guide/#cli) for per-rule
+output, themes, text formats, and file watching.
 
-In Rails, require `railroad_diagrams/rails` and call `railroad_diagram { seq('SELECT', :table) }` in an ERB view. The helper returns escaped SVG marked safe for the view. [A sample view](examples/integrations/rails/example.html.erb) is included.
+## Documentation
 
-The separate [Jekyll](integrations/jekyll-railroad/README.md) and [Asciidoctor](integrations/asciidoctor-railroad/README.md) gem directories include installation instructions and sample sites. Their `railroad` blocks accept the same YAML grammar format as the CLI.
+| Resource | What you will find |
+| --- | --- |
+| [User Guide](https://ydah.github.io/railroad_diagrams/guide/) | Installation, building diagrams, output, linked grammars, CLI, and integrations |
+| [Node and theme gallery](https://ydah.github.io/railroad_diagrams/) | Every node rendered in every bundled theme |
+| [Playground](https://ydah.github.io/railroad_diagrams/playground.html) | Edit Ruby DSL and preview SVG and text in your browser |
+| [API reference](https://ydah.github.io/railroad_diagrams/api/) | Classes, methods, and constructor options |
 
-## Demo CLI
+- [API stability](docs/api_stability.md) and [migration guide](docs/migration.md)
+- [Version 1.0 announcement](docs/announcing-1.0.md)
+- [Examples](examples/), [data schema](schema/v1.json), and [RBS declarations](sig/)
 
-`railroad_diagrams demo --format=svg > demo.html` writes an HTML page containing the bundled examples. Formats: `svg`, `standalone`, `ascii`, and `unicode`. Pass example names after the options to select diagrams. `--max-width 600` wraps SVG examples. The old command without `demo` still works with a deprecation warning.
+## Development
 
-## Configuration and compatibility
+```sh
+bin/setup
+bundle exec rake
+bundle exec rake site:build
+```
 
-The constants in [lib/railroad_diagrams.rb](lib/railroad_diagrams.rb), including `VS`, `AR`, `CHAR_WIDTH`, and `INTERNAL_ALIGNMENT`, remain available for compatibility. Pass options such as `arc_radius:`, `char_width:`, and `theme:` to individual output calls. `Style.default_style` returns the default CSS. `to_text(charset:)` uses per-call state and is safe to call from multiple threads.
+`bundle exec rake` runs specs and type checking. `site:build` builds the User Guide,
+gallery, and playground in `site/`. See [CONTRIBUTING.md](CONTRIBUTING.md) for
+checks and golden-output updates, or [SECURITY.md](SECURITY.md) to report a vulnerability.
 
-Read the [migration guide](docs/migration.md) for behavior changes and deprecations. Before 1.0, breaking changes receive at least one minor release of deprecation notice; removal is deferred to 2.0.
+To release, update the version and changelog, run the checks, and push a matching
+`vX.Y.Z` tag. The [release workflow](.github/workflows/release.yml) publishes through
+RubyGems Trusted Publishing and creates the GitHub release.
 
-## Development and releases
+## License
 
-Run `bin/setup`, then `bundle exec rake` for specs and type checking. `bundle exec rake golden:update` regenerates golden outputs; review those diffs before committing. `bundle exec rake docs:images` copies the reviewed SVG outputs into the node gallery. `bin/console` opens an IRB session.
-
-To release, update `lib/railroad_diagrams/version.rb` and `CHANGELOG.md`, run the test suite, then push a matching `vX.Y.Z` tag. The [release workflow](.github/workflows/release.yml) publishes the gem through RubyGems Trusted Publishing and creates a GitHub release.
-
-See [CONTRIBUTING.md](CONTRIBUTING.md) for changes and [SECURITY.md](SECURITY.md) for vulnerability reports. Licensed under [MIT](LICENSE.txt).
+Released under the [MIT License](LICENSE.txt).

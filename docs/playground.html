@@ -10,6 +10,7 @@
 body { margin: 0; min-height: 100vh; background: var(--paper); color: var(--ink); font: 1rem/1.5 system-ui, sans-serif; }
 header { padding: 1.25rem clamp(1rem, 3vw, 3rem); border-bottom: 1px solid var(--line); background: var(--white); }
 header a { color: var(--accent); }
+header nav { display: flex; flex-wrap: wrap; gap: .5rem 1.25rem; }
 h1 { margin: .35rem 0 0; font-size: clamp(2rem, 4vw, 3rem); letter-spacing: -.04em; }
 main { display: grid; grid-template-columns: minmax(18rem, 1fr) minmax(18rem, 1.3fr); gap: 1.5rem; padding: 1.5rem clamp(1rem, 3vw, 3rem); }
 section { min-width: 0; }
@@ -26,7 +27,7 @@ pre { overflow-x: auto; padding: 0.25em 0; white-space: pre; font: 13px/1 Menlo,
 </style>
 </head>
 <body>
-<header><a href="index.html">Gallery</a><h1>Try a diagram</h1></header>
+<header><nav aria-label="Site navigation"><a href="index.html">Gallery</a><a href="guide/index.html">User Guide</a><a href="api/index.html">API reference</a><a href="https://github.com/ydah/railroad_diagrams">GitHub</a></nav><h1>Try a diagram</h1></header>
 <main>
 <section><h2>Ruby DSL</h2><label for="source">Edit the diagram</label>
 <textarea id="source" spellcheck="false">diagram(

@@ -32,7 +32,7 @@ module SiteBuild
       'node-end' => RailroadDiagrams::Diagram.new(RailroadDiagrams::End.new)
     )
     template = ERB.new(File.read(File.expand_path('../docs/gallery.erb', __dir__)))
-    FileUtils.mkdir_p(File.join(directory, 'themes'))
+    FileUtils.mkdir_p([File.join(directory, 'themes'), File.join(directory, 'guide')])
     ExamplesLoader::THEMES.each do |theme|
       samples = NODES.map do |label, name|
         diagram = diagrams.fetch(name)
@@ -47,6 +47,9 @@ module SiteBuild
         File.write(File.join(directory, 'index.html'), template.result(binding))
       end
     end
+    guide = ERB.new(File.read(File.expand_path('../docs/guide.erb', __dir__)))
+    File.write(File.join(directory, 'guide', 'index.html'), guide.result)
+    FileUtils.cp(File.expand_path('../docs/images/select.svg', __dir__), File.join(directory, 'guide', 'select.svg'))
     PlaygroundBundle.build(File.join(directory, 'playground_bundle.js'))
     FileUtils.cp(File.expand_path('../docs/playground.html', __dir__), File.join(directory, 'playground.html'))
     FileUtils.cp(File.expand_path('../docs/playground.js', __dir__), File.join(directory, 'playground.js'))
