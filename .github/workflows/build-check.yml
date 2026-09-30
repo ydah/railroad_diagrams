@@ -33,7 +33,7 @@ jobs:
           ruby-version: ${{ matrix.ruby }}
           bundler-cache: true
       - name: Build and install gem
-        run: |
+        run: | # zizmor: ignore[adhoc-packages] install the gem built here for a CLI smoke test
           gem build railroad_diagrams.gemspec
           gem install --local --no-document --install-dir "$RUNNER_TEMP/railroad-gems" railroad_diagrams-*.gem
       - name: Run packaged CLI outside checkout

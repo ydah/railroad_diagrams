@@ -22,5 +22,4 @@ jobs:
         with:
           advanced-security: false
           online-audits: false
-          min-severity: medium
           version: 1.30.1
