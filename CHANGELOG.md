@@ -2,6 +2,13 @@
 
 ## Unreleased
 
+## 1.0.1 - 2026-09-30
+
+### Changed
+
+- Publish the API reference with the gallery and link to it from the gem metadata.
+- Correct the 0.4.0 and 0.5.0 release notes to reflect when geometry assertions were added.
+
 ## 1.0.0 - 2026-09-30
 
 ### Added
