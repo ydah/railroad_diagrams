@@ -114,7 +114,6 @@ output, themes, text formats, and file watching.
 | [API reference](https://ydah.github.io/railroad_diagrams/api/) | Classes, methods, and constructor options |
 
 - [API stability](docs/api_stability.md) and [migration guide](docs/migration.md)
-- [Version 1.0 announcement](docs/announcing-1.0.md)
 - [Examples](examples/), [data schema](schema/v1.json), and [RBS declarations](sig/)
 
 ## Development
