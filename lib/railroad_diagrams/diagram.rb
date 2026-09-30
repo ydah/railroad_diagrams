@@ -238,6 +238,7 @@ module RailroadDiagrams
       locale = options.fetch(:locale, RailroadDiagrams.default_options.locale)
       I18n.t(:describe_truncated, locale: locale)
       css = Theme[options.fetch(:theme, RailroadDiagrams.default_options.theme)].css(css_variables: false)
+      css += "\npre { overflow-x: auto; padding: 0.25em 0; font: 13px/1 Menlo, Consolas, \"DejaVu Sans Mono\", monospace; }\n"
       escaped_title = RailroadDiagrams.escape_html(title)
       text_options = options.dup
       text_options[:charset] = charset
