@@ -1,4 +1,4 @@
-name: CodeSpell
+name: zizmor
 on:
   push:
     branches: [main]
@@ -8,17 +8,19 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
-  codespell:
-    name: CodeSpell
+  zizmor:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: CodeSpell
-        uses: codespell-project/actions-codespell@8f01853be192eb0f849a5c7d721450e7a467c579 # v2.2
+      - name: Audit GitHub Actions workflows
+        uses: zizmorcore/zizmor-action@cc914d7f3750a2d13d75c7f184a1060aa0e9d482 # v0.6.4
         with:
-          check_filenames: true
-          check_hidden: true
-          ignore_words_file: .codespellignore
+          advanced-security: false
+          online-audits: false
+          min-severity: medium
+          version: 1.30.1

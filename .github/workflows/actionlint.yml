@@ -1,4 +1,4 @@
-name: CodeSpell
+name: actionlint
 on:
   push:
     branches: [main]
@@ -8,17 +8,16 @@ permissions:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: true
+
 jobs:
-  codespell:
-    name: CodeSpell
+  actionlint:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      - name: CodeSpell
-        uses: codespell-project/actions-codespell@8f01853be192eb0f849a5c7d721450e7a467c579 # v2.2
+      - name: Check GitHub Actions workflows
+        uses: docker://rhysd/actionlint@sha256:9d36088643581e728c969f35141f88139fec77280b2be23c1f66f8e40e1025e7
         with:
-          check_filenames: true
-          check_hidden: true
-          ignore_words_file: .codespellignore
+          args: -color

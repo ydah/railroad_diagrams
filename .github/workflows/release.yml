@@ -25,7 +25,7 @@ jobs:
       - uses: ruby/setup-ruby@984c0c890880bbf811283d6f09c4607c62d210a4 # v1.323.0
         with:
           ruby-version: '3.4'
-          bundler-cache: true
+      - run: bundle install
       - name: Verify tag and version
         run: test "${GITHUB_REF_NAME}" = "v$(bundle exec ruby -Ilib -rrailroad_diagrams/version -e 'print RailroadDiagrams::VERSION')"
       - name: Test and build
